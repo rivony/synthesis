@@ -1,0 +1,801 @@
+\documentclass[11pt]{report}
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage{hyperref}
+\title{La simulation des fluides}
+\author{Raoelisolonarivony - MISA M2}
+\date{Décembre 2016}
+
+\begin{document}
+\maketitle
+
+\section*{Description du cours}
+
+L'animation des fluides comme l'eau, la fumée ou le feu par la simulation basée sur les lois de la physique croit en importance dans les effets visuels et commencent à avoir beaucoup d'impacts sur les jeux vidéos en temps réel. Ce cours part des bases des écoulement de fluide en 3D à son état-de-l'art dans la synthèse d'image. Nous commencerons par une explication intuitive des concepts importants sur la simulation de fluide, et suivant cette progression, démontrerons comment implémenter un système de simulation d'eau et de fumée effective, et compléterons les frontières en courbes irrégulières et  la tension de la surface. La dernière moitié du cours couvrira des sujets plus avancés comme les feux et explosions, la méthode des grilles adaptives, les algorithmes en temps réel couplés aux dernières technologies en accélération graphique, et les fluides dites non-newtonien comme le sable. 
+
+\chapter{Les équations des fluides}
+Les écoulement des fluides sont gouvernés par les fameuses équations des fluides incompressibles de Navier-Stokes. Cet ensemble d'équations aux dérivées partielles régit le comportement des fluides. Elles sont souvent écrites comme suit:
+
+\begin{eqnarray}
+\frac{\partial \overrightarrow{u}}{\partial t} + (\overrightarrow{u} . \nabla ) \overrightarrow{u} + \frac{1}{\rho} \nabla p & = & \overrightarrow{g} + \nu \nabla . \nabla \overrightarrow{u} \\
+\nabla . \overrightarrow{u} & = & 0
+\end{eqnarray}
+
+Le symbole $ \overrightarrow{u} $ représente la vitesse du fluide. \newline
+
+La lettre grecque $  \rho $ est la masse volumique du fluide. Pour l'eau, elle de l'ordre de $ 1000kg/m^3 $ tandis que pour l'air elle est de $ 1,3kg/m^3 $. \newline
+
+La lettre \textit{p} pour "\textbf{pression}", représente la force exercée par le fluide sur une unité de surface. \newline
+
+Le symbole \overrightarrow{g} est l'accélération de la pesanteur ayant comme coordonnées $(0; -9,81; 0) m/s^2 $ en prenant comme convention un axe $ y $ vertical et orienté vers le haut. \newline
+
+La lettre grecque $\nu$ est appelé "\textbf{viscosité cinétique}". Elle mesure à quel point un fluide peut se déformer durant son écoulement. Par exemple le pois a une grande viscosité alors que l'alcool est un fluide à faible viscosité.
+
+\section{L'équation d'inertie}
+
+La première équation différentielle (1) est issue d'une équation vectorielle appelée "équation d'inertie". Cette équation est en fait celle de Newton $ \overrightarrow{F} = m. \overrightarrow{a} $ déguisée. Elle indique comment le fluide se meut soumis aux forces qui s'exercent sur lui. La seconde équation (2) est appelée "\textbf{condition d'incompressibilité}".
+
+En supposant que l'animation d'un fluide est modélisée en utilisant un système de particules. Chaque particule représente alors un élément du fluide. Elle a une masse \textit{M}, un volume \textit{V} et une vitesse \overrightarrow{u}. Il faut dresser le bilan des forces appliquées sur la particule pour pouvoir obtenir la position de la particule après un temps donné. $ \overrightarrow{F} = m. \overrightarrow{a} $ donne ensuite l'accélération pour créer le mouvement de cette particule. Cette accélération s'écrit:
+
+\begin{eqnarray}
+\overrightarrow{a} & = & \frac{D \overrightarrow{u}}{Dt}
+\end{eqnarray}
+
+La loi de Newton devient:
+
+\begin{eqnarray}
+\overrightarrow{F} & = & m. \frac{D \overrightarrow{u}}{Dt}
+\end{eqnarray}
+
+Quant aux forces s'exerçant sur la particule, la plus évidente est la force de la gravité $ m\overrightarrow{g} $. Les autres particules du fluide exerçent aussi des forces sur la particule concerné. \newline
+
+La première est la pression. Les régions à haute pression refoulent celles à basse pression. Ce qui est intéressant est la somme des forces appliquées à la particule. Par exemple, si la particule est soumise à une pression égale dans toutes les directions, la somme des forces sera nulle. Ce qui compte surtout c'est l'influence d'une haute pression sur un côté particulier de la particule, entrainant une force dirigée depuis les zones à haute pression vers celles à basse pression. La plus simple manière de mesurer la différence de pression sur la particule à une position donnée est de calculer la valeur du gradient de pression avec le signe moins: $ - \nabla p $.
+L'intégrale de cet élément sur le volume entier du fluide donne la force de pression. Par approximation, il est possible de multiplier par le volume V. En fait, la pression garde le volume du fluide constant.\newline
+
+L'autre force exercée par le fluide sur une de ses particules est celle due à la viscosité. Un fluide visqueux tend à résister à la déformation. C'est une force qui pousse la particule avec une vitesse, qui est la moyenne des vitesses des particules voisines, c'est-à-dire qu'elle cherche à minimiser les différences de vitesses entre les particules voisines dans le fluide. L'opérateur différentiel qui mesure à quelle proportion une quantité varie autour de la moyenne est le laplacien $ \nabla . \nabla $. L'intégration de cette valeur sur le volume entier donne la force due à la viscosité. Le "\textbf{coefficient de viscosité dynamique}" est noté $ \mu $. Ce coefficient est en rapport à la force plutôt qu'à l'accélération.\newline
+
+En regroupant toutes les forces et en remplaçant dans l'équation (4), le mouvement de la particule est régit par l'équation suivante:
+
+\begin{eqnarray}
+m\overrightarrow{g} - V \nabla p + V \mu \nabla . \nabla \overrightarrow{u} & = & m. \frac{D \overrightarrow{u}}{Dt}
+\end{eqnarray}
+
+Evidemment, le fait d'approximer le fluide en ne prennant compte qu'un nombre fini d'éléments est sujet à erreur. La limite à fixer se fait au niveau de la taille des particules qui doit tendre vers zero et le nombre de particules dans le fluide qui doit tendre vers l'infini. L'équation du mouvement de la particule est affecté par ces limitations puisque la masse \textit{m} et le volume \textit{V} vont tendre vers zéro.
+En divisant membre à membre l'équation (5) par le volume, la masse volumique entre en jeu et règle le problème des limites. Cette équation, en tenant compte que la masse volumique $ \rho $ = $ \frac{m}{V} $, devient:
+
+\begin{eqnarray}
+\rho\overrightarrow{g} - \nabla p + \mu \nabla . \nabla \overrightarrow{u} & = & \rho. \frac{D \overrightarrow{u}}{Dt}
+\end{eqnarray}
+
+En divisant ensuite par la masse volumique $ \rho $, cela donne:
+
+\begin{eqnarray}
+\overrightarrow{g} - \frac{1}{\rho}\nabla p + \frac{\mu}{\rho} \nabla . \nabla \overrightarrow{u} & = & \frac{D \overrightarrow{u}}{Dt}
+\end{eqnarray}
+
+En définissant la viscosité cinématique par $ \nu = \frac{\mu}{\rho} $, l'équation devient:
+
+\begin{eqnarray}
+\overrightarrow{g} - \frac{1}{\rho}\nabla p + \nu \nabla . \nabla \overrightarrow{u} & = & \frac{D \overrightarrow{u}}{Dt}
+\end{eqnarray}
+
+L'équation d'inertie (1) est sensiblement retrouvée. En fait, l'utilisation de la dérivée totale $ \frac{D\overrightarrow{u}}{Dt} $ est plus importante pour la synthèse d'image et nous conduit à des méthodes de résolutions numériques de l'équation. Pour expliciter cette importance de la dérivée $ \frac{D\overrightarrow{u}}{Dt} $, il faut considérer les approches de résolution "\textbf{Lagrangien} " et "\textbf{Eulérien}". 
+
+\section{Les points de vue Lagrangienne et Eulérienne}
+
+Le mouvement des fluides et des solides déformables peut être décrit en suivant deux approches: Lagrangienne et Eulérienne.\newline
+
+L'approche Lagrangienne (en l'honneur du mathématicien français Joseph Louis Lagrange) gère ce mouvement comme un système de particules. Chaque point dans le fluide est étiquetté comme une particule séparée, avec sa position \overrightarrow{x} et sa vitesse \overrightarrow{u}. On peut raisonnablement considérer la particule comme une molécule du fluide. Les fluides sont simulés par l'approche de Lagrange en un ensemble discret de particules connectées par des mailles, comme le sont communément les solides déformables.\newline
+
+L'approche Eulérienne (en l'honneur du mathématicien suisse Leonhard Euler), suit une tactique différente. Il est habituellement lié à la description du mouvement des fluides. Au lieu de retracer chaque particule, on s'intéresse à des points fixes dans l'espace et on note l'évolution des caractéristiques du fluide (comme la masse volumique, la vitesse, la température, etc.) au cours du temps en ces points. Quand le fluide s'écoule à travers ces points, il contribue au changement de ces caractéristiques (par exemple, quand un fluide chaud qui refroidit traverse les points, la température diminue - même si la température de chaque particule du fluide reste constante). \newline
+
+Une façon de comprendre les deux approches est son assimilation à la collecte de données météorologique. Pour la méthode de Lagrange, le point de vue se situe et se déplace dans un ballon laissé flotté au gré du vent et mesurant au passage la pression, la température et l'humidité de l'air aux alentours. Pour la méthode d'Euler, le point de vue est fixé sur le sol, mesurant la pression, la température et l'humidité de l'air qui transite par le point de vue. \newline
+
+D'un point de vue numérique, la méthode de Lagrange correspond à un système de particules (avec ou sans maillage) et la méthode d'Euler consiste à utiliser une grille fixe dans l'espace qui ne change pas même si le fluide le traverse. \newline
+
+L'approche eulérienne, malgré son apparente difficulté, est privilégié par rapport à celle de Lagrange pour les raisons suivantes:
+
+\begin{enumerate}
+\item Gérer les dérivées comme le gradient de la pression ou la viscosité est analytiquement aisé; 
+\item L'approximation de ces dérivées dans un système eulérien est plus pratique que dans un nuage de particules suivant des mouvements arbitraires.\newline
+\end{enumerate}
+
+La connexion liant les deux points de vue est la dérivée totale $ \frac{Dq}{Dt} $. D'abord pour le point de vue de Lagrange, le fluide est composé de particules avec des positions \overrightarrow{x} et des vitesses \overrightarrow{u}. En supposant que le fluide possède un caractère \textit{q}, chaque particule possède une valeur pour \textit{q} ( \textit{q} peut être la masse volumique, la vitesse, la température ou tout autre caractéristique du fluide). En particulier, la function $ q(t,\overrightarrow{x}) $ indiquant la valeur de \textit{q} à un instant \textit{t} pour la particule situé à une position $ \overrightarrow{x} $ représente une variable d'Euler. La variation de la caractéristique \textit{q}  de la particule répond quant à elle à la question de Lagrange. En prenant la dérivée totale:
+
+\begin{eqnarray}
+\frac{d}{dt} q(t, \overrightarrow{x}) 
+& = & \frac{\partial q}{\partial t} + \nabla q. \frac{d\overrightarrow{x}}{dt} \\
+& = & \frac{\partial q}{\partial t} + \nabla q. \overrightarrow{u} \\
+& = & \frac{Dq}{Dt}
+\end{eqnarray}
+
+Les deux termes intervenants dans cette dérivée sont $ \frac{\partial q}{\partial t} $ et  $ \nabla q. \overrightarrow{u} $ dans l'égalité (10). Le premier terme indique à quelle vitesse \textit{q} varie dans une position fixé dans l'espace (une mesure eulérienne). Le second terme corrige la variation occasionée à cette position qui n'a été causé que par les différences des fluides ayant transités par cette position (exemple: le changement de température vient du fait que le fluide froid s'est substitué au fluide chaud, il n'est pas causé par un changement de température des molécules).
+
+Finallement, en 3D et en fonction de ses dérivées partielles, cette dérivée s'écrit:
+
+\begin{equation}
+\frac{Dq}{Dt} 
+ =  \frac{\partial q}{\partial t} + u \frac{\partial q}{\partial x} + v \frac{\partial q}{\partial y} + w \frac{\partial q}{\partial z}
+\end{equation}
+ 
+La discussion porte sur la manière dont la particule fluide, ayant un caractère \textit{q}, est en mouvement dans un champ de vecteur vitesse \overrightarrow{u}. C'est ce qu'on appelle communément "\textbf{advection}" (ou parfois "\textbf{convection}" ou "\textbf{transport}"). Une "\textbf{équation d'advection}" utilise la dérivée $ \frac{Dq}{Dt} $, telle quelle soit nulle:
+
+\begin{eqnarray}
+\frac{Dq}{Dt} & = & 0 \\
+\frac{\partial q}{\partial t} + \nabla q. \overrightarrow{u} & = & 0
+\end{eqnarray}
+
+Cela signifie juste que la caractéristique q varie, mais pas au sens du point de vue de Lagrange.
+
+\subsection{Exemple}
+
+Pour simplifier, un exemple en une dimension est préférable sans fausser les raisonnements. Soit la caractéristique \textit{T} représentant la température du fluide. En supposant qu'à un instant \textit{t}, la température soit donnée par: 
+
+\begin{eqnarray*}
+T(x) = 10 x
+\end{eqnarray*}
+
+La température est de 0 (en degré Celsius) à l'origine et augmente au fur et à mesure que l'on avance vers la droite du repère, jusqu'à une température limite de 100 pour $x = 10 $. En supposant qu'un vent souffle à une vitesse \textit{c},  en d'autre termes que partout la vitesse du fluide est \textit{c}:
+
+\begin{eqnarray*}
+\overrightarrow{u} = c
+\end{eqnarray*}
+
+La température de chaque particule d'air est supposée constante, les particules sont seulement en mouvement. Donc, suivant l'approche de Lagrange, la variation de température est nulle:
+
+\begin{eqnarray*}
+\frac{DT}{Dt} = 0
+\end{eqnarray*} 
+
+En développant, cette équation devient:
+
+\begin{eqnarray*}
+\frac{\partial T}{\partial t} + \nabla T.\overrightarrow{u} & = & 0 \\
+\frac{\partial T}{\partial t} + 10.c & = & 0 \\
+\frac{\partial T}{\partial t}  & = & - 10.c
+\end{eqnarray*} 
+
+Interprétation: Pour un point fixé dans l'espace, la température varie avec le taux $ -10c $. Si le vent s'arrête de souffler, $ c = 0 $, rien ne change. Si le vent souffle vers la droite avec une vitesse $ c = 1 $, la température descendra à $ -10 $. Si par contre le vent souffle vers la gauche avec une vitesse $ c = -2 $, la température à ce point augmentera à 20. Dans ce cas, même si la dérivée de Lagrange est nulle, celle d'Euler peut prendre différentes valeurs dépendant de la vitesse et de la direction du fluide en mouvement. 
+
+
+\subsection{Quantité de vecteur d'advection}
+
+Une confusion apparaît pour l'application de l'opérateur de dérivée $ \frac{D}{Dt} $ sur la caractéristique de type vecteur, la coulour RGB par exemple, et encore plus de confusion pour son application sur le vecteur vitesse \overrightarrow{u}. Pour l'éviter, il faut prendre chaque composante séparemment.
+
+Pour le vecteur de couleur $ \overrightarrow{C} = (R, G, B) $, la dérivée s'écrit:
+\[
+\frac{D\overrightarrow{C}}{Dt} = 
+  \left[
+	\begin{array}{c}
+		DR/Dt\\
+		DG/Dt\\
+		DB/Dt
+	\end{array}
+ \right] = 
+ \left[
+	\begin{array}{c}
+		\partial R/\partial t + \overrightarrow{u} . \nabla R \\
+		\partial G/\partial t + \overrightarrow{u} . \nabla G \\
+		\partial B/\partial t + \overrightarrow{u} . \nabla B
+	\end{array}
+ \right] = 
+ \frac{\partial \overrightarrow{C}}{\partial t} + \overrightarrow{u} . \nabla \overrightarrow{C}
+\]
+
+Le terme $ \overrightarrow{u} . \nabla \overrightarrow{C} $ est un abus de notation, il représente implicitement l'advection du vecteur couleur $\overrightarrow{C} $ suivant ses composantes scalaires.
+
+De même, l'advection de la vitesse $ \overrightarrow{u} = (u, v, w) $ s'écrit:
+
+\[
+\frac{D\overrightarrow{u}}{Dt} = 
+  \left[
+	\begin{array}{c}
+		Du/Dt\\
+		Dv/Dt\\
+		Dw/Dt
+	\end{array}
+ \right] = 
+ \left[
+	\begin{array}{c}
+		\partial u/\partial t + \overrightarrow{u} . \nabla R \\
+		\partial v/\partial t + \overrightarrow{u} . \nabla G \\
+		\partial w/\partial t + \overrightarrow{u} . \nabla B
+	\end{array}
+ \right] = 
+ \frac{\partial \overrightarrow{u}}{\partial t} + \overrightarrow{u} . \nabla \overrightarrow{u}
+\]
+
+En développant, cette formule s'écrit:
+\[
+\frac{D\overrightarrow{u}}{Dt} = 
+  \left[
+	\begin{array}{c}
+		\partial u/\partial t + u \partial u / \partial x + v \partial u / \partial y + w \partial u / \partial z \\
+		\partial v/\partial t + u \partial v / \partial x + v \partial v / \partial y + w \partial v / \partial z\\
+		\partial w/\partial t + u \partial w / \partial x + v \partial w / \partial y + w \partial w / \partial z
+	\end{array}
+ \right]
+\]
+
+\section{L'incompressibilité}
+
+Les fluides réels, même l'eau, peut changer de volume. En fait, les ondes de son résultent de perturbation du volume (de la masse volumique et la pression) du fluide. Une fausse affirmation stipule que la différence entre les liquides et les gaz est que les gaz pouvaient changer de volume et pas les liquides. Cette affirmation peut être réfuté par le fait qu'il possible d'entendre sous l'eau.
+
+Un point crucial cependant, les fluides ne changent de volume qu'à très petit échelle. Il est presque impossible de modifier le volume de l'eau même avec une puissante pompe à eau. L'air même ne change pas de volume sauf s'il est fixé à une pompe ou dans d'extrêmes situations comme quand un objet franchit le mur du son. L'étude se rapportant à l'étude de tels phénomènes est celle des "\textbf{fluides compressibles}". L'écoulement de tels fluides est compliqué et couteux à simuler, et hormis pour l'acoustique, n'entre pas en jeu dans la vie quotidienne. De même, les ondes de son ne représentent qu'une infime partie des perturbations de volume, et ont des effets négligeables sur le mouvement des fluides à un niveau macroscopique (eau débarbouillante, fumée tournoyante, etc.), et n'ont donc pas une importance sur l'animation.
+
+Pour l'animation, les fluides sont considérés "\textbf{imcompressibles}", c'est-à-dire que leur volume ne change pas.
+Mathématiquement, en prenant une volume de fluide $ \Omega $ quelconque à un instant donné, de frontière $ \partial\Omega $, la mesure de la progression du volume de fluide est obtenue en intégrant la composante normale de sa vitesse suivant cette frontière:
+
+\begin{equation}
+\frac{d}{dt} Volume(\Omega) = \int \!\!\!\! \int_{\partial \Omega} \overrightarrow{u} . \hat{n}
+\end{equation}
+
+Pour un fluide incompressible, le volume est constant, l'équation (15) devient:
+
+\begin{equation}
+\int \!\!\!\! \int_{\partial \Omega} \overrightarrow{u} . \hat{n} = 0
+\end{equation}
+
+En utilisant le théorème de la divergence, l'équation fait apparaitre l'intégrale sur le volume:
+
+\begin{equation}
+\int \!\!\!\! \int \!\!\!\! \int_{\Omega} \nabla . \overrightarrow{u} = 0
+\end{equation}
+
+Toute la magie vient du fait que cette équation doit être toujours vraie quelque soit le volume $ \Omega $ pris dans l'ensemble du fluide. La seule fonction qui s'annule en s'intégrant indépendamment du volume choisi est la fonction nulle. En conséquence, l'équation (17) se réduit comme suit:
+
+\begin{eqnarray*}
+\mathbf{\nabla . \overrightarrow{u} = 0}
+\end{eqnarray*}
+
+L'équation (2) est retrouvée, elle s'appelle "\textbf{Equation d'incompressibilité}" du fluide. c'est la deuxième partie des équations de Navier-Stokes.
+Le champ de vecteur qui vérifie cette équation d'incompressibilité est appelé "\textbf{champ incompressible}" ou "\textbf{champ solénoïdal}" ou "\textbf{champ à divergence zéro}". Une des parties les plus sensibles lors de la simulation de fluide est de préserver cette incompressibilité pour le champ de vecteur de vitesses. C'est là que la pression entre en jeu.
+
+Une façon de considérer la pression est que c'est la force qui permet de préserver l'incompressibilité de la vitesse.
+
+La pression intervient uniquement dans l'équation d'inertie (1), il faut trouver une relation qui lie la pression avec la divergence du champ de vitesse. En appliquant la divergence aux deux membres de l'équation d'inertie, on a l'équation suivante:
+
+\begin{equation}
+\nabla . \, \frac{\partial \overrightarrow{u}}{\partial t} + \nabla . \, (\nabla \overrightarrow{u}. \,  \overrightarrow{u}) + \nabla . \, \frac{1}{\rho} \nabla p  =  \nabla . \, (\overrightarrow{g} + \nu \nabla . \nabla \overrightarrow{u})
+\end{equation}
+
+En inversant les opérateurs de dérivation dans le premier terme de cette équation, c'est-à-dire:
+
+\begin{equation}
+\frac{\partial }{\partial t}\nabla .\overrightarrow{u}
+\end{equation}
+
+Et en considérant que terme doit être nul compte tenu de la contrainte d'incompressibilité, le réarrangement de l'équation (18) donne:
+
+\begin{equation}
+\nabla . \frac{1}{\rho}\nabla p = \nabla . (-\nabla \overrightarrow{u} . \overrightarrow{u}+ \overrightarrow{g} + \nu \nabla . \nabla \overrightarrow{u}) 
+\end{equation}
+
+
+\section{Négliger la viscosité}	
+
+Dans certaines situations, la viscosité tient un rôle important: pour la simulation de miel ou de gouttes d'eau par exemple. Seulement, pour la plupart des animations, la viscosité joue un rôle de moindre importance. Sa simplification dans l'équation bénificie l'équation de Navier-Stokes de practicité. En fait, la plupart des méthodes numériques intervenants dans la simulation de fluides prônent des erreurs interprétables comme étant due à la viscosité du fluide. Donc le fait d'enlever le terme de viscosité dans l'équation ne nuit pas à la simulation. 
+
+Les équations de Navier-Stokes privées des termes portant sur la viscosité sont appelées "\textbf{Equation d'Euler}", et un fluide dit parfait sans viscosité est qualifié de fluide "\textbf{invisqueux}". Les équations résultant de la suppression des termes mettant en jeu la viscosité sont les suivantes:
+
+\begin{eqnarray}
+\frac{D\overrightarrow{u}}{Dt} + \frac{1}{\rho} \nabla p & = & \overrightarrow{g} \\
+\nabla . \overrightarrow{u} & = & 0
+\end{eqnarray}
+
+Ce sont les équations les plus utilisées dans l'animation.
+
+\section{Conditions à la frontière}	
+
+Une des choses les plus intéressantes dans la simulation numérique des fluides est la description du mouvement du fluide aux frontières. 
+
+Deux frontières usuellement rencontrées sont les frontières dites "murs solides" et "surfaces libres". Les frontières impliquant la frontière entre deux fluides différents sont aussi importantes: il est rare d'en avoir besoin en animation. Un article travaillant sur ces frontières où deux fluides entrent en collision est celui de Jeong-Mo Hong and Chang-Hun Kim \cite{Hong-05}.
+
+Une frontière en mur solide est là où le fluide entre en contact avec un solide. En terme de vitesse: A la frontière, le fluide ne doit pas pénétrer à travers le solide ou en sortir s'il y est contenu, donc la composante normale de la vitesse à cet emplacement est nulle:
+
+\begin{equation}
+\overrightarrow{u}.\hat{n} = 0
+\end{equation}
+
+L'équation (23) s'applique surtout si le solide n'est pas en mouvement. Dans le cas général, la composante normale de la vitesse du fluide doit correspondre à la composante normale de la vitesse du solide à son contact, c'est-à-dire:
+
+\begin{equation}
+\overrightarrow{u}.\hat{n} = \overrightarrow{u}\!\!_{solid} \,.\, \hat{n}
+\end{equation}
+
+Dans les deux équations, $ \hat{n} $ est la normale à la frontière solide.
+Ces équations représentent les conditions qui évitent au fluide de coller au solide, étant donné que la composante normale de la vitesse est restreinte, ce qui permet au fluide de glisser en suivant la direction tangentielle.\newline
+
+Quant est-il de la pression sur la frontière entre le fluide et le solide? L'idée de départ est que c'est la pression qui "maintient le fluide dans son état incompressible" en préservant son volume. Il faut aussi que les conditions aux frontières de type "mur solides" soient respectées. Le terme $ \frac{1}{\rho}\nabla p$ de l'équation d'inertie s'applique aussi à la frontière. Ainsi, la pression peut contrôler $  \overrightarrow{u} \,.\, \hat{n} $ au mur solide, ce qui indique une propriété de $ \nabla p \,.\, \hat{n} $, aussi appelée la dérivée normale de la pression "$ \partial p / \partial \hat{n} $".\newline
+
+Que se passerait-il si le liquide était visqueux? Les frottements dus à la viscosité auront une influence sur la composante tangentielle de la vitesse du fluide. Le cas le plus simple est la condition de non-glissement de la frontière, spécifiant:
+
+\begin{equation}
+\overrightarrow{u} = 0
+\end{equation}
+
+et si le solide est en mouvement, la condition est:
+
+\begin{equation}
+\overrightarrow{u} \,=\, \overrightarrow{u}\!\!_{solid}
+\end{equation}
+
+Parfois, la frontière solide est un genre d'évent ou un drain que le fluide peut traverser. Dans ce cas, le produit $ \overrightarrow{u}\,.\,\hat{n} $ doit être différent de la vitesse de la frontière, il doit plutôt être égale à la vitesse d'aspiration ou de refoulement du conduit dans la simulation.\newline
+
+
+Le deuxième type de frontière est celle entre le fluide et la surface libre. C'est l'ensemble des points où la modélisation du fluide n'est pas prise en compte. Par exemple, dans le cas de la simulation de l'eau qui éclabousse, les surface de l'eau qui \textbf{ne sont pas} en contact avec le solide sont les surfaces libres. En réalité, l'eau est en contact avec un autre fluide qui est l'air, mais cela ajoute plus de complexité  pour ajouter la simulation de l'air dans l'équation. De plus, comme l'air est 700 fois plus léger que l'eau, il n'a pas un effet assez significatif sur l'eau. Donc, l'air est modélisé simplement comme étant une région avec une pression atmosphérique. Et puisque pour les fluides incompressibles, seules les \textbf{ différences} de pression comptent, la pression constante de l'air peut être choisi arbitrairement: zéro fait bien l'affaire. En conséquence, une surface libre est celle qui a une pression $ p = 0 $, et la vitesse y est hors de contrôle.\newline
+
+Un autre cas où la surface libre est importante est celui de la simulation d'une petite partie de fluide qui fait partie d'un domaine plus large: par exemple la simulation de la fumée dans l'air. Simuler l'atmosphère tout entier n'est pas envisageable, donc une limitation sur une grille qui engloge la "zone d'intérêt" est fixée pour la simulation. A la frontière de cette zone, le fluide doit continuer, mais la simulation ne dépasse pas cette limite. Seulement, comme la simulation laisse le fluide pénétrer ou sortir de cette zone, la frontière est considérée comme une surface libre, $ p = 0 $, même si il n'y a aucune surface visible.\newline
+
+Un dernier point sur les surfaces libres: pour les liquides de petites grandeurs, la tension surfacique peut être importante. Dans les couches intérieures moléculaires, la tension de surface existe à cause de la variation des forces d'attraction entre les molécules de différents types. Par exemple, les molécules d'eau sont fortement attirés  plus par les autres molécules d'eau que par les molécules d'air: en conséquence, les molécules d'eau sur la surface séparant l'air et l'eau tendent à être entourés par encore plus d'eau autant que possible que d'air. Sur le point de vue géométrique, les chimistes ont modélisé ce phénomène par l'action de forces cherchant à minimiser la surface, ou à réduire la courbure moyenne de la surface. En d'autres mots, c'est la tension qui essaye constamment à rétrécir la surface, d'où son nom de tension de surface. L'autre manière d'interpréter cette tension est basée sur la courbure moyenne de la surface.\newline
+
+Pour faire court, le modèle à considérer est celui qui prend en compte qu'il y a un saut de pression entre les deux fluides en contact, qui est proportionnel à la courbure moyenne:
+
+\begin{equation}
+[p] = \gamma \kappa
+\end{equation}
+
+La notation $ [p] $ représente le saut de pression en question, c'est-à-dire la différence de pression mesurée sur le côté de l'eau et celle mesurée sur le côté de l'air, $ \gamma $ est le coefficient de la tension de surface ( pour l'air et l'eau à la température à l'ombre, il est approximativement $ \gamma \approx 0.073 N/m $), et $ \kappa $ est la courbure moyenne, mesurée en $ 1/m $. Ce qui signifie que pour une surface libre avec une tension de surface, la pression à la surface de l'eau est la somme  de la pression de l'air ($0 Pa$) et du saut de pression:
+
+\begin{equation}
+p = \gamma \kappa
+\end{equation}
+
+Les surfaces libres présentent un problème majeur: les bulles d'air se rompent immédiatement. Même si l'air est plus léger que l'eau, et qu'il ne peut pas transférer beaucoup d'élan à l'eau, il demeure incompressible. Une bulle d'air dans l'eau garde son volume. Modéliser une bulle d'air comme une surface libre provoquerait l'explosion de l'air. Pour pallier ce problème, une possibilité est de simuler en ajoutant des bulles d'air à la surface libre, ou plus généralement simuler l'air et l'eau (simulation à deux phases étant donné les deux fluides).
+
+\chapter{Revue des simulations numériques}
+
+Ayant ces équations de bases sur la mécanique des fluides, comment les discretiser ses équations numériquement pour la simulation sur ordinateur? Il y a plusieurs options pour cette numérisation, et encore aujourd'hui des innovations sur le sujet continuent de se multiplier.
+
+\section{La décomposition}
+
+Il s'agit de décomposer une équation complexes en parties plus petites résolues séparémment. Par exemple, si le caractéristique est la somme de différentes termes, l'opération consister à calcul chaque terme en premier temps, et à faire la somme des résultats donne la solution.
+
+Pour plus d'éclaircissement, prenons l'exemple très simple d'une équation différentielle du premier degré:
+
+\begin{eqnarray}
+\frac{dq}{dt} = 1 + 2
+\end{eqnarray}
+
+La solution est évidemment $ q(t) = 3t + q(0) $. Mais, par décomposition, deux étapes principales sont nécessaires pour la résolution numérique de l'équation. Ces deux étapes font appel à la méthode d'Euler:
+
+\begin{eqnarray}
+\tilde{q} & = & q^n + 1\Delta t\\
+q^{n+1} & = & \tilde{q} + 2 \Delta t
+\end{eqnarray}
+
+Par abus de notation, $ q^n $ est la valeur de $ q $ à l'étape $ n $. $ \Delta t $ est   la différence temporelle entre deux instants consécutives. L'équation est alors décomposée pour suivre deux étapes: après la première étape (2.2), la quantité intermédiaire $ \tilde{q} $ apparaît avec la contribution du premier terme ($ = 1$) mais pas du second terme ($ = 2 $). Et après, la seconde étape (2.3) part de la valeur intermédiaire pour avoir le résultat final en introduisant la partie manquante à l'équation.
+
+Prenons un deuxième exemple plus intéressant:
+
+\begin{equation}
+\frac{dq}{dt} = f(q) + g(q)
+\end{equation}
+
+Dans cet exemple, f() et g() représentent deux fonctions ou modules d'un programme. En appliquant la méthode d'Euler:
+
+\begin{eqnarray}
+\tilde{q} & = &  q^n + \Delta t \, f(q^n)\\
+q^{n+1} & = & \tilde{q} + \Delta t \, g(\tilde{q})
+\end{eqnarray}
+
+Cette décomposition est un algorithme de premier ordre d'après une simple analyse en développement de série de Taylor:
+
+\begin{eqnarray}
+q^{n+1} & = & (q^n + \Delta t \,\, f(q^n)) + \Delta t \,\, g(q^n + \Delta t \,\, f(q^n))\\
+& = & q^n + \Delta t \,\, f(q^n) + \Delta t \,\, (g(q^n) + O (\Delta t))\\
+& = & q^n + \Delta t \,\, (f(q^n) + g(q^n)) + O(\Delta t^2)\\
+q^{n+1} & = & q^n + \frac{dq}{dt} \,\, \Delta t + O (\Delta t^2)
+\end{eqnarray}
+
+Jusque-là, l'approche d'Euler avec décomposition n'apporte rien de nouveau que celui sans décomposition. Les choses deviennent plus sophistiquées en considérant la décomposition en fonction f() et g() comment étant le fait qu'il existe pour chaque fonction une méthode numérique spécialement efficace pour sa résolution.
+
+\begin{eqnarray}
+\frac{dr}{dt} = f(r)\\
+\frac{ds}{dt} = g(s)
+\end{eqnarray}
+
+C'est exactement l'avantage avec la décomposition: si la résolution de l'équation en entier est complexe, mais s'il est possible d'avoir une décomposition de cette équation en des termes possédant d'excellentes méthodes de résolution. En notant les algorithmes spéciales d'intégration $F(\Delta t, r)$ et $ G(\Delta t, s) $, la méthode de décomposition donne:
+
+\begin{eqnarray}
+\tilde{q} & = & F(\Delta t, q^n)\\
+q^{n+1} & = & G(\Delta t, \tilde{q})
+\end{eqnarray}
+
+Si F() et G() sont des Méthodes d'Euler, rien ne change et les équations sont similaires à (2.5) et (2.6).\newline
+
+La décomposition est en fait l'application de l'algorithme diviser-pour-régner sur les équations différentielles: résoudre l'équation sans décomposer peut être très dure, alors qu'en divisant en petites pièces qu'on peut résoudre séparément plus facilement et combiner les solutions pour obtenir un résultat final peut réduire la complexité grandement.\newline
+
+Une autre manière de voir l'avantage de cette décomposition est de procéder en parallèle: au lieu de séquentiellement résoudre l'équation en prenant la solution de F() et la connectant à G(), il est possible de lancer F() et G() en parallèle et ajouter leurs contributions ensemble.\newline
+
+Il est cependant non recommandé de paralléliser les exécutions de F() et G() dans le cas où les résultats de sorties de ces algorithmes sont des pré-requis pour d'autres opérations futures. Ces contraintes et garanties ne sont pas préservées si l'ordre d'exécution de ces méthodes n'est pas respecté. 
+
+\section{La décomposition des équations des fluides}
+
+En utilisant la méthode de décomposition sur les équations des fluides, il y a une séparation sur le terme d'advection, le terme de la force de la gravité, et les termes de pression et d'incompressibilité.
+
+Ces équations plus simples à résoudre sont les suivantes:
+
+\begin{eqnarray}
+\frac{Dq}{Dt}  & = & 0 \:\: (Advection) \\
+\frac{\partial \overrightarrow{u}}{\partial t} & = & \overrightarrow{g} \:\: (force\:de\: la\: gravité) \\
+\frac{\partial \overrightarrow{u}}{\partial t} + \frac{1}{\rho} \nabla p & = & 0 \,\,\; s.t. \,\,\; \nabla . \overrightarrow{u} = 0 \:\: (pression/incompressibilité)
+\end{eqnarray}
+
+La quantité générique q dans l'équation d'advection est utile car il est possible de faire l'advection d'autres caractéristiques du fluide autre que la vitesse $ \overrightarrow{u} $. \newline
+
+En supposant que l'algorithme résolvant  l'équation d'avection (2.16) est $ \mathit{Advect(\overrightarrow{u}, \Delta t, q)} $, la solution donne l'advection de la quantité $ q $ à travers un champ de vecteur $ \overrightarrow{u} $ durant l'interval de temps $ \Delta t $.\newline
+
+Pour la résolution de l'équation de force de la gravité (2.17), la méthode d'Euler est tout indiqué.\newline
+
+Pour la partie pression/incompressibilité, un algorithme $ \mathit{project(\Delta t, \overrightarrow{u}}) $  a pour rôle de calculer et d'appliquer la bonne pression pour garder le champ $ \overrightarrow{u} $ à divergence zéro. Cette pression doit 
+également renforcer les conditions sur les frontières de murs solides. \newline
+
+La condition préalable pour pouvoir calculer les advections dans le champ de vitesse $  \overrightarrow{u} $ est que le champ soit à divergence nulle. Quand le fluide est mis en mouvement, il conserve son volume, et donc le champ de vecteur vitesse dans lequel il évolue doit être à divergence zéro pour cela. Il faut s'assurer que la méthode $ \mathit{Advect()} $ prenne comme argument d'entrée le résultat de la fonction $ \mathit{project()} $. \newline
+
+En somme, l'algorithme de l'écoulement du fluide est le suivant:
+
+\begin{itemize}
+\item L'initialisation commence par un champ de vecteur vitesse à divergence nulle $ \overrightarrow{u}^{(0)} $ 
+\item Pour les instants $ n \,=\, 0, 1, 2, ... $ faire:
+	\begin{itemize}
+		\item Déterminer une intervalle de temps $ \Delta t $ convenable permettant de passer du temps $ t_n $ au temps $ t_{n+1} $
+		\item Assigner $ \overrightarrow{u}^A = Advect(\overrightarrow{u}^n, \Delta t, \overrightarrow{u}^n) $
+		\item Faire la somme $ \overrightarrow{u}^B = \overrightarrow{u}^A + \Delta t \,\, \overrightarrow{g} $
+		\item Assigner $ \overrightarrow{u}^{n+1} = project(\Delta t, \overrightarrow{u}^B) $
+	\end{itemize}
+\end{itemize}
+
+\section{Les intervalles de temps}
+
+La détermination d'un bon pas de temps est la première étape de l'algorithme. D'abord, cette durée ne doit pas excéder le temps d'un frame de l'animation: si $ \Delta t $ vérifie $t_n + \Delta t > t_{frame}$, il faut ajuster $ \Delta t$ tel que $ \Delta t = t_{frame} - t_n $ et assigner un marqueur pour signaler que la fin du frame de l'animation est atteinte. (Il est à noter que vérifier si $ t_{n+1} = t_{frame} $ est une mauvaise idée, étant donné qu'un résultat arithmétique inexact en virgule flottante peut conduire à ce que $ t_{n+1} $ ne soit pas égal à $ t_{frame} $). Au bout de chaque frame, une opération spéciale est effectuée soit pour sauvegarder l'état de l'animation du fluide dans le disque soit pour effectuer un rendu à l'écran.\newline
+
+En respectant cette limitation de $\Delta t$, le choix de ce pas de temps doit se faire sous les conditions remplissant les différentes étapes de la simulation: l'advection, les forces, etc. La sélection du minimun des pas de temps de toutes ces étapes est la solution la plus sécuritaire.\newline
+
+Cependant, dans certaines situations requérant des demandes de performance, le choix d'un différent pas de temps à chaque frame n'est pas conseillé. Par exemple, avec trois pas de temps par frame, il faut s'assurer que  $ \Delta t $ soit au moins le tier du temps d'un frame. Cela est plus large que les pas de temps suggéré pour chaque étape, dans ce cas il être sur que toutes les méthodes utilisées peuvent supporter ces pas de temps plus larges - il faut que des résultats puissent en découler malgré l'imprecision quantitative de ces pas. 
+
+\section{Les grilles}
+
+La discretisation du temps doit être de pair avec celui de l'espace.
+Il faut pour cela introduire la structure de base des grilles.\newline
+
+Dans les tout débuts de la résolution par ordinateur de la dynamique des fluides, Harlow et Welch \cite{harlow-65} ont introduit la méthode "Marker-and-Cell (MAC) pour solutionner le problème de l'écoulement des fluides incompressibles. Une des innovations fondamentales de cet article état la structure de la grille qui fait resortir un algorithme très efficace.\newline
+
+La "\textbf{grille MAC}" est une grille dans laquelle les différentes variables sont stockées à différentes locations. D'abord le cas de la 2D est illustré par la figure 2.1. La pression de la cellule $(i, j)$ est placée au centre de la cellule, notée $p_{i,j}$. Le vecteur vitesse est décomposé en ses composantes cartésiennes. La composante horizontale $ u $ de la vitesse est placée sur les centres des faces verticales de la cellule. Par exemple, $ u_{i+1/2, j} $ indique la vitesse horizontale entre les cellules $(i, j)$ et $(i+1, j)$. La composante verticale de la vitesse est placée aux centres des faces horizontales de la cellule. Par exemple, $ v{i, j+1/2} $ indique la vitesse verticale entre les cellules $ (i, j) $ et $(i, j+1)$. Pour la cellule $(i, j)$ de la grille, la composante \textbf{normale} de la vitesse est placée au centre de chaque face de la cellule: ce placement va permettre d'estimer naturellement la quantité de fluide entrante et sortante de la cellule. \newline
+
+En dimension 3, la grille MAC est configurée de la même manière, la pression au centre de la cellule de la grille et les trois composantes de la vitesse sont décomposées de telle façon que la composante normale soit placée au centre de chaque face de la cellule: voir figure 2.2. \newline
+
+Pour simplifier, la grille MAC est utilisée pour pouvoir utiliser les "\textbf{différences centrales}" du gradient de la pression et de la divergence du champ des vecteurs de vitesse sans les désavantages cette méthode. Par exemple, en dimension 1,  pour approcher la dérivée de la quantité q aux locations $..., q_{i-1}, q_{i}, q_{i+1}, ...$ : $ \partial q/\partial x$ est estimé au point i par la formule de la première différence centrale suivante:
+
+\begin{equation}
+\left(\frac{\partial q}{\partial x}\right)_i \approx \frac{q_{i+1} - q_{i-1}}{2 \Delta x}
+\end{equation}
+
+Cette approximation est meilleure et plus précise à l'ordre de $ O(\Delta x^2)$, à l'opposée de la différence en amont ou en aval comme:
+
+\begin{equation}
+\left(\frac{\partial q}{\partial x}\right)_i \approx \frac{q_{i+1} - q_{i}}{\Delta x}
+\end{equation}
+
+Cette approximation est biaisée à droite et moins précise avec $ O(\Delta x) $. Seulement l'approche de l'équation (2.18) a un inconvénient sérieux étant donné que l'estimation au point $i$ de la grille n'utilisent pas du tout la valeur $ q_i $. En rappelant que la dérivée première d'une fonction constante est zéro, si la différence finie (2.18) doit être nulle, alors la quantité $ q $ n'est pas nécessairement constante - $ q_i$ peut être très différent de $ q_{i-1} $ et de $ q_{i+1}$ mais la dérivée reste nulle aussi longtemps que $ q_{i-1} = q_{i+1}$. En fait, une fonction sur mesure comme $ q_i = (-1)^i $, presque constante, permet d'obtenir une dérivée égale à 0 pour l'équation (2.18). D'un autre côté, seules des fonctions constantes peuvent vérifier que la difference en amont (2.19) soient zéro. Le problème avec la formule (2.18) est techniquement appelé équation avec un "\textbf{nulle-espace}" non trivial: l'ensemble des fonctions qui évaluent la formule à zéro contient plus que les fonctions constantes auxquelles elle doit être s'y restreindre.\newline
+
+Comment arriver à une approximation précise de second ordre de la différence centrale sans avoir ce problème de "nulle-espace"? La réponse réside dans l'utilisation de la grille MAC: prendre l'échantillon de $ q $ à mi-chemin, $ q_{i+1/2} $. La dérivée de $q$ à un point $i$ de la grille est alors:
+
+\begin{equation}
+\left(\frac{\partial q}{\partial x}\right)_i \approx \frac{q_{i+1/2} - q_{i-1/2}}{ \Delta x}
+\end{equation}
+ 
+Cette formule est non biaisée et précise à $O(\Delta x^2)$, et en plus il n'ignore pas la valeur de $q$ comme sur la formule (2.18). L'égalisation à zéro de cette nouvelle formule est possible qu'à condition que $q$ soit constante et rien de plus: l'espace-nulle est correct. La grille MAC est configurée pour prendre en compte la forme de la différence centrale de la formule (2.20) lorsqu'une estimation de la dérivée de la pression (i.e la condition d'incompressibilité).\newline
+
+La grille MAC est bien adaptée pour prendre en compte la pression et l'incompressibilité mais cette méthode n'est pas souhaitable pour d'autres utilisations. Par exemple, pour évaluer le vecteur vitesse en entier, une sorte d'interpolation doit être considérer même à un point de la grille. A une location arbitraire dans l'espace, une interpolation bilinéaire ou trilinéaire est effectuée sur chaque composante de la vitesse, mais étant donné que ces composantes sont décallées les unes des autres, un ensemble d'interpolation de poids pour chaque composante est nécessaire. Au location des grilles même, ces interpolations tendent qu'à n'être qu'un calcul de moyenne. En deux dimensions, ces valeurs sont:
+
+\begin{eqnarray}
+\overrightarrow{u}_{i,j} & = & \left( \frac{u_{i-1/2,j} + u_{i+1/2,j}}{2},\;\; \frac{v_{i, j-1/2} + v_{i, j+1/2}}{2} \right) \\
+\overrightarrow{u}_{i+1/2,j} & = & \left(u_{i+1/2,j},\;\; \frac{v_{i, j-1/2} + v_{i, j+1/2} + v_{i+1, j-1/2} + v_{i+1, j+1/2}}{4}  \right) \\
+\overrightarrow{u}_{i, j+1/2} & = & \left( \frac{u_{i-1/2, j} + u_{i+1/2, j} + u_{i-1/2, j+1} + u_{i+1/2, j+1}}{4},\;\; v_{i, j+1/2}  \right) 
+\end{eqnarray}
+
+En trois dimension, les formules sont similaires:
+
+\begin{eqnarray}
+\overrightarrow{u}_{i,j,k} & = & \left(
+	\frac{u_{i-1/2,j,k} + u_{i+1/2,j,k}}{2}, \;\; 
+	\frac{v_{i,j-1/2,k} + v_{i,j+1/2,k}}{2}, \;\; 
+	\frac{w_{i,j,k-1/2} + w_{i,j,k+1/2}}{2}  
+\right) \\
+\overrightarrow{u}_{i+1/2,j,k} & = & \left( 
+	u_{i+1/2,j,k}, \;\; 
+	\frac{\begin{array}{c} 
+		v_{i,j-1/2,k} + v_{i,j+1/2,k} +\\ 
+		v_{i+1, j-1/2, k} + v_{i+1, j+1/2, k} 
+		\end{array} }{4}, \;\; 
+	\frac{\begin{array}{c}
+ 		w_{i,j,k-1/2} + w_{i,j,k+1/2} +\\ 
+ 		w_{i+1,j,k-1/2} + w_{i+1,j,k+1/2}
+		\end{array}}{4} 
+\right) \\
+\overrightarrow{u}_{i,j+1/2,k} & = & \left(
+	\frac{\begin{array}{c}
+		u_{i-1/2,j,k} + u_{i+1/2,j,k} + \\ 
+		u_{i-1/2,j+1,k} + u_{i+1/2,j+1,k}
+		\end{array}}{4}, \;\;
+	v_{i,j+1/2,k}, \;\;
+	\frac{\begin{array}{c}
+		w_{i,j,k-1/2} + w_{i,j,k+1/2} + \\
+		w_{i,j+1,k-1/2} + w_{i,j+1,k+1/2}
+		\end{array}}{4} \;\;
+\right) \\
+\overrightarrow{u}_{i, j,k+1/2} & = & \left(
+	\frac{\begin{array}{c}
+		u_{i-1/2,j,k} + u_{i+1/2,j,k} + \\
+		u_{i-1/2,j,k+1} + u_{i+1/2,j,k+1}
+		\end{array}}{4}, \;\;
+	\frac{\begin{array}{c}
+		v_{i,j-1/2, k} + v_{i, j+1/2, k} + \\
+		v_{i,j-1/2, k+1} + v_{i,j+1/2, k+1}
+		\end{array}}{4}, \;\;
+	w_{i, j, k+1/2}
+\right)
+\end{eqnarray}
+
+\chapter{Des algorithmes d'advection}
+
+Dans le chapitre précédent, 	il a été montré qu' une étape cruciale pour la simulation d'un fluide est la résolution de l'équation d'advection:
+
+\begin{equation}
+\frac{Dq}{Dt} = 0
+\end{equation}
+
+Cette résolution peut être encapsuler dans le module numérique suivant:
+
+\begin{equation}
+q^{n+1} = advect(\overrightarrow{u}, \Delta t, q^n)
+\end{equation}
+
+Ce module prend en entrée le champ de vecteur vitesse $ \overrightarrow{u} $ (discrétisée sur une grille MAC), un pas de temps $ \Delta t $ et le champ associé au caractère candidat pour l'advection $ q^n $. En sortie du module, il a le résultat de l'advection de $q$ au travers du champ de vecteur vitesse pendant le laps de temps associé. \newline
+
+L'approche par force brute pour résoudre $ \frac{Dq}{Dt} $ pour un temps donné est en premier lieu d'écrire l'équation au dérivée partielle (DPE). En dimension 1, elle s'écrit:
+
+\begin{equation}
+\frac{\partial q}{\partial t} + u \frac{\partial q}{\partial x} = 0
+\end{equation}
+
+En deuxième lieu, les dérivées sont remplacées par des différences finie. Par exemple, si la méthode d'Euler est utilisée pour la dérivée par rapport au temps et une différence centrale précise pour la dérivée par rapport à x, l'équation (3.3) devient:
+
+\begin{equation}
+\frac{q_i^{n+1} - q_i^n}{\Delta t} + u_i^n \,\, \frac{q_{i+1}^n - q_{i-1}^n}{2 \Delta x} = 0
+\end{equation}
+
+Cette dernière équation peut être transformée en une formule qui donne la nouvelle valeur de $ q $:
+
+\begin{equation}
+q_i^{n+1} = q_i^n - \Delta t \,\, u_i^n \,\, \frac{q_{i+1}^n - q_{i-1}^n}{2 \Delta x}
+\end{equation}
+
+Bien qu'à première vue, la formule semble simple, un gros problème lui est associé. La méthode d'Euler est inconditionellement \textbf{instable} pour la discrétisation de la dérivée par rapport à $x$: même si la valeur $ \Delta t $ est négligée à une infime valeur, l'opération ne se passe pas bien. (En connaissant la région de stabilité de la méthode d'Euler, les valeurs propres du Jacobien généré par la différence centrale sont des imaginaires pures, donc toujours en dehors de la zone de stabilité).\newline
+
+Même en remplaçant la méthode d'Euler par une technique d'intégration par rapport au temps plus stable, ou encore plus, même si la partie associée au temps de la dérivée partielle est exactement résolue, la discrétisation par rapport à $x$ pose toujours problème. Comme dans le chapitre précédent, la discussion sur les problèmes de "l'espace nulle" sur la méthode standard des différences centrales revient: "\textbf{haute fréquence} qui divisent les composantes de la solution, comme $(-1)^i$, donnent des dérivées spatiales nulles ou quasi-nulles, donc n'évoluent pas dans le temps, ou avance plus lentement qu'elles devraient le faire. Entre-temps, les composantes de basse fréquence sont gérées avec précision et évoluent à la bonne vitesse. De ce fait, il faut séparer les composantes de basse fréquence de celles avec les hautes fréquences. Cela conduirait à un désordre de hautes fréquences et des oscillations apparaissant et s'accolant à ce \textbf{qu'elles ne devrait pas}.\newline
+
+Une analyse rigoureuse permet d'identifier les sources de problèmes des différences centrales, et des outils sophistiqués de l'analyse numérique permettent également de donner des solutions avec des formules de différences finies pour les dérivées spatiales.
+
+Une approche tout à fait différente, plus simple et plus associée à la physique, est celle dite "\textbf{semi-Lagrangienne}". Le mot Lagrangien rappèle l'équation d'advection $ Dq/Dt = 0 $ qui a une résolution trivial dans le modèle de Lagrange. Si des méthodes à système de particule sont utilisés, l'équation est automatiquement résolue lorsque les particules passent dans le champ de vecteur vitesses. Donc, la nouvelle valeur de $q$ à une position $\overrightarrow{x}$ de l'espace est seulement l'ancienne valeur $q$  de la particule qui a fini à la position $\overrightarrow{x}$. \newline
+
+Ce raisonnement peut être appliquée sur la grille pour introduire la méthode semi-Lagrangienne introduite par Jos Stam \cite{stam-99}. Pour trouver la valeur de $q$ à un point de la grille, par la méthode de Lagrange, il faut trouver la valeur de $q$ de la particule qui finit au point de la grille en question. La particule est en mouvement à travers le champ de vitesse $\overrightarrow{u}$, donc son point de destination est connu. Pour savoir la position initiale de la particule, il faut retourner en arrière à travers le champ de vecteur depuis le point de la grille. L'ancienne valeur de $ q $ est donnée en cette position initiale, donc la nouvelle valeur de $ q $ est trouvée à ce point de la grille. Si cette position initiale ne se trouve pas sur la grille, une interpolation de la valeur de $ q $ depuis des anciennes valeurs sur la grille le détermine.\newline
+
+Pour être plus clair, il faut passer étape par étape en suivant des formules. La position de l'espace recherché dans la grille est $\overrightarrow{x}_G$. Il faut déterminer la nouvelle valeur de $q$ à cette position, notée $q_G^{n+1}$. Par la définition de l'advection, si une particule hypothétique avec une valeur $q_P^n$ arrive à la position $\overrightarrow{x}_G$, s'il est en mouvement à travers un champ de vitesse pendant un pas de temps $\Delta t$, alors $ q_G^{n+1} = q_P^n $. Donc la question est comment trouver $q_P^n$?\newline
+
+La première étape est de chercher la position initiale de cette particule imaginaire, notée $\overrightarrow{x}_P$. La particule suit l'équation de mouvement suivante:
+
+\begin{equation}
+\frac{d\overrightarrow{x}}{dt} = \overrightarrow{u}
+\end{equation}
+
+Cette particule arrive à la position $\overrightarrow{x}_G $ après un temps $\Delta t$. Si le retour en arrière est possible, le mouvement peut être effectué depuis $\overrightarrow{x}_G $ jusqu'à la position initiale de la particule. Pour cela, la particule doit passer à travers un champ de vitesse inverse $-\overrightarrow{u}$ "à partir" de $\overrightarrow{x}_G$. La manière la plus simple pour cette estimation est  l'application une fois de la méthode d'Euler:
+
+\begin{equation}
+\overrightarrow{x}_P = \overrightarrow{x}_G - \Delta t \,\, \overrightarrow{u}_G
+\end{equation} 
+
+La vitesse évaluée au point de la grille a été utilisé pour revenir d'un instant $\Delta t$ en arrière à travers le champ d'écoulement. La méthode d'Euler est souvent adéquate, mais de meilleure résultat peuvent être obtenu avec une méthode plus sophistiquée appelée Euler modifié ou méthode de second ordre de Runge-Kutta (RK2).\newline
+
+La position initiale de la particule est connue. A présent, il faut trouver l'ancienne valeur de $ q $. Souvent $\overrightarrow{x}_P$ ne se trouve pas sur la grille, donc la valeur trouvée n'est pas exacte, mais une excellente approximation peut être possible en faisant une interpolation à partir de $q^n$ au niveau des points voisins. Une interpolation bilinéaire (ou trilinéaire en dimension 3) fait habituellement l'affaire, d'autres schémas plus précis ont été développés dont un est documenté par Fedkiw, Stam et Jensen \cite{fedkiw-stam-jensen-01}.\newline
+
+En regroupant le tout dans une formule, une version plus simple de la formule semi-Lagrangienne en ressort:
+
+\begin{equation}
+q_G^{n+1} = interpolate(q^n, \overrightarrow{x}_G - \Delta t \,\, \overrightarrow{u}_G)
+\end{equation}
+
+La particule en question est purement hypothétique. Aucune particule n'est créée dans l'ordinateur: Une particule de Lagrange a été utilisée pour trouver conceptuellement une formule mise à jour dans le cadre de l'advection d'Euler. Comme une approche Lagrangienne a été quasiment utilisée pour effectuer des opérations Eulérienne, la méthode est qualifiée de "Semi-Lagrangienne".\newline
+
+Pour être plus complet, il faut illustrer cette méthode en dimension 1, en utilisant la méthode d'Euler et une interpolation linéaire pour les opérations semi-langrangienne. Pour un point de la grille $x_i$, la particule est retracée par $x_P = x_i - \Delta t \,\, u_i$. En supposant que ce mouvement se passe dans l'intervalle $[x_j, x_{j+1}]$, et soit $\alpha = (x_p-x_j)/\Delta x$ la fraction de l'intervalle où le point se situe, l'interpolation linéaire est: $ q_p^n = (1-\alpha) \,\, q_j^n + \alpha \,\, q_j^{n+1}$. La formule semi-lagrangienne devient:
+
+\begin{equation}
+q_i^{n+1} = (1-\alpha) \,\, q_j^n - \alpha \,\, q_j^{n+1}
+\end{equation}
+
+Dans la pratique, il faut faire l'advection du champ de vitesse, et peut-être des variables additionnels comme la densité de la fumée ou la température. D'habitute, les variables additionnels sont stockées au centre des cellules de la grille, mais les composantes de la vitesse sont situées au niveau des faces de la grille comme mentionné dans le chapitre précédent. Dans chaque cas, il faudra choisir la vitesse moyenne, mentionné à la fin du chapitre précédent, pour l'estimer la trajectoire de la particule.
+
+
+\section{Les conditions aux frontières}
+
+Si le point de départ de la particule imaginaire se trouve à l'intérieur du fluide, l'interpolation se passe sans souci. Que se passerait-il si la position de départ estimée se trouve en dehors des limites du fluide? Cela est possible car le fluide est supposée entrer dans le domaine d'étude (et la particule est un "nouveau" fluide). Cela est aussi possible à cause d'erreur numérique (la vraie trajectoire de la particule est inclue à l'intérieur du fluide, mais les étapes reposant sur la méthode d'Euler ou celui de RK2 peut introduire des erreurs qui fait que la particule se trouve en dehors au départ).\newline
+
+C'est exactement un problème de conditions aux frontières. Dans le premier cas, où le fluide s'écoule depuis l'extérieur vers l'intérieur, il faut connaître la quantité ou caractéristique qui s'écoule vers l'intérieur: c'est la première partie de la situation du problème de manière correcte. Par exemple, si le fluide s'écoule vers l'intérieur à partir d'un foyer situé d'un côté du domaine avec une vitesse $\overrightarrow{U}$, alors toute particule dont la position de départ se situe sur ce côté doivent avoir la même vitesse $\overrightarrow{U}$.\newline
+
+Dans le second cas, où une trajectoire de particule s'égare en dehors des frontières limitant le fluide à cause d'erreur de calcul numérique, la stratégie la plus appropriée est d'extrapoler la quantité par le point le plus proche se trouvant sur cette frontière - c'est la meilleure solution en misant que c'est la quantité que la vraie trajectoire (qui devrait être inclue dans le fluide) donnerait. Quelques fois, l'extrapolation est aisée: si la frontière la plus proche a une vitesse spécifique, cette vitesse est utilisée. Par exemple, pour simuler la fumée dans l'air, il est pratique de supposer que le vent a une vitesse constante $\overrightarrow{U}$ (peut être nulle) en dehors du domaine de la simulation.\newline
+
+Le cas épineux est quand la quantité à simuler n'a pas de valeur \textit{à priori} et doit être extrapolé à partir des régions du fluide où elle est connue. Cette extrapolation est rencontré plus en détail sur l'animation de l'eau. Pour le moment, il faut trouver le point le plus proche se trouvant sur la frontière de la région du fluide, et interpoler la quantité à partir des valeurs du fluides stockées dans la grille voisine. En particulier, c'est ce qu'il faut effectuer pour trouver les valeurs de la vitesse quand la position de départ est à l'intérieur d'un objet solide, ou pour l'écoulement sur une surface libre (l'eau) si le fluide évolue dans un espace libre.\newline
+
+Prendre la vitesse du fluide à la frontière solide n'est pas en générale la même que prendre la vitesse du solide. Comme discuté plus tôt, la composante normale de la vitesse du fluide est égale à la composante normale de la vitesse du solide, mais mis à part les écoulements visqueux, la composante tangentielle peut être complétement différente. C'est la raison pour laquelle l'interpolation de la vitesse est réalisée à la frontière du fluide, elle n'est pas assimilée à la vitesse du solide. Cependant pour le cas des écoulements visqueux (au du moins les intéractions fluides-solides), il est possible de prendre un raccourci en choissant la vitesse du solide.
+
+\section{Le pas de temps}
+
+Le principale critère pour une méthode numérique est sa stabilité: est-ce qu'elle va tout faire exploser? La méthode semi-lagrangienne est "\textbf{inconditionnellement stable}": même si la valeur de $\Delta t$ est très grande, la simulation peut toujours tenir. Il est facile de voir pourquoi: quelque soit la position de départ de la particule trouvée, l'interpolation des nouvelles valeurs de $q$ à partir de ses anciennes valeurs est toujours possible: il n'est pas possible de créer des valeurs plus larges ou plus petites de $q$ que celles présentes à l'instant antérieur. Donc, $q$ reste lié. C'est très intéressant: il est possible de sélectionner le pas de temps en se basant purement sur la courbe "précision vs. la vitesse compenssatrice". Pour pouvoir simuler en temps réel sans se soucier de la précision de la simulation, $\Delta t$ est assimiler au temps d'un frame.\newline
+
+Dans la pratique, la méthode peut produire des résultats innatendus si le pas de temps est exagéré. Il est suggéré par Foster et Fedkiw \cite{foster-fedkiw-01} que la stratégie la plus appropriée est de limiter $\Delta t$ de manière à ce que la trace d'une trajectoire de particule soit au plus \textit{cinq} fois la largeur d'une cellule de la grille:
+
+\begin{equation}
+\Delta t \leq \frac{5 \,\, \Delta x}{u_{max}}
+\end{equation}
+
+$u_{max}$ est une estimation de la vitesse maximale du fluide. Cela peut être simplement la vitesse maximale stockée dans la grille. Une estimation plus robuste prendrait en compte les vitesses induites par la force de la gravité $g$ (ou d'autre forces comme la flottaison) durant un pas de temps. Dans ce cas:
+
+\begin{equation}
+u_{max} = \mbox{max}(|u_n|)+\Delta t \,\, |g|
+\end{equation}
+
+Et après quelques manipulations sur l'inégalité (3.10), une approximation est la suivante:
+
+\begin{equation}
+u_{max} = \mbox{max}(|u_n|)+ \sqrt{5 \,\, \Delta x \,\, |g|}
+\end{equation}
+
+Cette vitesse a l'avantage d'être positive, même si la vitesse initiale est égale à zéro, ce qui résout le problème de la division par zéro dans l'inégalité (3.10).
+
+\subsection{La condition CFL}
+
+Avant de quitter le sujet des pas de temps pour l'advection, il faut remarquer un aspect intéressant et souvent sujet à confusion. La "\textbf{condition CFL}" est un des termes les plus largement abusés en animation basée sur la physique, et pour mettre les choses au clair, il faudrait completement en donner des explications ici. Cette section concerne des aspects techniques de l'analyse numérique dont il est possible de faire une impasse dans ce cours.\newline
+
+La condition CFL, ainsi nommée à la suite des mathématiciens R. Courant, K. Friedrichs and H. Lewy, est une simple et intuitive condition pour la convergence. La convergence veut dire que si une simulation se répète encore et encore avec $\Delta t$ et $\Delta x$ de plus en plus petit, et dans la limite tendre vers zéro, alors les solutions numériques se rapprochent de la solution exacte 
+\footnote{Pour remarque, c'est un point en suspend sur les équations de Navier-Stokes de fluides incompressibles, celui que jusqu'à maintenant, personne n'a pu prouvé qu'elles n'admettent qu'une unique solution  à tout temps. Cela a été déjà prouvé en dimension 2, mais le prix d'un million de dollars offert par l'institut Clay pour le premier qui aura réussi à prouver l'unicité de cette solution en dimension 3}.\newline
+
+La solution d'une équation différentielle dépendant du temps, comme l'équation d'advection, à un point particulier dans l'espace $\overrightarrow{x}^\star$ et du temps  $t^\star$, dépend de certaines conditions initiales. Dans ce cas, il est possible que la valeur des conditions initiales en un point peut être modifiée sans changer la valeur de la solution au point $\overrightarrow{x}^\star$ et $t^\star$, alors que si les conditions initiales en d'autres points sont modifiées, la valeur de la solution change. Dans le cas d'une équation d'avection à vitesse constante, la valeur $q(\overrightarrow{x}^\star,t^\star)$ est exactement $q(\overrightarrow{x}^\star - t^\star \,\, \overrightarrow{u}, 0)$, donc cela ne dépend que d'un unique point dans les conditions initiales. Pour d'autres PDE, comme l'équation de la chaleur $\partial q/\partial t = \nabla . \nabla q$, chaque point de la solution dépend de \textit{tous} les points dans les conditions initiales. Le "\textbf{domaine de dépendance}" pour un point est un ensemble de points ayant un effet sur la valeur de la solution en ce point. \newline
+
+Chaque point d'une solution numérique possède aussi un domaine de dépendance: là encore, l'ensemble des positions dans les conditions initiales ayant un effet sur la valeur de la solution à ce point. Il devrait être intuitivement évident que le domaine de dépendance numérique, dans la limite, doit contenir le vrai domaine de dépendance pour avoir la réponse correcte. C'est en fait, la condition CFL: la convergence est seulement possible si en général, dans la limite comme $\Delta x \longrightarrow 0 $ et $\Delta t \longrightarrow 0 $, le domaine de dépendance numérique pour chaque point  contient le vrai domaine de dépendance.\newline
+
+Pour des méthodes semi-langrangienne, la condition CFL est automatiquement satisfaite:  dans la limite, les trajectoires de particules tracées convergent vers les vraies particules, donc une interpolation à partir des cellules correctes de la grille donne la correcte dépendance. Par conséquent, parler des conditions CFL dans le contexte des méthodes semi-lagrangiennes n'est pas nécessaire: il n'y en a pas.\newline
+
+Ceci dit, concernant des méthodes standards explicite de différence finie pour l'équation d'advection, où la nouvelle valeur du point de la grille $q_i^{n+1}$ est calculée à partir de quelques anciennes valeurs au niveau des grilles voisines, i.e. à partir des points uniquement $C \,\, \Delta x$ loin d'un petit entier constant C, il y a une condition CFL significatif. En particulier, la vraie solution évolue à une vitesse $|\overrightarrow{u}|$, alors la vitesse à laquelle l'information numérique est transmise, i.e $ C \,\, \Delta x/\Delta t $, doit au moins plus rapide. Donc:
+
+\begin{equation}
+\frac{C\,\,\Delta x}{\Delta t} \geq |\overrightarrow{u}|
+\end{equation}
+
+qui devient une condition au pas de temps:
+
+\begin{equation}
+\Delta t \leq \frac{C\,\,\Delta x}{\overrightarrow{u}}
+\end{equation}
+
+Maintenant, c'est là que toute la confusion apparait. C'est souvent le même, jusqu'à un petit facteur constant, le pas de temps maximum stable pour la méthode. (Il y a en effet des exceptions: la première méthode de ce chapitre est instable quelque soit la petite ampleur du pas de temps, et il est possible de concevoir des méthodes explicites qui sont stables malgré un grand pas de temps - bien sûr, ces méthodes donnent le mauvais résultat à moins que la condition CFL ne soit respectée). Comme les deux types de méthodes concernent le même problème, beaucoup pense que la condition CFL a besoin d'être remplie constamment pour obtenir une stabilité, bien qu'elle n'ait aucunement lié avec la stabilité d'une méthode, et même c'est toujours la condition (3.14) indépendamment de la méthode utilisée. Alors, le lap de temps discuté plus tôt, avec l'inégalité (3.10), est cinq fois la condition CFL - quand cela n'a aucun sens.\newline
+
+Maintenant c'est clair. Il faut sensibiliser les gens. Il ne faut pas abuser de la condition CFL quand il s'agit réellement de condition de stabilité ou de condition de précision. 
+
+\section{Le dissipation}
+
+Dans l'étape d'interpolation de l'advection semi-langrangienne, une moyenne pondéré des valeurs à partir du pas de temps antérieur est prise. Donc, à chaque étape de l'advection, il faut calculer la moyenne. Atteindre les moyennes tend à lisser les caractéristiques nettes. Ce processus est appelé "\textbf{dissipation}". Il faut éviter à tout prix ce phénomène de dissipation car il a des conséquences catastrophiques sur la simulation.
+
+Pour mieux comprendre d'un point de vue physique ce comportement de lissage, il faut utiliser une technique appelée "EDPs modifiés". Le moyen le plus pratique pour trouver une erreur numérique dans la résolution d'équation est que la solution trouvée n'est pas compatible avec la vraie solution obtenue en amont. L'approche différente à utiliser, souvent appelée "\textbf{backwards error analysis}", est de dire que le problème est en train d'être résolu - à la seule différence que le problème est différent de la situation initiale, et a été modifié d'une manière ou d'une autre. Souvent en interprétant les erreurs de cette façon, et en décelant les modifications apportées au problème à résoudre, l'intérêt crucial de la méthode est flagrant.
+
+Pour simplifier autant que possible l'analyse, il faut résoudre le problème d'advection en dimension 1 avec une vitesse constante $ u > 0 $:
+
+\begin{equation}
+\frac{\partial q}{\partial t} + u \,\, \frac{\partial q}{\partial x} = 0
+\end{equation}
+
+En supposant que $ \Delta t < \Delta x/u $, i.e que les trajectoires de particules sont inférieures aux cellules de la grille - l'analyse peut être étendue facilement à un pas de temps plus large - mais rien de significant apparait. Dans ce cas, le point de départ de la trajectoire  qui finit au point de la grille $i$ se trouve dans l'intervalle $[x_{i-1}, x_i]$. Effectuer une interpolation linéaire entre $q_{i-1}^n$ et $q_i^n$ au point $x_i - \Delta t \, u$ donne:
+
+\begin{equation}
+q_i^{n+1} = \frac{\Delta t \,\, u}{ \Delta x} \, q_{i-1}^n + (1 - \frac{\Delta t \,\, u}{ \Delta x}) \, q_i^n
+\end{equation}
+
+En arrangant cette équation:
+
+\begin{equation}
+q_i^{n+1} = q_i^n - \Delta t \,\, u \,\, \frac{q_i^n - q_{i-1}^n }{\Delta x}
+\end{equation}
+
+Cette équation est exactement le schéma d'Euler de la méthode d'Euler dans le temps et un côté de la différence finie dans l'espace.
+En rappelant la série de Taylor pour $q_{i-1}^n$:
+
+\begin{equation}
+q_{i-1}^n = q_i^n - \left(\frac{\partial q}{\partial x}\right)_i^n \,\, \Delta x + \left(\frac{\partial^2 q}{\partial x^2}\right)_i^n \,\, \frac{\Delta x^2}{2} + O(\Delta x^3)
+\end{equation} 
+
+En subsituant $q_{i-1}^n$ dans l'équation  (3.17) et en simplifiant:
+
+\begin{eqnarray}
+q_i^{n+1} & = & q_i^n - \Delta t \,\,u \,\, \frac{1}{\Delta x} \left( \left(\frac{\partial q}{\partial x}\right)_i^n \,\, \Delta x + \left(\frac{\partial^2 q}{\partial x^2}\right)_i^n \,\, \frac{\Delta x^2}{2} + O(\Delta x^3) \right) \\
+& = & q_i^n - \Delta t \,\,u \,\,\left(\frac{\partial q}{\partial x}\right)_i^n + \Delta t \,\,u \,\,\Delta x \,\, \left(\frac{\partial^2 q}{\partial x^2}\right)_i^n + O(\Delta x^2	)
+\end{eqnarray}
+
+Jusqu'à une erreur de troncature de second ordre, voici la méthode d'Euler en temps appliquée à la \textbf{EDP modifiée}:
+
+\begin{equation}
+\frac{\partial q}{\partial t} + u \,\, \frac{\partial q}{\partial x} = u \,\, \Delta x \,\,\frac{\partial^2 q}{\partial x^2}
+\end{equation}
+
+C'est l'équation d'advection avec un terme similaire à la viscosité ayant le coefficient $u \Delta x$. Donc pour résoudre l'équation d'advection \textit{sans}  viscosité par une simple méthode semi-lagrangienne, le résultat revient à simuler un fluide \textit{avec} viscosité. Cela s'appelle "\textbf{dissipation numérique}" (ou viscosité numérique, diffusion numérique - ce sont les mêmes choses).\newline
+
+Le coefficient de cette dissipation numérique tend vers zéro quand $\Delta x \,\, \rightarrow \,\, 0$, et le bon résultat est obtenu à la limite. Il faut patienter pour que $\Delta x$ tende vers zéro, l'objectif est d'avoir un résultat représentatif même si $\Delta x$ est le grand possible.\newline
+
+Cela dépend donc de la simulation souhaitée. Si la simulation porte sur des fluides visqueux, qui présente d'ores et déjà beaucoup de dissipation, alors la dissipation supplémentaire sera grandement visible - et plus important encore, apporte plus de réalité avec le surplus de dissipation. Mais, souvent les simulations portent sur des fluides non visqueux, et c'est un souci ennuyeux qui lisse les caractéristiques intéressantes comme les petits tourbillons lors de l'écoulement. Si cela impacte négativement la rapidité, dans le chapitre, il nuit à d'autres variables du fluide également. \newline
+
+Des techniques doivent être trouvées pour résoudre le problème de dissipation. Une approximation plus précise des interpolations est un début de solution, encore proposée par Fedkiw, Stam et Jensen \cite{fedkiw-stam-jensen-01} par exemple, mais revient à être couteux en calcul et inadéquat. Des solutions plus effectives sont proposées dans les derniers chapitres.
+
+\chapter{Rendre les fluides incompressibles}
+
+
+
+\newpage
+
+\begin{thebibliography}{2}
+\bibitem{Hong-05}
+Jeong-Mo HONG and Chang-Hun KIM:
+\textit{Discontinuous fluids}.
+ACM Trans. Graph. (Proc. SIGGRAPH),24:915–920, 2005.
+
+\bibitem{harlow-65}
+F. HARLOW and J. WELCH:
+\textit{Numerical Calculation of Time-Dependent Viscous Incompressible Flow of
+Fluid with Free Surface}.
+Phys. Fluids, 8:2182–2189, 1965.
+
+\bibitem{stam-99}
+Jos STAM:
+\textit{Stable fluids}.
+In Proc. SIGGRAPH, pages 121–128, 1999.
+
+\bibitem{fedkiw-stam-jensen-01}
+R. FEDKIW, J. STAM, and H. JENSEN:
+\textit{Visual simulation of smoke}.
+In Proc. SIGGRAPH, pages 15–22, 2001.
+
+\bibitem{foster-fedkiw-01}
+Nick Foster and Ronald Fedkiw:
+\textit{Practical animation of liquids}.
+In Proc. SIGGRAPH, pages 23–30, 2001.
+
+\bibitem{Herbulot-2003}
+A. HERBULOT, S. JEHAN-BESSON, S. DUFFNER, M. BARLAUD and G. AUBERT:
+\textit{Segmentation of vectorial image features using shape gradients and information measures}.
+Journal of Mathematical Imaging and Vision, vol. 25, no. 3, pages 365–386, 2006.
+
+\bibitem{Lecellier-2010}
+F. LECELLIER, M.J. FADILI, S. JEHAN-BESSON, G. AUBERT, M. REVENU and E. SALOUX.:
+\textit{Region-Based Active Contours with Exponential Family Observations}.
+Journal of Mathematical Imaging and Vision, vol. 36, no. 1, pages 28–45, January 2010.
+
+\bibitem{Amari-1990}
+S. AMARI:
+\textit{Differential-geometrical methods in statistics. Lecture notes in statistics.}.
+Springer-Verlag, 1990.
+
+
+
+\end{thebibliography}
+
+\end{document}
