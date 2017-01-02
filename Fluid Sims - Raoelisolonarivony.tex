@@ -20,6 +20,7 @@
 
 \begin{document}
 \maketitle
+\part{Les bases}
 
 \section*{Description du cours}
 
@@ -301,9 +302,9 @@ Ce sont les équations les plus utilisées dans l'animation.
 
 Une des choses les plus intéressantes dans la simulation numérique des fluides est la description du mouvement du fluide aux frontières. 
 
-Deux frontières usuellement rencontrées sont les frontières dites "murs solides" et "surfaces libres". Les frontières impliquant la frontière entre deux fluides différents sont aussi importantes: il est rare d'en avoir besoin en animation. Un article travaillant sur ces frontières où deux fluides entrent en collision est celui de Jeong-Mo Hong and Chang-Hun Kim \cite{Hong-05}.
+Deux frontières usuellement rencontrées sont les frontières dites "parois solides" et "surfaces libres". Les frontières impliquant la frontière entre deux fluides différents sont aussi importantes: il est rare d'en avoir besoin en animation. Un article travaillant sur ces frontières où deux fluides entrent en collision est celui de Jeong-Mo Hong and Chang-Hun Kim \cite{Hong-05}.
 
-Une frontière en mur solide est là où le fluide entre en contact avec un solide. En terme de vitesse: A la frontière, le fluide ne doit pas pénétrer à travers le solide ou en sortir s'il y est contenu, donc la composante normale de la vitesse à cet emplacement est nulle:
+Une frontière en paroi solide est là où le fluide entre en contact avec un solide. En terme de vitesse: A la frontière, le fluide ne doit pas pénétrer à travers le solide ou en sortir s'il y est contenu, donc la composante normale de la vitesse à cet emplacement est nulle:
 
 \begin{equation}
 \overrightarrow{u}.\hat{n} = 0
@@ -318,7 +319,7 @@ L'équation (23) s'applique surtout si le solide n'est pas en mouvement. Dans le
 Dans les deux équations, $ \hat{n} $ est la normale à la frontière solide.
 Ces équations représentent les conditions qui évitent au fluide de coller au solide, étant donné que la composante normale de la vitesse est restreinte, ce qui permet au fluide de glisser en suivant la direction tangentielle.\newline
 
-Quant est-il de la pression sur la frontière entre le fluide et le solide? L'idée de départ est que c'est la pression qui "maintient le fluide dans son état incompressible" en préservant son volume. Il faut aussi que les conditions aux frontières de type "mur solides" soient respectées. Le terme $ \frac{1}{\rho}\nabla p$ de l'équation d'inertie s'applique aussi à la frontière. Ainsi, la pression peut contrôler $  \overrightarrow{u} \,.\, \hat{n} $ au mur solide, ce qui indique une propriété de $ \nabla p \,.\, \hat{n} $, aussi appelée la dérivée normale de la pression "$ \partial p / \partial \hat{n} $".\newline
+Quant est-il de la pression sur la frontière entre le fluide et le solide? L'idée de départ est que c'est la pression qui "maintient le fluide dans son état incompressible" en préservant son volume. Il faut aussi que les conditions aux frontières de type "parois solides" soient respectées. Le terme $ \frac{1}{\rho}\nabla p$ de l'équation d'inertie s'applique aussi à la frontière. Ainsi, la pression peut contrôler $  \overrightarrow{u} \,.\, \hat{n} $ au paroi solide, ce qui indique une propriété de $ \nabla p \,.\, \hat{n} $, aussi appelée la dérivée normale de la pression "$ \partial p / \partial \hat{n} $".\newline
 
 Que se passerait-il si le liquide était visqueux? Les frottements dus à la viscosité auront une influence sur la composante tangentielle de la vitesse du fluide. Le cas le plus simple est la condition de non-glissement de la frontière, spécifiant:
 
@@ -332,12 +333,12 @@ et si le solide est en mouvement, la condition est:
 \overrightarrow{u} \,=\, \overrightarrow{u}\!\!_{solid}
 \end{equation}
 
-Parfois, la frontière solide est un genre d'évent ou un drain que le fluide peut traverser. Dans ce cas, le produit $ \overrightarrow{u}\,.\,\hat{n} $ doit être différent de la vitesse de la frontière, il doit plutôt être égale à la vitesse d'aspiration ou de refoulement du conduit dans la simulation.\newline
+Parfois, la frontière en parois solides est un genre d'évent ou un drain que le fluide peut traverser. Dans ce cas, le produit $ \overrightarrow{u}\,.\,\hat{n} $ doit être différent de la vitesse de la frontière, il doit plutôt être égale à la vitesse d'aspiration ou de refoulement du conduit dans la simulation.\newline
 
 
-Le deuxième type de frontière est celle entre le fluide et la surface libre. C'est l'ensemble des points où la modélisation du fluide n'est pas prise en compte. Par exemple, dans le cas de la simulation de l'eau qui éclabousse, les surface de l'eau qui \textbf{ne sont pas} en contact avec le solide sont les surfaces libres. En réalité, l'eau est en contact avec un autre fluide qui est l'air, mais cela ajoute plus de complexité  pour ajouter la simulation de l'air dans l'équation. De plus, comme l'air est 700 fois plus léger que l'eau, il n'a pas un effet assez significatif sur l'eau. Donc, l'air est modélisé simplement comme étant une région avec une pression atmosphérique. Et puisque pour les fluides incompressibles, seules les \textbf{ différences} de pression comptent, la pression constante de l'air peut être choisi arbitrairement: zéro fait bien l'affaire. En conséquence, une surface libre est celle qui a une pression $ p = 0 $, et la vitesse y est hors de contrôle.\newline
+Le deuxième type de frontière est celle entre le fluide et la surface libre ou surface ouverte. C'est l'ensemble des points où la modélisation du fluide n'est pas prise en compte. Par exemple, dans le cas de la simulation de l'eau qui éclabousse, les surface de l'eau qui \textbf{ne sont pas} en contact avec le solide sont les surfaces libres. En réalité, l'eau est en contact avec un autre fluide qui est l'air, mais cela ajoute plus de complexité  pour ajouter la simulation de l'air dans l'équation. De plus, comme l'air est 700 fois plus léger que l'eau, il n'a pas un effet assez significatif sur l'eau. Donc, l'air est modélisé simplement comme étant une région avec une pression atmosphérique. Et puisque pour les fluides incompressibles, seules les \textbf{ différences} de pression comptent, la pression constante de l'air peut être choisi arbitrairement: zéro fait bien l'affaire. En conséquence, une surface ouverte est celle qui a une pression $ p = 0 $, et la vitesse y est hors de contrôle.\newline
 
-Un autre cas où la surface libre est importante est celui de la simulation d'une petite partie de fluide qui fait partie d'un domaine plus large: par exemple la simulation de la fumée dans l'air. Simuler l'atmosphère tout entier n'est pas envisageable, donc une limitation sur une grille qui engloge la "zone d'intérêt" est fixée pour la simulation. A la frontière de cette zone, le fluide doit continuer, mais la simulation ne dépasse pas cette limite. Seulement, comme la simulation laisse le fluide pénétrer ou sortir de cette zone, la frontière est considérée comme une surface libre, $ p = 0 $, même si il n'y a aucune surface visible.\newline
+Un autre cas où la surface ouverte est importante est celui de la simulation d'une petite partie de fluide qui fait partie d'un domaine plus large: par exemple la simulation de la fumée dans l'air. Simuler l'atmosphère tout entier n'est pas envisageable, donc une limitation sur une grille qui engloge la "zone d'intérêt" est fixée pour la simulation. A la frontière de cette zone, le fluide doit continuer, mais la simulation ne dépasse pas cette limite. Seulement, comme la simulation laisse le fluide pénétrer ou sortir de cette zone, la frontière est considérée comme une surface ouverte, $ p = 0 $, même si il n'y a aucune surface visible.\newline
 
 Un dernier point sur les surfaces libres: pour les liquides de petites grandeurs, la tension surfacique peut être importante. Dans les couches intérieures moléculaires, la tension de surface existe à cause de la variation des forces d'attraction entre les molécules de différents types. Par exemple, les molécules d'eau sont fortement attirés  plus par les autres molécules d'eau que par les molécules d'air: en conséquence, les molécules d'eau sur la surface séparant l'air et l'eau tendent à être entourés par encore plus d'eau autant que possible que d'air. Sur le point de vue géométrique, les chimistes ont modélisé ce phénomène par l'action de forces cherchant à minimiser la surface, ou à réduire la courbure moyenne de la surface. En d'autres mots, c'est la tension qui essaye constamment à rétrécir la surface, d'où son nom de tension de surface. L'autre manière d'interpréter cette tension est basée sur la courbure moyenne de la surface.\newline
 
@@ -347,13 +348,13 @@ Pour faire court, le modèle à considérer est celui qui prend en compte qu'il 
 [p] = \gamma \kappa
 \end{equation}
 
-La notation $ [p] $ représente le saut de pression en question, c'est-à-dire la différence de pression mesurée sur le côté de l'eau et celle mesurée sur le côté de l'air, $ \gamma $ est le coefficient de la tension de surface ( pour l'air et l'eau à la température à l'ombre, il est approximativement $ \gamma \approx 0.073 N/m $), et $ \kappa $ est la courbure moyenne, mesurée en $ 1/m $. Ce qui signifie que pour une surface libre avec une tension de surface, la pression à la surface de l'eau est la somme  de la pression de l'air ($0 Pa$) et du saut de pression:
+La notation $ [p] $ représente le saut de pression en question, c'est-à-dire la différence de pression mesurée sur le côté de l'eau et celle mesurée sur le côté de l'air, $ \gamma $ est le coefficient de la tension de surface ( pour l'air et l'eau à la température à l'ombre, il est approximativement $ \gamma \approx 0.073 N/m $), et $ \kappa $ est la courbure moyenne, mesurée en $ 1/m $. Ce qui signifie que pour une surface ouverte avec une tension de surface, la pression à la surface de l'eau est la somme  de la pression de l'air ($0 Pa$) et du saut de pression:
 
 \begin{equation}
 p = \gamma \kappa
 \end{equation}
 
-Les surfaces libres présentent un problème majeur: les bulles d'air se rompent immédiatement. Même si l'air est plus léger que l'eau, et qu'il ne peut pas transférer beaucoup d'élan à l'eau, il demeure incompressible. Une bulle d'air dans l'eau garde son volume. Modéliser une bulle d'air comme une surface libre provoquerait l'explosion de l'air. Pour pallier ce problème, une possibilité est de simuler en ajoutant des bulles d'air à la surface libre, ou plus généralement simuler l'air et l'eau (simulation à deux phases étant donné les deux fluides).
+Les surfaces libres présentent un problème majeur: les bulles d'air se rompent immédiatement. Même si l'air est plus léger que l'eau, et qu'il ne peut pas transférer beaucoup d'élan à l'eau, il demeure incompressible. Une bulle d'air dans l'eau garde son volume. Modéliser une bulle d'air comme une surface ouverte provoquerait l'explosion de l'air. Pour pallier ce problème, une possibilité est de simuler en ajoutant des bulles d'air à la surface ouverte, ou plus généralement simuler l'air et l'eau (simulation à deux phases étant donné les deux fluides).
 
 \chapter{Revue des simulations numériques}
 
@@ -441,7 +442,7 @@ En supposant que l'algorithme résolvant  l'équation d'avection (2.16) est $ \m
 Pour la résolution de l'équation de force de la gravité (2.17), la méthode d'Euler est tout indiqué.\newline
 
 Pour la partie pression/incompressibilité, un algorithme $ \mathit{project(\Delta t, \overrightarrow{u}}) $  a pour rôle de calculer et d'appliquer la bonne pression pour garder le champ $ \overrightarrow{u} $ à divergence zéro. Cette pression doit 
-également renforcer les conditions sur les frontières de murs solides. \newline
+également renforcer les conditions sur les frontières des parois solides. \newline
 
 La condition préalable pour pouvoir calculer les advections dans le champ de vitesse $  \overrightarrow{u} $ est que le champ soit à divergence nulle. Quand le fluide est mis en mouvement, il conserve son volume, et donc le champ de vecteur vitesse dans lequel il évolue doit être à divergence zéro pour cela. Il faut s'assurer que la méthode $ \mathit{Advect()} $ prenne comme argument d'entrée le résultat de la fonction $ \mathit{project()} $. \newline
 
@@ -637,7 +638,7 @@ C'est exactement un problème de conditions aux frontières. Dans le premier cas
 
 Dans le second cas, où une trajectoire de particule s'égare en dehors des frontières limitant le fluide à cause d'erreur de calcul numérique, la stratégie la plus appropriée est d'extrapoler la quantité par le point le plus proche se trouvant sur cette frontière - c'est la meilleure solution en misant que c'est la quantité que la vraie trajectoire (qui devrait être inclue dans le fluide) donnerait. Quelques fois, l'extrapolation est aisée: si la frontière la plus proche a une vitesse spécifique, cette vitesse est utilisée. Par exemple, pour simuler la fumée dans l'air, il est pratique de supposer que le vent a une vitesse constante $\overrightarrow{U}$ (peut être nulle) en dehors du domaine de la simulation.\newline
 
-Le cas épineux est quand la quantité à simuler n'a pas de valeur \textit{à priori} et doit être extrapolé à partir des régions du fluide où elle est connue. Cette extrapolation est rencontré plus en détail sur l'animation de l'eau. Pour le moment, il faut trouver le point le plus proche se trouvant sur la frontière de la région du fluide, et interpoler la quantité à partir des valeurs du fluides stockées dans la grille voisine. En particulier, c'est ce qu'il faut effectuer pour trouver les valeurs de la vitesse quand la position de départ est à l'intérieur d'un objet solide, ou pour l'écoulement sur une surface libre (l'eau) si le fluide évolue dans un espace libre.\newline
+Le cas épineux est quand la quantité à simuler n'a pas de valeur \textit{à priori} et doit être extrapolé à partir des régions du fluide où elle est connue. Cette extrapolation est rencontré plus en détail sur l'animation de l'eau. Pour le moment, il faut trouver le point le plus proche se trouvant sur la frontière de la région du fluide, et interpoler la quantité à partir des valeurs du fluides stockées dans la grille voisine. En particulier, c'est ce qu'il faut effectuer pour trouver les valeurs de la vitesse quand la position de départ est à l'intérieur d'un objet solide, ou pour l'écoulement sur une surface ouverte (l'eau) si le fluide évolue dans un espace libre.\newline
 
 Prendre la vitesse du fluide à la frontière solide n'est pas en générale la même que prendre la vitesse du solide. Comme discuté plus tôt, la composante normale de la vitesse du fluide est égale à la composante normale de la vitesse du solide, mais mis à part les écoulements visqueux, la composante tangentielle peut être complétement différente. C'est la raison pour laquelle l'interpolation de la vitesse est réalisée à la frontière du fluide, elle n'est pas assimilée à la vitesse du solide. Cependant pour le cas des écoulements visqueux (au du moins les intéractions fluides-solides), il est possible de prendre un raccourci en choissant la vitesse du solide.
 
@@ -748,10 +749,631 @@ Des techniques doivent être trouvées pour résoudre le problème de dissipatio
 
 \chapter{Rendre les fluides incompressibles}
 
+Dans ce chapitre, le but est de chercher comment rendre le fluide incompressible et simultanément faire en sorte d'affirmer les conditions sur les frontières: l'implémentation du module $project(\Delta t, \overrightarrow{u})$ mentionné au chapitre 2. Il faut tout d'abord suivre une approche classique pour après avancer dans  des méthodes plus précises de discrétisation.
+
+Le module $project$ soustrait le gradient de la pression au champ vecteur vitesse intermédiaire \overrightarrow{u}:
+
+\begin{equation}
+\overrightarrow{u}^{n+1} = \overrightarrow{u} - \Delta t \,\, \frac{1}{\rho} \,\, \nabla p 
+\end{equation}
+
+pour qu'ainsi le résultat satisfasse l'incompressibilité à l'intérieur du fluide:
+
+\begin{equation}
+\nabla . \overrightarrow{u}^{n+1} = 0
+\end{equation}
+
+et remplisse les conditions sur les frontières en parois solides:
+\begin{equation}
+\overrightarrow{u}^{n+1} \,\, . \,\, \hat{n} = \overrightarrow{u}_{solid} \,\, . \,\, \hat{n}
+\end{equation}
+
+Maintenant, la première chose à faire est d'enregistrer la discrétisation du changement de la pression: comment faire une approximation du gradient de la pression sur la grille MAC? après chercher à définir la divergence discrète sur la grille MAC, et il résulte, en mettant les deux ensemble, un système d'équations linéaires à résoudre pour trouver la pression; ces systèmes seront analysés et un moyen de résolution effectif sera entrepris. \newline
+
+L'approche classique de la grille MAC à voir en premier est appliquée uniquement aux frontières qui sont alignés sur la grille: il n'est pas facile de gérer les frontières inclinées ou incurvées. Le chapitre finit sur une réinterprétation de l'équation de la pression qui conduit à un moyen simple pour traiter avec précision et robustesse ces conditions sur les frontières irrégulières. \newline
+
+\section{Le gradient de pression discret}
+
+La raison d'être de la grille MAC, comme discuté précédemment, est que les subdivisions rendent les différences centrales robustes. Par exemple, s'il faut soustraire la composante $\partial/\partial x$ du gradient de pression de la composante $u$ du vecteur vitesse, il y a deux valeurs de la pression qui sont perfectement alignées avec les côtés de la composante $u$ attendant justement d'être différenciées. Voir la figure (2.1) pour rappel de la marche à suivre. \newline
+
+Sans plus de complications, voici les formules de changement de pression en deux dimensions les approximations par différence central de $\partial p/\partial x$ et $\partial p/\partial y$:
+
+\begin{eqnarray}
+u_{i+1/2,j}^{n+1} & = & u_{i+1/2,j} - \,\, \Delta t \,\, \frac{1}{\rho} \,\,\frac{p_{i+1,j} - p_{i,j}}{\Delta x} \\
+v_{i,j+1/2}^{n+1} & = & v_{i,j+1/2} -\,\, \Delta t \,\, \frac{1}{\rho} \,\, \frac{p_{i,j+1} - p_{i,j}}{\Delta x}
+\end{eqnarray}
+
+et en trois dimensions avec $\partial p/\partial z$:
+
+\begin{eqnarray}
+u_{i+1/2,j,k}^{n+1} & = & u_{i+1/2,j,k} - \,\, \Delta t \,\, \frac{1}{\rho} \,\,\frac{p_{i+1,j,k} - p_{i,j,k}}{\Delta x} \\
+v_{i,j+1/2,k}^{n+1} & = & v_{i,j+1/2,k} -\,\, \Delta t \,\, \frac{1}{\rho} \,\, \frac{p_{i,j+1,k} - p_{i,j,k}}{\Delta x} \\
+w_{i,j,k+1/2}^{n+1} & = & w_{i,j,k+1/2} -\,\, \Delta t \,\, \frac{1}{\rho} \,\,\frac{p_{i,j,k+1} - p_{i,j,k}}{\Delta x} 
+\end{eqnarray}
+
+Ces changements de pressions s'appliquent à chaque composante du vecteur vitesse qui borde une cellule contenant un fluide.	Cependant, les formules ci-dessous, appliquées sur les faces de la frontière de la région du fluide, n'affectent que les cellules de la grille qui se trouvent à l'\textbf{extérieur} de la région du fluide. Alors il est nécessaire de définir les conditions de pression sur la frontière. Pour le moment, il faut classifier les cellules de la grille en cellules fluides (celles qui contiennent du fluide) , en cellules solides (celles qui sont entièrement occupées par un solide), ou en cellules d'air (celles qui n'ont rien sur elles - comme celles composant la surface ouverte dans les simulation d'eau). Il convient de mettre de côté pour le moment les cellules qui ne sont que partiellement remplies par un solide et/ou un fluide jusqu'à la fin de ce chapitre: pour le moment, le solide doit s'aligner perfectement à la grille, et il n'y a aucune connaissance sur le mixage exact d'air et d'eau dans les cellules de la grille au niveau de la surface ouverte, il est juste considérer comme des cellules du fluide. \newline
+
+La condition de pression sur la frontière la plus simple concerne la surface ouverte, comme sur la simulation de l'eau. Ici, la pression extérieure au fluide est supposée nulle: dans les formules précédentes le terme $p_{i,j,k}$ est remplacé par zéro. C'est la condition au frontière de \textbf{Dirichlet}: la valeur de la quantité est directement spécifié sur la frontière. \newline
+
+La condition de pression sur la frontière la plus difficile concerne la paroi solide. Comme les frontières en paroi solide s'alignent avec les faces de cellule de la grille, la composante de la vélocité stockée sur ces faces est en fait $\overrightarrow{u} \,\,.\,\, \hat{n}$. Dans ce cas, soustraire le gradient de la pression là dessus devrait fortifier la condition à la frontière $\overrightarrow{u}^{n+1} \,\, . \,\, \hat{n} = \overrightarrow{u}_{solid} \,\, . \,\, \hat{n}$. Cela va élaborer une spécification la dérivée normale de la pression (techniquement connu comme la condition à la frontière de "\textbf{Neumann}". En substituant dans la modification de la pression, l'équation obtenu devient simplement linéaire pour obtenir la pression à l'intérieur de la paroi solide. Par exemple, en supposant que la cellule de la grille $(i,j)$ soit un fluide et que la cellule $(i+1,j)$ soit un solide, $u_{i+1/2, j}$ devrait être:
+\begin{equation}
+u_{i+1/2,j}^{n+1} \,\, = \,\, u_{i+1/2,j} - \,\, \Delta t \,\, \frac{1}{\rho} \,\,\frac{p_{i+1,j} - p_{i,j}}{\Delta x}
+\end{equation}
+
+et comme $ u_{i+1/2,j}^{n+1} $ est en fait $ u_{solid} $. En réarrangeant, l'équation mise à jour devient:
+
+\begin{equation}
+p_{i+1,j} \,\, = \,\, p_{i,j} + \frac{\rho \,\, \Delta x}{\Delta t} (u_{i+1/2,j} - u_{solid})
+\end{equation}
+
+Même si apparemment, il semble plus facile d'assigner directement la valeur de $u_{i+1/2,j}^{n+1}$ à ce qu'elle est supposée l'être, au lieu de rechercher la valeur de la pression à soustraire. En fait, de nombreux simulateurs de fluide procède comme cela, c'est-à-dire mettre d'abord  les vecteurs vitesse sur les parois solides, et s'occuper de la pression après. Mais, comme ce sera indiqué plus tard à la fin de ce chapitre, ce sera plus payant de procéder par la pression en premier: les équations de milieux continus sont plus respectées ce fait. Connaître la nature de cette pression quand viendra le temps de formuler des équations pour résoudre la pression à l'intérieur du fluide.\newline
+
+Un autre point curieux utile à mentionner ici, concernant la condition à la frontière, est que la pression de la cellule de la grille solide pour chaque limite d'une face est évaluée \textbf{séparément}. C'est en fait, si une cellule de la grille solide possède plus de deux faces adjacentes à des cellules de fluide, il faudra calculer pour la cellule plus de deux valeurs de la pression complétement indépendamment. Bien que cela peut sembler incongru, mais il faut juste se rappeler que, au niveau de la continuité, la pression n'est pas définie à l'intérieur du solide: seul le gradient de pression est utilisé à la frontière du solide. Numériquement, il convient d'exprimer cela comme une différence finie (ce qui correspond bien avec toutes les formules), mais la pression qui est supposée être à l'intérieur de la cellule de la grille solide  est une invention convenable pour faciliter une imagination mathématique du procédé. Ce qui compte surtout, c'est la différence de pression sur les faces de la frontière. Donc, la pression n'est pas explicitement stockée à l'intérieur de la cellule de la grille solide (car il peut y avoir plusieurs valeurs pour elle), une formule comme celle de l'équation (4.10) sera utilisée quand il sera nécessaire de calculer la différence de pression le long de la face frontière. \newline
+
+Les conditions à la frontière peuvent être très compliquées - ce ne sont pas des histoires de remarquer dans la communauté de la mécanique des fluides numériques, que les transpirations, le sang et les pleurs sont versés en cherchant à obtenir des conditions à la frontière fiables. Cela peut être bénéfique de parcourir cette section doucement, en dessinant la grille MAC (comme la figure 2.1) et cherchant à obtenir les différentes configurations des cellules de solide, de fluide et d'air jusqu'à en saisir le sens. 
+
+\section{La divergence discrète}
+
+C'est la partie facile du chapitre. Pour le cas des milieux continus, il est préférable d'avoir un fluide incompressible: $ \nabla \,.\, \overrightarrow{u} \,\, = \,\, 0 $. Au niveau de la grille, cette condition est approximée avec les différences finies, et requiert que la divergence estimée soit à chaque cellule de la grille égale à zéro pour $\overrightarrow{u}^{n+1}$.
+
+La divergence est:
+
+\begin{equation}
+\nabla \,\,.\,\, \overrightarrow{u} \,\, = \,\, \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} 
+\end{equation}
+
+et en dimension 3:
+
+\begin{equation}
+\nabla \,\,.\,\, \overrightarrow{u} \,\, = \,\, \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} + \frac{\partial w}{\partial z}
+\end{equation}
+
+En utilisant les différences centrales (se référer encore à la grille MAC), la divergence à deux dimensions est approximée pour la cellule de la grille fluide $(i,j)$ par:
+
+\begin{equation}
+(\nabla \,\,.\,\, \overrightarrow{u})_{i,j} \,\, \approx \,\, \frac{u_{i+1/2, j} - u_{i-1/2, j}}{\Delta x} + \frac{v_{i,j+1/2} - v_{i,j-1/2}}{\Delta x}
+\end{equation}
+
+et en dimension 3 pour la cellule de la grille $(i,j,k)$:
+
+\begin{equation}
+(\nabla \,\,.\,\, \overrightarrow{u})_{i,j,k} \,\, \approx \,\, \frac{u_{i+1/2, j, k} - u_{i-1/2, j, k}}{\Delta x} + \frac{v_{i,j+1/2, k} - v_{i,j-1/2, k}}{\Delta x} + \frac{w_{i, j, k+1/2} - w_{i, j, k-1/2}}{\Delta x}
+\end{equation}
+
+C'est juste l'évaluation de la divergence d'une cellule de la grille de fluide.
+
+Une autre manière d'interpréter la divergence discrète est de passer à travers une estimation directe du taux total de fluide entrant et sortant la cellule de la grille. Il faut se rappeler que ce (dans les configurations exactes des milieux continus) n'est juste que l'intégrale de la composante normale du vecteur vitesse autour des faces de la cellule de la grille:
+
+\begin{equation}
+\int \!\!\! \int_{\partial cell} \overrightarrow{u} \,\,.\,\, \hat{n}
+\end{equation}
+
+C'est la somme des intégrales sur chaque face de la cellule de la grille. Comme la composante normale du vecteur vitesse est stockée au centre de chaque face,  l'intégrale peut être facilement estimer en multipliant juste la composante normale par la surface de la face (en prennant en compte les signes - dans l'intégrale ci-dessous, la normale pointe toujours vers l'extérieur, alors que les composantes du vecteur vitesse stockées sur la grille sont dans le même sens, comme montré sur la figure 2.1 par exemple). Après un redimensionnement, cela conduit exactement aux mêmes formules de différence centrale. Cette technique numérique, où l'intégral d'une quantité autour des faces de la cellule de la grille est estimé directement au lieu de chercher la formulation de l'équation différentielle, est appelée méthode des "volumes finies".\newline
+
+Finallement, la grille MAC est très utile. Si une régulière grille \textbf{collocé} a été utilisé, à l'intérieure de laquelle toutes les composantes du vecteur vitesse auraient été stockées ensemble sur les points de la grille, la divergence aurait été loin d'être facile à avoir. Par exemple, avec la formule de la différence centrale:
+
+\begin{equation}
+(\nabla \,\,.\,\, \overrightarrow{u})_{i,j} \,\, \approx \,\, \frac{u_{i+1, j} - u_{i-1, j}}{2 \, \Delta x} + \frac{v_{i,j+1} - v_{i,j-1}}{2 \, \Delta x}
+\end{equation}
+ 
+Le problème d'espace nul du chapitre 2 revient. Des champs de vecteur vitesse hautement divergents comme $\overrightarrow{u}_{i,j} = ((-1)^i,(-1)^j)$ deviendront à divergence zéro. De plus, la solution de la pression ne peut pas apporter des corrections sur ces champs, alors de hautes oscillations de fréquence vont persister dans le champ de vecteurs vitesse et peuvent probablement même croître instablement combiné avec l'advection. Il y a deux solutions possibles pour résoudre ce problème mais la grille "collocé" est toujours utilisée. La première est d'utiliser une approximation biaisée de la différence sur un seul côté -  et même si cela fonctionne, un bais particulier est introduite dans la simulation qui peut être distingué très clairement. La deuxième solution est de lisser les modes de divergence à haute fréquence avant de calculer la pression - seulement, le but principal est d'éviter des lissages numériques autant que possible, donc ce n'est pas une bonne idée pour l'animation. Il faut se tenir alors à la grille MAC.
+
+
+\section{Les équations de pression}
+
+Les deux ingrédients pour calculer l'incompressibilité sont réunis: comment mettre à jour les vecteurs vitesse avec le gradient de la pression, et comment avoir une estimation de la divergence.
+
+Le but recherché est que le vecteur vitesse final, $\overrightarrow{u}^{n+1}$ soit à divergence zéro (divergence-free) à l'intérieur du fluide. Pour trouver la pression qui pourrait réaliser cela, il faut simplement substituer les formules de changement de pression pour $\overrightarrow{u}^{n+1}$, équations (4.4) en 2D et (3.6) en 3D, dans la formule de la divergence, équations (4.13) en 2D et (4.14) en 3D. Une équation linéaire pour chaque cellule de la grille de fluide est obtenue (il faut rappeler que la divergence est seulement calculée pour les cellules de de la grille contenant du fluide), avec les pressions comme inconnues.
+
+En écrivant cela explicitement pour la 2D, pour la cellule de la grille de fluide (i,j):
+\begin{eqnarray}
+& \frac{u_{i+1/2,j}^{n+1} - u_{i-1/2,j}^{n+1}}{\Delta x} \,\,+\,\, \frac{v_{i,j+1/2}^{n+1} - v_{i,j-1/2}^{n+1}}{\Delta x}  =  0 \\ 
+& \frac{1}{\Delta x} 
+	\left[
+		\begin{array}{c}
+			\left( 
+			u_{i+1/2,j} - \Delta t \,\, \frac{1}{\rho} \,\, \frac{p_{i+1,j} - p_{i,j}}{\Delta x}
+			\right) -
+			\left( 
+			u_{i-1/2,j} - \Delta t \,\, \frac{1}{\rho} \,\, \frac{p_{i,j} - p_{i-1,j}}{\Delta x}
+			\right) +\\
+			\left( 
+			v_{i,j+1/2} - \Delta t \,\, \frac{1}{\rho} \,\, \frac{p_{i,j+1} - p_{i,j}}{\Delta x}
+			\right) -
+			\left( 
+			v_{i,j-1/2} - \Delta t \,\, \frac{1}{\rho} \,\, \frac{p_{i,j} - p_{i,j-1}}{\Delta x}
+			\right)
+		\end{array}
+	 \right] =  0 \\	 
+& \frac{\Delta t}{\rho} \,\,
+\left(
+	 \frac{4 \,\, p_{i,j} - \,\, p{i+1,j} - \,\, p_{i,j+1} - \,\, p_{i-1,j} - \,\, p_{i,j-1}}
+	 {\Delta x_2}
+\right) = \, - \,	 
+\left(
+	\frac{u_{i+1/2,j} - u_{i-1/2,j}}
+	{\Delta x} + 
+	\frac{v_{i,j+1/2} - v_{i,j-1/2}}
+	{\Delta x}
+\right)
+\end{eqnarray}
+
+Et maintenant dans une cellule de grille de fluide $ (i,j,k) $:
+
+\begin{eqnarray}
+& \frac{u_{i+1/2,j,k}^{n+1} - u_{i-1/2,j,k}^{n+1}}{\Delta x} \,\,+\,\, \frac{v_{i,j+1/2,k}^{n+1} - v_{i,j-1/2,k}^{n+1}}{\Delta x} \,\,+\,\,
+\frac{w_{i,j,k+1/2}^{n+1} - w_{i,j,k-1/2}^{n+1}}{\Delta x} =  0 \\ 
+& \frac{1}{\Delta x} 
+	\left[
+		\begin{array}{c}
+			\left( 
+			u_{i+1/2,j,k} - \Delta t \,\, \frac{1}{\rho} \,\, \frac{p_{i+1,j,k} - p_{i,j,k}}{\Delta x}
+			\right) -
+			\left( 
+			u_{i-1/2,j,k} - \Delta t \,\, \frac{1}{\rho} \,\, \frac{p_{i,j,k} - p_{i-1,j,k}}{\Delta x}
+			\right) +\\
+			\left( 
+			v_{i,j+1/2,k} - \Delta t \,\, \frac{1}{\rho} \,\, \frac{p_{i,j+1,k} - p_{i,j,k}}{\Delta x}
+			\right) -
+			\left( 
+			v_{i,j-1/2,k} - \Delta t \,\, \frac{1}{\rho} \,\, \frac{p_{i,j,k} - p_{i,j-1,k}}{\Delta x}
+			\right)+\\
+			\left( 
+			w_{i,j,k+1/2} - \Delta t \,\, \frac{1}{\rho} \,\, \frac{p_{i,j,k+1} - p_{i,j,k}}{\Delta x}
+			\right) -
+			\left( 
+			w_{i,j,k-1/2} - \Delta t \,\, \frac{1}{\rho} \,\, \frac{p_{i,j,k} - p_{i,j,k-1}}{\Delta x}
+			\right)
+		\end{array}
+	 \right] =  0 \\	 
+& \frac{\Delta t}{\rho} \,\,
+\left(	
+	\frac{
+		\begin{array}{c}
+			6 \,\, p_{i,j,k} - p{i+1,j,k} -\\
+			p_{i,j+1,k} - p_{i,j,k+1} - \\ 
+			p_{i-1,j,k} - p_{i,j-1,k} - p_{i,j,k-1}
+		\end{array}
+	}
+	{\Delta x_2}
+\right) = \, - \,	 
+\left(
+	\begin{array}{c}
+		\frac{u_{i+1/2,j,k} - u_{i-1/2,j,k}}{\Delta x} + 
+		\frac{v_{i,j+1/2,k} - v_{i,j-1/2,k}}{\Delta x} + \\
+		\frac{w_{i,j,k+1/2} - w_{i,j,k-1/2}}{\Delta x}
+	\end{array}
+\right)
+\end{eqnarray}
+
+Les équations (4.19) et (4.22) sont des approximations du problème de "\textbf{Poisson}" $ - \Delta t/\rho \nabla . \nabla p = - \nabla . \overrightarrow{u} $
+
+
+Si une cellule de la grille fluide se trouve à la frontière, il faut se rappeler que les nouvelles vélocités les faces frontières repoussent des pressions à l'extérieur du fluide à définir par des conditions aux frontières: ce constat doit être utilisé ici. Par exemple si la cellule de la grille $(i, j+1)$ est une cellule d'air, alors il faut remplacer $p_{i,j+1}$ par zéro dans l'équation (4.19). Si la cellule $(i+1,j)$ est une cellule de la grille solide, alors il faut remplacer $p_{i+1,j}$ par la valeur calculée à partir des conditions aux frontières en cette cellule, comme dans la formule (4.10). En supposant que (i-1,j) et (i,j-1) sont des cellules de fluide, l'équation est réduite à:
+
+\begin{eqnarray}
+&\begin{array}{c}
+ \frac{\Delta t}{\rho}
+\left(
+	 \frac{4 \,\, p_{i,j} - 
+	 \left[ 
+	 	p_{i,j} + \frac{\rho\Delta x}{\Delta t}
+	 	\left(
+	 		u_{i+1/2,j} - u_{solid}
+	 	\right)
+	 \right] 
+	 - 0- \,\, p_{i-1,j} - \,\, p_{i,j-1}}
+	 {\Delta x_2}
+\right) = \\ \, - \,	 
+\left(
+	\frac{u_{i+1/2,j} - u_{i-1/2,j}}
+	{\Delta x} + 
+	\frac{v_{i,j+1/2} - v_{i,j-1/2}}
+	{\Delta x}
+\right)
+\end{array} \\
+&\begin{array}{c}
+\frac{\Delta t}{\rho}
+\left(
+	 \frac{3 \,\, p_{i,j} - p_{i-1,j} - p_{i,j-1}}
+	 {\Delta x_2}
+\right) = \\ \, - \,	 
+\left(
+	\frac{u_{i+1/2,j} - u_{i-1/2,j}}
+	{\Delta x} + 
+	\frac{v_{i,j+1/2} - v_{i,j-1/2}}
+	{\Delta x}
+\right) +
+\left(
+	\frac{u_{i+1/2,j} - u_{solid}}{\Delta x}
+\right)
+\end{array}\\
+&\begin{array}{c}
+\frac{\Delta t}{\rho}
+\left(
+	 \frac{3 \,\, p_{i,j} - p_{i-1,j} - p_{i,j-1}}
+	 {\Delta x_2}
+\right) = \\ \, - \,	 
+\left(
+	\frac{u_{solid} - u_{i-1/2,j}}
+	{\Delta x} + 
+	\frac{v_{i,j+1/2} - v_{i,j-1/2}}
+	{\Delta x}
+\right)
+\end{array}
+\end{eqnarray}
+
+Trois remarques peuvent être faites sur ces équations, à être prises en compte dans le code d'implémentation. Premièrement, pour la condition à la limite des cellules d'air, il faudra enlever $p$ de l'équation. Deuxièmement, pour la condition à la limite des cellules solides, $p$ sera encore éliminé mais aussi la réduction du coefficient devant $p_{i,j}$, qui est normalement 4, par 1 - en d'autres termes, le coefficient devant $p_{i,j}$ est égale au nombre de cellules voisines de la cellule de la grille qui ne sont pas solides (c'est la même chose en dimension 3). Il faut changer la divergence mesurée dans le côté droit par la vélocité de la paroi solide $u_{solid}$ à la place de l'ancienne vélocité $u_{i+1/2,j}$: des remplacements similaires seront effectués d'autres frontières se heurtent à la surface solide.
+
+\subsection{Les mettre tous dans la matrice de vecteurs}
+
+
+\part{Les différents types de fluides}
+
+\chapter{La fumée}
+
+Le premier phénomène visuel de fluides que nous allons considérer est la fumée, en se référant à l'article de Fedkiw et al. \cite{fedkiw-stam-jensen-01}. Notre fluide dans ce cas est l'air dans lequel des particules de fumée sont suspendues. Pour modéliser les effets les plus importants de la fumée, nous avons besoin de deux variables du fluide supplémentaires: la température $T$ de l'air et la concentration $s$ de particules de fumée (ce qui nous est en fait visible).\newline
+
+En réalité, des changements de température entraine une expansion ou une contraction de l'air, changeant la densité, et la masse de particules de fumée fait aussi augmenter la densité. Cependant, ces variations sont infimes, alors nous utiliserons ce qu'on appelle approximation de "\textbf{Boussinesq}" et supposerons une densité constante comme avant mais remplacerons la force de la gravité par la force de flottaison \textit{$f_{buoy}$} qui est tirée de ces variations. Pour nous simplifier la vie, nous supposons que la flottaison dépend linéairement juste de la température et de la concentration de fumée. Soit $T_{amp}$ la température ambiante de fond (disons 300K, ou 270K au Canada), on prend comme force de flottaison:
+
+\begin{equation}
+f_{buoy} = (0, -\alpha s + \beta (T-T_{amb}) ,0)
+\end{equation}
+
+Ici, $\alpha$ et $\beta$ sont des constantes positives qui peuvent être choisies par l'utilisateur pour réaliser différents comportements. Noter que la force $f_{buoy}$ est nulle s'il n'y a pas de fumée ou que la température est à la température ambiante.\newline
+
+Nous stockons typiquement $T$ et $s$ dans les centres sur la grille (au même titre que la pression). Pour ajouter la force de flottaison à la composante $v$ de la vélocité dans sa localisation sur la grille MAC compensé, nous avons ainsi besoin d'évaluer la moyenne des valeurs pour $T$ et $s$ aux centres voisins, exemple $T_{i, j+1/2, k} = (T_{i,j,k} + T_{i,j+1,k})/2$.\newline
+
+Nous avons aussi besoin de détailler comment $T$ et $s$ sont élaborés. Ils sont bien sur advectés avec le fluide, mais en réalité ils sont également diffusés. Cependant, comme nous avons négligé complèment le terme de viscosité dans l'équation de moment à cause du fait que l'inévitable dissipation numérique l'imite de toute façon, nous n'avons pas besoin explicitement de modéliser la chaleur et la diffusion de fumée: ils apparaitront dans nos méthodes numériques que nous le voulions ou pas. Ainsi, nos nouvelles équations d'évolution sont simplement:
+
+\begin{equation}
+\frac{DT}{Dt} = 0 \,\,\,\,\,\,\, \frac{Ds}{Dt} = 0
+\end{equation}
+
+Quand nous faisons l'advection de la vélocité dans notre simulation, nous allons faire l'advection de la température et de la concentration de fumée.
+
+Les conditions aux bords pour la fumée sont raisonablement simples. Pour la vélocité et la pression, nous devrons avoir des bords solides pour tout objet autour duquel la fumée tourne (à l'intérieur duquel la fumée sort, si nous prenons une vélocité différente de zéro au bord), et dans les coins de la grille qui ne sont pas inclus nous avons une surface libre ($p=0$). Nous pouvons étendre le champ de température à l'intérieur des objets juste en prenant la température actuelle de l'objet (et en procédant ainsi, nous obtenons naturellement la convection à partir des objets chauds), et en dehors du domaine comme la température ambiante $T_{amb}$ de fond. La concentration de la fumée n'existe pas à l'intérieur des objets, sauf si elle est supposée à être versé d'un objet (avec une vélocité de bord non nulle), dans quel cas nous pouvons poser une valeur source pour la fumée contenue dans l'objet. Dans le cas contraire, nous devrions faire une extrapolation de la concentration de la fumée dans l'objet, i.e. pour la fumée à l'intérieur d'un objet nous interpolons à partir des valeurs extérieures les plus proches.\newline
+
+Le souci dans ce modèle est que, simulé sur une grille typique grossière, la dissipation numérique issue du schéma semi-lagrangien d'advection simple que nous utilisons est excessive. Les caractéristiques intéressantes - des petites vorticités, nettes séparant l'air pure de l'air enfumée - disparraissent simplement plus vites que désirées. Ainsi le reste du chapitre détaille deux méthodes pour aider à contrecarrer cette dissipation numérique.
+
+\section{Confinement de vorticités}   
+
+Pour pallier le problème de vorticités disparaissant artificiellement trop vite, nous ajoutons une force de "\textbf{confinement de vorticités}" définie comme suit:
+
+\begin{equation}
+\overrightarrow{\omega} = \nabla \times \overrightarrow{u}
+\end{equation}
+
+Si besoin, revoir la signification de l'opérateur différentiel "rotationel" apparaissant ici dans l'Appendix. Vous pouvez vérifier que pour une rotation rigide du champ de vélocités, par exemple, la vorticité est exactement le double de la vitesse angulaire, prêtant le crédit à l'idée que cela mesure les caractéristiques rotationnelles. Un vortex, vaguement parlant, est un pic dans le champ de vorticité, une place qui tournoye plus vite que tout autre fluide aux alentours.\newline
+
+En sachant que l'advection numérique va artificiellement dissiper la vorticité, nous cherchons à construire un champ de force qui peut partiellement compenser en accroissant la vorticité. C'est ce que nous appelerons confinement de vorticité: c'est une force qui essaye de confiner des petites vorticités pour ne pas s'étendre à l'extérieur et diminuer. L'astuce consiste à trouver la direction que cette force doit prendre pour accroitre la rotation d'un vortex.\newline
+
+Notre premier étape après avoir trouvé la vorticité est de trouver où sont les vortices, qui sont les maximales locales de vorticité. Nous construisons des vecteurs unitaires $\overrightarrow{N}$ qui pointent là dessus simplement en normalisant le gradient de $ |\overrightarrow{\omega}|$:
+
+\begin{equation}
+\overrightarrow{N} = \frac{\nabla |\overrightarrow{\omega}|}{\| \nabla |\overrightarrow{\omega}| \|}
+\end{equation}
+
+Maintenant, $\overrightarrow{N}$ pointe vers le centre de rotation d'un vortex, et $\overrightarrow{\omega}$ lui-même pointe le long de l'axe de rotation, donc pour obtenir un vecteur de force qui fait augmenter la rotation, nous prenons simplement le produit vectoriel:
+
+\begin{equation}
+f_{conf} = \epsilon \,\, \Delta x \,\, (\overrightarrow{N} \,\, \times \,\, \overrightarrow{\omega})
+\end{equation}
+
+Ici $\epsilon$ est un paramèrtre ajustable pour pouvoir contrôler l'effet du confinement de vorticité. Nous incluons en passant le terme $\Delta x$ qui va être physiquement consistant: quand nous affinons la grille et que $\Delta x$ tend vers zéro, l'erreur de la dissipation numérique dans l'advection de la vélocité tend vers zéro donc notre correction le doit aussi.\newline
+
+Passons maintenant à l'implémentation numérique. Nous commencons par faire les moyennes des vélocités sur la grille MAC avec les centres des cellules (voir chapitre 2), et utiliser la dérivées centrales pour approximer la vorticité :
+
+\begin{equation}
+\overrightarrow{\omega}_{i,j,k} = 
+	\left(
+		\begin{array}{c}
+			\frac{w_{i,j+1,k} - w_{i,j-1,k}}{2\,\Delta x} - \frac{v_{i,j,k+1} - v_{i,j,k-1}}{2\,\Delta x}, \\
+			\frac{u_{i,j,k+1} - u_{i,j,k-1}}{2\,\Delta x} - \frac{w_{i+1,j,k} - w_{i-1,j,k}}{2\,\Delta x}, \\
+	 		\frac{v_{i+1,j,k} - v_{i-1,j,k}}{2\,\Delta x} - \frac{u_{i,j+1,k} - u_{i,j-1,k}}{2\,\Delta x}
+		\end{array}
+	\right)
+\end{equation}
+
+Le gradient de |\overrightarrow{\omega}| est estimé similairement en utilisant les différences centrales aux centres des cellules de la grille, utilisé pour définir $\overrightarrow{N}$:
+
+\begin{equation}
+\nabla |\overrightarrow{\omega}| _{i,j,k} = 
+	\left(
+		\frac{|\overrightarrow{\omega}|_{i+1,j,k} - |\overrightarrow{\omega}|_{i-1,j,k} }{2 \,\Delta x},\,
+		\frac{|\overrightarrow{\omega}|_{i,j+1,k} - |\overrightarrow{\omega}|_{i,j-1,k} }{2 \,\Delta x},\,
+		\frac{|\overrightarrow{\omega}|_{i,j,k+1} - |\overrightarrow{\omega}|_{i,j,k-1} }{2 \,\Delta x}
+ 	\right)
+\end{equation}
+
+Lorsque nous normalisons ce terme pour avoir $N$, nous devons bien sur nous prévenir de la division par zéro en utilisant, par exemple:
+
+\begin{equation}
+\overrightarrow{N}_{i,j,k} = \frac{\nabla |\overrightarrow{\omega}|_{i,j,k}}{\| \nabla |\overrightarrow{\omega}|_{i,j,k} \| + 10^{-20}}
+\end{equation}
+
+Finallement nous prenons le produit vectoriel pour obtenir $f_{conf}$ aux centres des cellules de la grille; nous pouvons prendre les moyennes appropriées pour appliquer cela aux différentes composantes de la vélocité sur la grille MAC. \newline
+
+Nous pouvons réduire simplement cela pour la dimension 2 en considérant que les composantes bi-dimensionnelles de la vélocité est $(u,v,0)$. Cela donne un champ de vorticité $\overrightarrow{\omega} = (0,0,\omega)$, que nous pouvons juste considérer comme le scalaire $\omega$. \newline
+
+La vorticité est un caractère extremement important pour les fluides, et en prenant le "rotationel" des équations de moments, une peut dériver sur "l'\textbf{équation de la vorticité}" qui montre comment élaborer la vorticité pendant le temps. En fait, de nombreuses méthodes numériques pour l'écoulement des liquides ont été tirées de cette équation (spécialement en deux dimensions, où l'équation de vorticité est particulièrement simple). Généralement parlant, ces méthodes de vorticité tracent précisement la localisation, la force, et l'axe des vortices avec des particules de vortex. Malheureusement, spécialement en dimension 3, il est difficile de modéliser avec précision les interactions aux bords et d'autres propriétés physiques importantes purement par l'approche par particules de vortex. Cependant, nous partageons les travaux récents de Selle et al. \cite{Selle-2005} qui démontre comment augmenter l'approche de simulation des fluides dans ces notes en retracant les particules de voxels qui introduisent plus de précision dans une version du confinement de vorticité. \newline
+
+\section{Une interpolation plus pointue} 
+
+Si le confinement de vorticité fait des merveilles pour contrecarrer la dissipation numérique dans le champ de vélocité, il ne s'applique pas à la température et aux concentrations de fumée. L'utilisation de l'interpolation bilinéaire/trilinéaire standard  dans l'advection semi-lagrangienne étale rapidement les caractéristiques pointues sur ces champs, qui pour des fumées à large échelle (où la diffusion physique est réellement négligable) apparaissent distinctement erronées.\newline
+
+Une solution partielle pour ce problème est d'utiliser une interpolation plus précise. Fedkiw et al. \cite{fedkiw-stam-jensen-01} suggère un choix particulier d'une interpolation cubique créée pour être stable et précise, que nous allons revoir en dimension 1. Cela peut être utiliser pour démarrer deux ou trois dimensions dans la même manière qu'une interpolation linéaire comme base pour les interpolations bilinéaires et trilinéaires: nous interpolons dans une dimension suivant un seul axe pour commencer, puis interpoler entre les valeurs  interpolés pour l'axe suivant, et ainsi de suite.\newline
+
+Le schéma sous-jacent est le spline Catmull-Rom. Sachant les valeurs $q_{i-1}, q_i, q_{i+1} $ et $q_{i+2}$, nous cherchons à estimer $q$ au point $x$ entre $x_i$ et $x_{i+1}$. Pour faciliter la vie, nous allons traduire conceptuellement et dimensionner les choses, telles que $x_i = 0$ et $x_{i+1} = 1$, i.e. que $x$ ici est la fraction le long de l'intervalle que nous cherchions. Nous estimons $q(x)$ un polynôme cubique sur l'intervalle qui traverse les points $q_i$ et $q_{i+1}$, dont les pentes en ces points correspondent aux approximations de la différence centrale issue des données. Alors, nous voulons que les pentes soient:
+
+\begin{eqnarray}
+d_i = \frac{q_{i+1} - q_{i-1}}{2}\\
+d_{i+1} = \frac{q_{i+2} - q_i}{2}
+\end{eqnarray}
+  
+Le cubique d'Hermite qui satisfont ces quatre conditions est:
+
+\begin{equation}
+q(x) \approx q_i + d_i x + (3 \Delta q - 2 d_i - d_{i+1}) \,\, x^2 + (-2 \Delta q + d_i + d_{i+1}) \,\, x^3
+\end{equation}
+
+où $\Delta q = q_{i+1} - q_i$. (On note que les coefficients présentés dans \cite{fedkiw-stam-jensen-01} contient une erreur typographique: un 2 manque dans le terme cubique - qui peut être utiliser comme avertissement concernant le fait de copier aveuglement les formules depuis des articles sans les avoir vérifier soi-même!)
+
+Le danger de l'interpolant de Catmut-Rom est qu'il peut dépasser ou aller en dessous des données. Par exemple, si $q_i < q_{i+1}$ mais que la pente $d_{i+1} < 0$, le maximum de la cubique se trouve quelque part au milieu et dépasse $q_{i+1}$. Si notre schéma semi-lagrangien est utilisé sur un échantillon là, il peut créer une nouvelle valeur de $q$. Si cela continue, $q$ pourrait s'accroître exponentiellement: ce qui est une très mauvaise chose. Pour résoudre cela, nous limitons le cubique en limitant les pentes à prendre en compte le signe de $\Delta q$. C'est pourquoi, nous mettons $d_i$ ou $d_{i+1}$ à $0$ s'il n'est pas du même signe que $\Delta q$. Alors, l'interpolant est garanti être monotone, nous ne pouvons pas devenir instable.   
+
+\chapter{L'eau et les lignes de niveau}
+
+Notre modèle pour l'eau est simplement un fluide avec une surface libre qui est en mouvement avec la vélocité du fluide. Nous allons inclure la force de confinement de vorticité discutée dans le chapitre précédent sur la fumée pour limiter la dissipation numérique dans l'advection de la vélocité. Ce qui est nouveau est la manière de garder la trace de la position de l'eau.
+
+\section{Marqueur de particules} 
+
+L'approche la plus simple, utilisée par exemple dans l'article originel Marker-and-Cell \cite{harlow-65}, est l'utilisation de "marqueurs de particules". Les marqueurs de particules sont simplement des particules utilisées pour marquer où le fluide se situe: toute cellule de la grille contenant un particule marqueur est un fluide marqué, et les cellules vides forment l'air.\newline
+
+Nous commençons par échantilloner le volume du fluide avec plusieurs particules par cellule. Une méthode bien effective est de créer huit particules dans un arrangement $2 \times 2 \times 2$ secoué aléatoirement (de quatre particules en dimension 2).\newline
+
+Au commencement de chaque pas de temps nous mettons en mouvement les particules à travers un champ de vélocité de divergence égale à zéro (divergence-free), chacune suivant le simplement mouvement 
+
+\begin{equation}
+\frac{d\overrightarrow{x}}{dt} = \overrightarrow{u}(\overrightarrow{x})
+\end{equation}
+
+Au moins une méthode de Runge-Kutta, Euler modifiée, doit être utilsée étant donné que celle d'Euler se comporte misérablement pour le mouvement de rotation. (Il serait intuitif d'essayer d'autres schémas, comme celui de leapfrog:
+
+\begin{equation}
+\overrightarrow{x}^{n+1} = \overrightarrow{x}^{n-1} + 2 \Delta t \overrightarrow{u}^n(\overrightarrow{x}^n)
+\end{equation}
+
+qui est garanti pour tracer parfaitement le mouvement rotationel dans le limite de stabitilité.) Si de large pas de temps sont utilisés dans la simulation de fluide, il serait plus judicieux de subdiviser l'intervalle de temps et de prendre plusieurs étapes pour le mouvement des particules. Dans des simulations impliquant des objets solides, il est aussi recommendé de détecter si des particules ont pu pénétrer l'objet solide et les faire resortir à l'extérieur de la région de la grille dans ce cas.\newline
+
+Si vous êtes restés concentrés, vous devriez noter quelque chose de pas net ici. Ces intégrateurs numériques ont besoin de prendre des échantillons de vélocité du fluide le long de la trajectoire de la particule. Mais si l'eau éclabousse dans une nouvelle région de l'espace - i.e. les particules sont projetés (en mouvement) à l'extérieur du volume courant du fluide - la vélocité du fluide ne doit pas être définie. La réponse is d'extrapoler la vélocité courante du fluide extérieure à celle du reste de la grille (air et solides) avant de faire mouvoir le particules marqueurs. Bien entendu, ce sera aussi nécessaire pour la méthode semi-Lagrangienne d'être en mesure de déterminer les nouvelles vélocités dans les nouvelles régions du fluide. Nous revenons à la question de la section 6.3, comment extrapoler exactement la vélocité: en un mot, nous allons choisir la vélocité en un point extérieur au volume du fluide pour être la vélocité au point le plus proche du fluide.\newline
+
+Après que la particule ait été déplacée, nous étiquettons chaque celle de la grille qui contient un particule marqueur comme "fluide" et le reste comme "vide" (ou solid). Cette information est alors utilisé pour les autres étapes de la simulation de fluide, comme la projection de la pression.\newline
+
+Les particules marqueurs sont extremement simples et robustes, mais elles ont un faille flagrante: il est difficile d'obtenir des informations précises sur la surface de l'eau en dehors d'elles-même. Elles peuvent être rendues avec des surfaces implicites en blob, mais le résultat tend à être cahoteux même pour une eau qui est supposée être à plat. Similairement, si la méthode précise de la surface libre pour les conditions aux bords décrite dans la fin du chapitre 4 devrait être implémentée, nous avons besoin de bonne informations sur où la surface libre coupent à travers les lignes de la grille: les "blob" peuvent encore nous apporter la réponse, mais il s'avère un peu bruité. C'est une motivation pour se tourner vers une méthode alternative pour retrouver la position de l'eau: les lignes de niveau. \newline
+
+\section{Les lignes de niveau}
+
+On rappèle qu'une surface implicite est celle qui est définie par l'ensemble des zéros d'une fonction. Soit la fonction $\phi(\overrightarrow{x}))$, la surface est:
+
+\begin{equation}
+\{\overrightarrow{x} \,\, | \,\, \phi(\overrightarrow{x}) = 0\}
+\end{equation}
+
+Nous utiliserons la convention que l'intérieur (l'eau dans notre cas) est l'ensemble où $\phi(\overrightarrow{x}) < 0$ et l'extérieur (l'air) est l'ensemble où $\phi(\overrightarrow{x}) > 0$. Le principale avantage des surfaces implicites comparées aux maillages est qu'il n'y a pas de connectivité à gérer, faire des opérations comme les changements de topologie (ex. deux eaux qui tombent et fusionnent ensemble, ou un filet se divisant en plusieurs gouttes) est trivial.\newline
+
+Une "ligne de niveau" est justement une surface implicite telle que la fonction scalaire $\phi$ est représentée simplement par des valeurs prises sur la grille: pour être plus précis, nous allons assumer qu'elles ont été prises parmi les centres des cellules de la grille: en particulier, les lignes de niveau sont parfaitement adaptées pour l'utilisation d'EDP dans l'élaboration de surfaces. Nous recommendons les lecteurs le livre d'Osher et Fedkiw \cite{osher-fedkiw-2002} pour une étude détaillée des numériques et des applications des lignes de niveau.\newline
+
+Les lignes de niveau sont attrayants pour la simulaton de l'eau car elles permettent de modéliser facilement des surfaces lisses (différemment des particules marqueurs) et également de prendre compte trivialement les changements de topologie (à l'opposé des mailles), et encore plus elle s procurent facilement des informations comme celle qui dit si un point $\overrightarrow{x}$ se trouve à l'intérieur du fluide: nous faisons simplement une interpolation de $\phi$ sur $\overrightarrow{x}$ à partir des points voisins de la grille et vérifions si le signe est négatif. Elles ont aussi leur propre inconvénient, dont nous reviendrons à la fin de cette section.\newline
+
+Notons que si deux fonctions $\phi_1$ et $\phi_2$ sont zéro dans de mêmes locations, alors elles représentent la même surface implicite même si leurs valeurs non nulles sont différentes. Ainsi nous avons une grande liberté dans le choix de notre ligne de niveau, et la question est: quelle est la fonction la plus convenable?\newline
+
+Pour avoir un bon comportement dans les méthodes numériques, nous voulons une fonction qui soit fiable - ainsi, toutes erreurs numériques susceptibles de perturber notre évaluation ne peuvent pas changer énormément la localisation apparente de la surface. En d'autre mots, si nous secouons $\overrightarrow{x}$ par $\epsilon$, nous souhaitons que $\phi(\overrightarrow{x})$ varie par $\epsilon$. C'est évidément une condition sur le gradient de $\phi$:
+
+\begin{equation}
+\| \nabla \phi (\overrightarrow{x}) \| \,\,\, = 0
+\end{equation}
+
+Il s'avère que nous pouvons avoir cette conditon, et de nombreuses fonctionnalités à introduire, en utilisant la $distance signée$ comme fonction $\phi$.
+
+\subsection{La distance signée}
+
+La distance signée d'une surface fermée est simplement la distance au point le plus proche de la surface, avec le signe positif si nous sommes à l'extérieur et le signe négatif si nous sommes à l'intérieur. C'est-à-dire, $|\phi (\overrightarrow{x})|$ nous dis à quel point nous sommes proches de la surface, et le signe de $\phi (\overrightarrow{x})$ nous indique si nous nous trouvons à l'intérieur ou à l'extérieur. Et pour combler le tout, pour une fonction définissant la surface implicitement: la distance jusqu'à la surface est zéro si et seulement si nous sommes sur la surface.\newline
+
+Supposons maintenant que $\phi$ est une distance signée. A un certain point $\overrightarrow{x}$ à l'intérieur de la surface, soit $\hat{n}$ la longueur unitaire de la direction la plus proche d'un point de la surface. Notons que $\phi (\overrightarrow{x} + \epsilon\,\,\hat{n})$ doit être $\phi (\overrightarrow{x}) + \epsilon$: si je me déplace suivant cette direction $\hat{n}$, mon point le plus proche sur la surface ne change pas, et ma distance de ce point change exactement d'une distance équivalente à mon déplacement. Donc la dérivée de $\phi$ suivant cette direction est 1:
+
+\begin{equation}
+\nabla \phi \,\,.\,\, \hat{n} = 1
+\end{equation}
+
+Notons aussi que si je me déplace dans toute autre direcion, $\phi$ ne peut pas changer plus rapidement - le moyen le plus rapide pour augmenter ou réduire la distance  à la surface est évidement de me déplacer le long de la direction vers le point le plus proche. Ainsi le gradient  de $\phi$, qui indique la direction de l'ascension la plus abrupte, doit être en fait la direction  $\hat{n}$ la plus proche du point de la surface:
+
+\begin{equation}
+\hat{n} = \nabla \phi
+\end{equation}
+
+Exactement le même résultat est maintenu à l'extérieur de la surface, et à la limite à mesure que nous approchons la surface, nous obtenons juste le point de la surface normale dirigé vers l'extérieur. En mettant les deux équations précédentes ensemble, nous avons aussi comme souhaité $\| \nabla \phi \|$. Un autre fonctionnalité intéressante qui en ressort est que pour tout point $\overrightarrow{x}$, le point de la surface le plus proche est situé à $\overrightarrow{x} - \phi (\overrightarrow{x})\,\, \nabla \nabla \phi (\overrightarrow{x})$. \newline
+
+Typiquement, nous allons commencer la simulation avec une fonction de distance signée connue (même précalculée et chargée, ou une fonction analytique comme $\| \overrightarrow{x} - \overrightarrow{c} \| \,\, - r$ pour une sphère centré en $\overrightarrow{c}$ de rayon $r$). Cependant, si nous désignons arbitraire une fonction implicite pour la surface sur la grille, ou si nous disposons un surface sous forme de mailles, nous avons besoin de calculer la distance signée.
+
+\subsection{Calcul de la distance signée}
+
+La question suivante est comment calculer les valeurs des points de la grille de la distance signée pour notre ligne de niveau. Il y a deux approches générales, des méthodes EDP qui approximent numériquement $\| \nabla \phi \| = 1$ (techniquement connu sous le nom d'équation Eikonal), et des méthodes géométriques qui de leur côté calculent les distances par rapport à la surface. Ces deux approches ont leurs mérites, mais nous nous focaliserons sur les dernières car elles sont les plus robustes et précises mais aussi peuvent être plus simples et bien rapides. En particulier, nous basons notre méthode sur l'algorithm 4 dans \cite{tsai-2002}. Pour une récente revue de nombreux autres algorithmes, voir \cite{Jones-Baerentzen-sramek-2006}.\newline
+
+L'algorithme est donné à la figure \ref{figure:algo6.1}. Il propage efficacement des informations sur la surface à des points de la grille même les plus éloignés, sans avoir recours à des recherches géométriques couteuses pour chaque point de la grille. Il y a plusieurs détails à remarquer: trouver les points les plus proches de la grille près de la surface, dans quel ordre parcourir les points de la grille, et distinguer l'intérieur de l'extérieur.
+
+\begin{figure}
+\centering
+\textit{
+\begin{enumerate}
+	\item Trouver les points les plus proches de la surface pour les points voisins dans la grille, posant leurs valeurs des distances signées respectivement. Mettre les autres points de la grille comme inconnus.\\
+	\item Parcourir les points inconnus de la grille (i,j,k) dans un ordre choisi:
+\begin{itemize}
+		\item Trouver tous les points avoisinants de la grille qui ont une distance signée connue et les plus proches de la surface.\\
+		\item chercher les distances depuis $\overrightarrow{x}_{i,j,k}$ jusqu'à ces points de surface. Si $\overrightarrow{x}_{i,j,k}$ est plus proche que le voisin, marquer le voisin encore comme inconnu.\\
+		\item Prendre le minimum des distances, déterminer si (i,j,k) est à l'intérieur ou à l'extérieur, et donner sa distance signée respective.\\
+	\end{itemize}
+\end{enumerate}
+}
+\caption{Un algorithme de construction de la distance signée avec une méthode géométrique}
+\label{figure:algo6.1}
+\end{figure}
+
+\subsubsection*{Trouver les points les plus proches}
+
+Si notre argument en entrée est une surface implicite déjà échantillonée sur la grille (mais présumée non dotée de distance signée) alors nous pouvons immédiatement identifier lesquels des points sont près de la surface: ce sont ceux qui ont un voisin avec un signe différent. C'est peut-être le cas si nous utilisons des particules marqueurs et simplement en enveloppant ces particules d'une surface implicite sous forme de "blob" - nous allons toujours vouloir calculer la distance signée dans ce cas pour faciliter l'extrapolation du champ de vélocité. Une alternative pour des particules marqueurs est de simplement initialiser les cellules contenant des particules à $-1$ et les cellules vides à $+1$; cela peut conduire à des artifices en escalier donc il est préférable de faire disparaitre ces champs $\pm 1$ avec des moyennes pondérées avant de calculer les distances signées.\newline
+
+L'approximation la plus simple dans ce cas (les valeurs sur la grille étant connues) est d'estimer les points de la surface le long des lignes entre un point et ses plus proches voisins en cherchant où l'interpolant linéaire est égale à zéro. Ensuite il faut prendre le plus proches de ces points candidats. Cela a l'avantage d'avoir une garantie pour la recherche d'estimations raisonnables de points de la surface, bien qu'elle puisse ne pas être les points les plus proches, donc la précision sera moins que celle recherchée. Un moyen simple d'améliorer cette précision est de tester les points additionnels entourant le point de la grille, dans les autres directions que celles des points de la grille, avec des valeurs interpolées. En pratique, c'est le plus simple et le plus robuste des approches.\newline
+
+Une attaque plus sophistiquée pour estimer la direction du point le plus proche avec le gradient, évalué avec une différence finie, et ensuite faire une recherche d'un zéro de la fonction implicite interpolée suivant cette direction. C'est considérablement plus précis, mais encore moins robuste face à l'entrée générale: nous devons nous assurer que la direction est bonne (si elle pointe vers la surface) et nous occuper de la convergence de notre ligne de recherche.\newline
+
+Une troisième alternative est d'abord d'approximer la surface de chaque cellule en utilisants le "marching cubes" ou des variantes, et ensuite calculer le point exact le plus proche sur la surface polygonale.\newline
+
+Cela nous conduit à l'autre cas: si notre géométrie est fournie dans la forme d'une maille de triangles. Dans ce cas nous avons besoin d'utiliser une forme d'élection pour réduire le nombre de triangles à tester jusqu'à un nombre gérable. Par exemple, nous pouvons initialiser une liste de candidats de triangles pour chaque point de la grille supposée être vide. Ensuite, pour chaque triangle, l'ajouter aux listes des points de la grille dont les cellules (ou la boite qui la borde) l'intersectent. Pour chaque point de la grille avec une liste non vide, nous trouvons le point le plus proche sur les triangles dans la liste. Si la distance est $d$, nous continuons à vérifier les triangles additionels à partir des listes des points dont les cellules sont à une distance $d$. Finallement, nous avons besoin de déterminer si le point de la grille est à l'intérieur ou à l'extérieur, ce qui est discuté ci-dessous.
+
+\subsubsection*{L'ordre de la boucle}
+
+Il y a deux suggestions dans \cite{tsai-2002}, l'une basée sur la méthode "Fast Marching" \cite{sethian-1996} \cite{tsitsiklis-1995} et l'une basée sur la méthode "Fast Sweeping" \cite{zhao-2005}. 
+
+La méthode "Fast Marching" est basée sur la réalisation que des points de la grille doivent obtenir des informations sur la distance jusqu'à la surface depuis 
+
+
+
+
+\part{Les fluides en temps réel}
+
+\chapter{Les simulations en temps réel}
+
+Avec la puissance de calcul des consoles de jeux ou de PC de nouvelle génération, la présence d'effets visuels de plus en plus grandissante - jusque-là non rencontrée que dans les films - intègre les applications en temps réel comme les jeux vidéos 3D. Il y a, cependant, un grand fossée entre un effet visuel pré-traité pendant des heures sur des ordinateurs puissantes et la simulation de l'effet en temps réel, entre autre à un taux de 40-60 frames par seconde dans une console unique. Dans le but d'élaborer un algorithme de simulation destiné aux jeux interactifs, il doit présenter certaines caractéristiques: 
+
+\begin{enumerate}
+	\item[$\bullet$] \textbf{Peu couteuse à calculer}: Un jeu vidéo 3D doit tourner à un taux constant de 40-60 frames par secondes. Pour le temps total imparti pour un frame unique, la simulation basée sur la physique ne dispose qu'une fraction par rapport aux autres tâches du rendu ou de l'animation de caractère. Donc le moins de puissance de calcul l'algorithme utilise, le mieux c'est. Recemment, la simulation basée sur la physique a été transférée depuis le CPU au GPU (NVidia) ou sur une unité de calcul dédiée à la physique (PPU - Physics Processing Unit) (AGEIA). Toutefois, plus l'algorithme est rapide, plus le nombre d'objets qu'il est possible de simuler en temps réel est grand. Donc un complexité de calcul réduite (voire moindre) est une des plus importante contraintes. 
+	
+\item[$\bullet$] \textbf{Faible consommation de mémoire}: Si pour les calculs hors ligne, les gens se procure simplement autant de mémoire qu'ils ont besoin pour simuler l'effet désiré, la mémoire sur une console de jeux ou un PC unique est limitée et est partagée parmi différentes tâches très similaires au temps de traitement. En conséquence, la gestion efficace de la mémoire de la méthode a également besoin d'attention spécial.
+
+\item[$\bullet$] \textbf{Stabilité}: Dans les traitements hors ligne, la mise en place d'un pas de temps adaptive peut être utilisée dans des situations où les problèmes de stabilité surviennent. En contraste, pour un jeu qui tourne à un taux de frame fixe. La méthode de simulation doit, en conséquence, être stable pour le pas de temps quoi qu'il arrive. Les forces extérieures et le mouvement des bords peuvent devenir presque arbitrairement élevées. Dans certains jeux, les caractères se déplace à une vitesse d'au moins 100mph par exemple. Une méthode de simulation en temps réel a besoin d'être capable de s'occuper de toutes ses situations et rester stable en toutes circonstances.
+
+\item[$\bullet$] \textbf{Plausibilité}: Bien sur il  n'est pas possible de réduire la complexité de calcul si drastiquement et d'accroître autant la stabilité sans contre-partie sur la qualité du résultat. Ainsi, ce que nous avons besoin pour une méthode de simulation en temps réel est la \textit{plausibilité} visuelle et les effets "wow", non pas des scènes indistinguables par rapport au monde réel.
+
+\end{enumerate}
+
+\section{De l'eau en temps réel}
+
+Les contraintes décrites ci-dessous nous indique le fait que résoudre les équations de Navier-Stokes 3D au complet n'est pas une  façon pratique de simuler de l'eau dans les jeux. Pour la simulation de l'eau en temps réel, trois principales méthodes simplifiées sont devenues populaires ses dernières années.
+
+\begin{enumerate}
+
+\item[$\bullet$] \textbf{L'eau procédurale} Une méthode procédurale anime l'effet physique directement au lieu de simuler la cause de cet effet(\cite{fournier-1986}\cite{hinsinger-2002}). Une manière de générer par procédure la surface d'un lac ou d'un océan, par exemple, est de surimposer des vagues de sinus d'amplitudes et de directions variées. Il n'y a aucune limite quant à la créativité quand il s'agit d'inventer des techniques d'animations procédurales. Tout marche tant que la méthode produit l'effet visuel désiré. Un avantage de l'animation procédurale est sa contrôlabilité, une caractéristique importante des jeux. Le principale désavantage de simuler avec une procédure l'eau est la difficulté d'obtenir une interaction entre l'eau et le bord ou avec des corps immergés.
+
+\item[$\bullet$] \textbf{Des approximations des champ de hauteurs (Heightfield approximations)} Si tout ce qui nous intéresse est l'animation en 2D de la surface d'un lac ou d'un océan, ce serait un gâchi de simuler le corps entier en 3D de l'eau. Dans ce cas, seule la surface est représentée comme une fonction à deux dimensions ou champ de hauteur (highfield) et animée en utilisant la version 2D de l'équation des vagues. Cette simplificaition les ordres de simulation de la magnitude plus rapide. Le point négatif de cette approche est que la fonction ou heighfield peut uniquement représenter une valeur de hauteur pour une localisation dans le plan. Cela rend la simulation des vagues cassantes impossible. Nous entrerons avec plus de détails dans les approximations "heighfield" dans le chapitre \ref{chap:heightfield-approx}.
+
+\item[$\bullet$] \textbf{Les systèmes de particules} L'autre extrême est un petit amas d'eau, une éclaboussure de fluide, un jet d'eau, de petites flaques d'eau, ou ruisselements (runnels). Dans ce cas, une troisième méthode de simplification serait un bon candidat, appelé système de particules. La combinaison entre les fluides basés sur les particules et les approximations "highfield" peuvent générer un ensemble d'effets additionnel intéressant. Les méthodes basées sur les particules sont discutées plus en détail dans le chapitre \ref{chap:sph}
+
+
+\end{enumerate}
+
+\chapter{Les approximations "Heightfield"} \label{chap:heightfield-approx}
+
+Si nous voulons simuler la surface d'une grande étendue d'eau comme un lac ou un océan, représenter et simuler l'eau comme un "heightfield" est probablement le meilleur choix. Nous commençons par ce que nous appelons le "\textit{hello world}" des fluides en "heightfield", c'est-à-dire sa variante la plus simple. C'est algorithme simple est devenu bien populaire dans le jeux et les scènes de démo parce qu'il est presque trivial de l'implémenter et donne des résultats pourtant impressionants. Supposons que nous ayons un tableau de hauteurs "heights" $u[i,j]$ avec $0 \leq i < N$ et $0 \leq j < M$ et un second tableau $v[i,j]$ de la même taille. Alors, l'algorithme s'énonce comme suit:\newline
+
+\begin{itemize}
+
+\item[\texttt{forall i,j do u[i,j] = u0[i,j]; v[i,j] = 0;}]
+
+\item[\texttt{loop}]
+
+	\begin{itemize}
+		\item[ ]
+		\item[\texttt{forall}]\texttt{ i,j do v[i,j] += (u[i-1,j] + u[i+1,j] + u[i,j-1] + u[i,j+1])/4 - u[i,j];}
+	
+		\item[\texttt{forall}]\texttt{ i,j do v[i,j] *= 0.99;}
+	
+		\item[\texttt{forall}]\texttt{ i,j do u[i,j] += v[i,j];}
+	
+	\end{itemize}
+
+\item[\texttt{endloop}]
+
+\end{itemize} 
+\vspace{2em}
+
+Le tableau $u[i,j]$ est initialisé avec des valeurs initiales de hauteurs interessantes $u0[i,j]$ différente d'une valeur constante. Une initialisation plate de "heightfield" restera plate à travers la simulation. Le second tableau $v[i,j]$ contient les vélocités verticales des hauteurs "heights". Nous initialisons les vélocités à zéro bien qu'elles pourraient être initialisées différemment. Dans la boucle de simulation les vélocités sont mis à jour, puis elles sont humectées, et pour finir, les hauteurs "heights" sont mis à jour en utilisant les nouvelles vélocités. La dernière action de la boucle de simulation, les valeurs des hauteurs $u[i,j]$ doivent être visualisées d'une manière ou d'une autre. En plus des conditions initiales dans la première ligne, les conditions sur les bords sont également nécessaires. La première ligne dans la boucle de simulation prend accès dans les valeurs des hauteurs en dehors des bords de $u[i,j]$. Les conditions de bords les plus simple possibles reflètent seulement le bord du tableau de hauteurs. Cela signifie que nous définisons:\newline
+\begin{itemize}
+
+\item[
+\texttt{
+	u[i,j] = u[0,j],\newline
+}]
+\item[
+\texttt{
+	u[N,j] = u[N-1,j],\newline
+}]
+\item[
+\texttt{
+	u[i,-1] = u[i,0],\newline
+}]
+\item[
+\texttt{
+	u[i,M] = u[i,M-1].
+}]
+
+\end{itemize}
+
+
+\vspace{2em}
+Cette définition reflète les vagues sur les bords du tableau.
+
+Avoir une procédure si simple avec tous les résultats impressionants qu'elle génère est incroyable. Cependant, il serait bien de savoir d'où exactement la magie opère et comment cet algorithme ne pourrait pas être amélioré encore plus. C'est pourquoi nous allons donner les fondements mathématiques de cette méthode.
+
+Dans les mathématiques et la physique, les substances et les objets sont typiquement représentés comme continus au premier abord et seulement après, pour trouver des solutions numériques des équations les gouvernant, comme discrétisés en utilisant les mailles et les grilles réguliers \cite{jeffrey-2003}. Alors, la surface de l'eau est tout d'abord représentée par une fonction à deux plus une dimension:
+
+\begin{equation}
+u: (x,y),t \,\, \longrightarrow \,\, u(x,y,t)
+\end{equation}
+
+qui représente la hauteur du fluide $u$ à chaque localisation $(x,y)$ dans le plan et à chaque instant $t$. En second lieu, nous avons besoin d'une équation gouvernante qui nous dis comment le champ de hauteur se comporte dans le temps étant donné les valeurs initiales des heightfields $u(x,y,0) = u0(x,y)$. Comme dans l'approche 3D complète, nous avons recours à la seconde loi de mouvement de Newton $f = ma$ mais cette fois-ci l'adapter à la configuration spéciale des "heightfields". Puisque dériver les équations en dimension 1 est plus simple, nous allons voir simplement dans un fil à une dimension et ensuite généraliser la situation dans les membranes et les surfaces de l'eau en dimension 2.
+
+Considérons le fil à une dimension schématisé par la figure \ref{fig:heightfields-string}. Nous décrivons sa déviation de l'axe des x par la fonction continue $u(x,t)$ qui nous montre à quelle distance un élément se trouvant à la position $x$ est déplacé suivant l'axe de $u$ à l'instant $t$. Nous accordons alors plus d'attention à un élément infinitésimal du fil entre la position $x$ et $x + dx$. Supposons que le fil est sous un (stress) constant $\sigma$. Alors, la force agissant suivant la normal à la section croisée $A$ est $f = \sigma A$. Sur les deux positions $x$ et $x + dx$, les normales à la surface de l'élément sont de signes opposées et c'est aussi vrai pour les forces intérieures. Puisque nous voulons savoir comment ces forces transforment la fonction $u(x,t)$, nous ne nous intéressons alors qu'à leurs composantes suivant l'axe $u$, c'est-à-dire perpendiculaires à l'axe des $x$. Pour de petites déviations, ces composantes peuvent être approximées par 
+
+\begin{equation}
+f_u \approx u_x \sigma A,
+\end{equation} 
+
+avec $u_x$ la dérivée de $u$ suivant $x$ alors que $f_u$ est seulement la composante de $f$ le long de l'axe $u$. Nous sommes alors prêts pour la formulation de la seconde loi de mouvement de Newton pour l'élément infinitésimal du fil:
+
+\begin{equation}
+(\rho\, A\, dx)u_{tt} = \sigma\, A \,u_{x|x+dx} - \sigma A u_{x|x}
+\end{equation}
+
+Dans le terme de gauche, nous avons la masse $\rho A dx$ multipliée par l'accélération $u_{tt}$ qui est égale à la somme des forces appliquées sur les deux sections croisées sur $x+dx$ et $x$. En divisant les deux membres par $A dx$, cette équation se simplifie en
+
+\begin{equation}
+\rho u_{tt} = \sigma u_{xx}
+\end{equation}
+
+Maintenant, si nous substituons $c = \sqrt{\sigma/\rho}$ nous obtenons l'équation d'une vague en une dimension
+
+\begin{equation}
+u_{tt} = c^2 u_{xx}
+\end{equation}
+
+\begin{figure}
+
+\caption{Application de la seconde loi de mouvement de Newton à un élémen infinitésimal d'un fil sous l'équation en dimension 1 $u_{tt} = c^2 u_{xx}$}
+\label{fig:heightfields-string}
+\end{figure}
+
+Par substitution, on peut vérifier facilement que $u(x,t) = a\,.\, f(x+ct) \,+\, b\,.\,f(x-ct)$ est la solution de l'équation de la vague pour une fonction arbitraire $f()$. Cette solution générale montre que des solutions particulières de l'équation de la vague sont les vagues voyageant avec une vitesse $c$ dans les mêmes directions. Le scalaire $c$, alors, représente la vitesse du son or la vitesse de la vague dans le matériel en question. Intuitivement, l'équation de la vague nous indique que ce matériel dans les régions à courbure positive est accéléré vers le haut alors que le matériel se trouvant dans les régions à courbure négative est accéléré par le bas. L'équation de la vague se généralise naturellement pour les dimensions supérieures. Pour des fluides "heightfields", nous nous intéressons particulièrement au cas de la dimension 2:
+
+\begin{equation}
+u_{tt} = c^2 (u_{xx} + u_{yy})
+\end{equation}
+
+qui est la forme spécifique en dimension 2
+
+\chapter{Smoothed Particle Hydrodynamics}\label{chap:sph}
 
 
 \newpage
-
 \begin{thebibliography}{2}
 \bibitem{Hong-05}
 Jeong-Mo HONG and Chang-Hun KIM:
@@ -775,25 +1397,57 @@ R. FEDKIW, J. STAM, and H. JENSEN:
 In Proc. SIGGRAPH, pages 15–22, 2001.
 
 \bibitem{foster-fedkiw-01}
-Nick Foster and Ronald Fedkiw:
+Nick FOSTER and Ronald FEDKIW:
 \textit{Practical animation of liquids}.
 In Proc. SIGGRAPH, pages 23–30, 2001.
 
-\bibitem{Herbulot-2003}
-A. HERBULOT, S. JEHAN-BESSON, S. DUFFNER, M. BARLAUD and G. AUBERT:
-\textit{Segmentation of vectorial image features using shape gradients and information measures}.
-Journal of Mathematical Imaging and Vision, vol. 25, no. 3, pages 365–386, 2006.
+\bibitem{Selle-2005}
+Andrew SELLE, Nick RASMUSSEN, and Ronald FEDKIW:
+\textit{A vortex particle method for smoke, water and explosions}.
+ACM Trans. Graph. (Proc. SIGGRAPH), pages 910–914, 2005.
 
-\bibitem{Lecellier-2010}
-F. LECELLIER, M.J. FADILI, S. JEHAN-BESSON, G. AUBERT, M. REVENU and E. SALOUX.:
-\textit{Region-Based Active Contours with Exponential Family Observations}.
-Journal of Mathematical Imaging and Vision, vol. 36, no. 1, pages 28–45, January 2010.
+\bibitem{osher-fedkiw-2002}
+S. OSHER and R. FEDKIW:
+\textit{Level Set Methods and Dynamic Implicit Surfaces}.
+Springer-Verlag, 2002. New York, NY.
 
-\bibitem{Amari-1990}
-S. AMARI:
-\textit{Differential-geometrical methods in statistics. Lecture notes in statistics.}.
-Springer-Verlag, 1990.
+\bibitem{tsai-2002}
+Yen-Hsi Richard TSAI:
+\textit{Rapid and accurate computation of the distance function using grids}.
+J. Comput. Phys., 178(1):175–195, 2002.
 
+\bibitem{Jones-Baerentzen-sramek-2006}
+M. JONES, A. B\AE RENTZEN, and M. SRAMEK:
+\textit{3D distance fields: A survey of techniques and applications}.
+IEEE Trans. Vis. Comp. Graphics, 2006.
+
+\bibitem{sethian-1996}
+J. SETHIAN:
+\textit{A fast marching level set method for monotonically advancing fronts}.
+Proc. Natl. Acad. Sci., 93:1591–1595, 1996.
+
+\bibitem{tsitsiklis-1995}
+J. TSITSIKLIS:
+\textit{Efficient algorithms for globally optimal trajectories}.
+IEEE Trans. on Automatic Control, 40:1528–1538, 1995.
+
+\bibitem{zhao-2005}
+Hongkai Zhao:
+\textit{A fast sweeping method for Eikonal equations}.
+Math. Comp., 74:603–627, 2005.
+
+\bibitem{fournier-1986}
+A. Fournier and W. T. Reeves:
+\textit{A simple model of ocean waves}. In Proc. SIGGRAPH, pages 75–84, 1986.
+
+\bibitem{hinsinger-2002}
+D. Hinsinger, F. Neyret, and M.P. Cani:
+\textit{Interactive animation of ocean waves}. In Proc. ACM SIG-
+GRAPH/Eurographics Symp. Comp. Anim., pages 161–166, 2002.
+
+\bibitem{jeffrey-2003}
+A. Jeffrey:
+\textit{Applied Partial Differential Equations}. Academic Press, 2003.
 
 
 \end{thebibliography}

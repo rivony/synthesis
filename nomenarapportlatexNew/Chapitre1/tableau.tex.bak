@@ -1,0 +1,76 @@
+\footnotesize{
+\begin{tabular}{|l|l|l|l|}
+
+\hline 
+\multicolumn{2}{|c|}{\textbf{Étapes}} & \textbf{Règles} & \textbf{Exemples} \tabularnewline 
+\hline 
+
+\hline
+
+\multirow{8}*{Étape 1} & \multirow{4}*{a} & \tabitem SSES $\rightarrow$ SS & caresses $\rightarrow$ caress \tabularnewline
+
+ & & \tabitem IES $\rightarrow$ I & ponies $\rightarrow$ poni \tabularnewline
+ 
+ & & \tabitem SS $\rightarrow$ SS & caress $\rightarrow$ caress \tabularnewline
+ 
+ & & \tabitem S $\rightarrow$  & cats $\rightarrow$ cat \tabularnewline
+ 
+\cline{2-4} 
+
+& \multirow{3}*{b} & \tabitem (m$>$0) EED $\rightarrow$ EE & feed $\rightarrow$ feed, agreed $\rightarrow$ agree \tabularnewline
+
+&  & \tabitem ($\ast$v$\ast$) ED $\rightarrow$ & plastered $\rightarrow$ plaster, bled $\rightarrow$ bled \tabularnewline
+
+&  & \tabitem ($\ast$v$\ast$) ING $\rightarrow$ & motoring $\rightarrow$ motor, sing $\rightarrow$ sing \tabularnewline 
+
+\cline{2-4} 
+
+& c & \tabitem ($\ast$v$\ast$) Y $\rightarrow$ I & happy $\rightarrow$ happi, sky $\rightarrow$ sky \tabularnewline 
+
+\hline 
+
+\multicolumn{2}{|c|}{} & \tabitem (m$>$0) ATIONAL $\rightarrow$ ATE & relational $\rightarrow$ relate \tabularnewline 
+
+\multicolumn{2}{|c|}{} & \tabitem (m$>$0) TIONAL $\rightarrow$ TION & conditional $\rightarrow$ condition, rational $\rightarrow$ rational \tabularnewline
+
+\multicolumn{2}{|c|}{Étape 2} & \tabitem (m$>$0) ENCI $\rightarrow$ ENCE & valenci $\rightarrow$ valence \tabularnewline
+
+\multicolumn{2}{|c|}{} & \tabitem (m$>$0) ANCI $\rightarrow$ ANCE & hesitansi $\rightarrow$ hesitance \tabularnewline
+
+\multicolumn{2}{|c|}{} & $\cdots$ & $\cdots$ \tabularnewline
+
+\hline 
+
+\multicolumn{2}{|c|}{} & \tabitem (m$>$0) ICATE $\rightarrow$ IC & triplicate $\rightarrow$ triplic \tabularnewline 
+
+\multicolumn{2}{|c|}{} & \tabitem (m$>$0) ATIVE $\rightarrow$ & formative $\rightarrow$ form \tabularnewline 
+
+\multicolumn{2}{|c|}{Étape 3} & \tabitem (m$>$0) ALIZE $\rightarrow$ AL & formalize $\rightarrow$ formal \tabularnewline 
+
+\multicolumn{2}{|c|}{} & \tabitem (m$>$0) ICITI $\rightarrow$ IC & electriciti $\rightarrow$ electric \tabularnewline
+
+\multicolumn{2}{|c|}{} & $\cdots$ & $\cdots$ \tabularnewline
+
+\hline 
+
+\multicolumn{2}{|c|}{} & \tabitem (m$>$1) AL $\rightarrow$ & revival $\rightarrow$ reviv \tabularnewline
+
+\multicolumn{2}{|c|}{} & \tabitem (m$>$1) ANCE $\rightarrow$ & allowance $\rightarrow$ allow \tabularnewline
+
+\multicolumn{2}{|c|}{Étape 4} & \tabitem (m$>$1) ENCE $\rightarrow$ & inference $\rightarrow$ infer \tabularnewline
+
+\multicolumn{2}{|c|}{} & \tabitem (m$>$1) ER $\rightarrow$ & airliner $\rightarrow$ airlin \tabularnewline
+
+\multicolumn{2}{|c|}{} & $\cdots$ & $\cdots$ \tabularnewline
+
+\hline 
+
+\multicolumn{2}{|c|}{} & \tabitem (m$>$1) E $\rightarrow$ & probate $\rightarrow$ probat, rate $\rightarrow$ rate \tabularnewline 
+
+\multicolumn{2}{|c|}{Étape 5} & \tabitem (m$=$1 et non $\ast$o) E $\rightarrow$ & cease $\rightarrow$ ceas \tabularnewline
+
+\multicolumn{2}{|c|}{} & \tabitem (m$>$1 et $\ast$d et $\ast$L) $\rightarrow$ lettre non doublée & controll $\rightarrow$ control, roll $\rightarrow$ roll \tabularnewline
+ 
+\hline 
+\end{tabular} 
+}

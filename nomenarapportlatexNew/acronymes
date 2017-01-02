@@ -1,0 +1,21 @@
+CBIR:
+RNA:
+VO:
+TALN:
+m-RNN:
+OCR:
+GTN:
+CNN: ConvNet
+DCNN:
+AlexNet:
+VGG:
+GoogleNet:
+cbow: continuous bag of word
+RNN:
+LSTM:
+gLSTM:
+BDLSTM:
+tanh:
+ACC:
+KCCA:
+ILSVRC:
