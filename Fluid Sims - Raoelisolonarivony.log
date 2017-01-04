@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.6.8)  30 DEC 2016 08:59
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.6.8)  4 JAN 2017 06:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -465,6 +465,7 @@ Now handling font encoding PD1 ...
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
 )
+Package hyperref Info: Option `colorlinks' set `true' on input line 4319.
 Package hyperref Info: Hyper figures OFF on input line 4443.
 Package hyperref Info: Link nesting OFF on input line 4448.
 Package hyperref Info: Hyper index ON on input line 4451.
@@ -487,7 +488,7 @@ Package hyperref Info: Hyper figures OFF on input line 6295.
 Package hyperref Info: Link nesting OFF on input line 6300.
 Package hyperref Info: Hyper index ON on input line 6303.
 Package hyperref Info: backreferencing OFF on input line 6310.
-Package hyperref Info: Link coloring OFF on input line 6315.
+Package hyperref Info: Link coloring ON on input line 6313.
 Package hyperref Info: Link coloring with OCG OFF on input line 6320.
 Package hyperref Info: PDF/A mode OFF on input line 6325.
 LaTeX Info: Redefining \ref on input line 6365.
@@ -514,21 +515,21 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 (./Fluid Sims - Raoelisolonarivony.aux)
 \openout1 = `"Fluid Sims - Raoelisolonarivony.aux"'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 21.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 27.
  (/usr/share/texmf/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -566,9 +567,9 @@ File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \degres on input line 21.
-LaTeX Info: Redefining \dots on input line 21.
-LaTeX Info: Redefining \up on input line 21.
+LaTeX Info: Redefining \degres on input line 27.
+LaTeX Info: Redefining \dots on input line 27.
+LaTeX Info: Redefining \up on input line 27.
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count108
@@ -597,7 +598,7 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Info: Redefining \microtypecontext on input line 21.
+LaTeX Info: Redefining \microtypecontext on input line 27.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -613,7 +614,16 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 (RS)
 )
 \AtBeginShipoutBox=\box27
-Package hyperref Info: Link coloring OFF on input line 21.
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 130.
+)
+Package hyperref Info: Link coloring ON on input line 27.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -623,42 +633,42 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count114
 )
-LaTeX Info: Redefining \ref on input line 21.
-LaTeX Info: Redefining \pageref on input line 21.
-LaTeX Info: Redefining \nameref on input line 21.
+LaTeX Info: Redefining \ref on input line 27.
+LaTeX Info: Redefining \pageref on input line 27.
+LaTeX Info: Redefining \nameref on input line 27.
 
 (./Fluid Sims - Raoelisolonarivony.out) (./Fluid Sims - Raoelisolonarivony.out)
 \@outlinefile=\write3
 \openout3 = `"Fluid Sims - Raoelisolonarivony.out"'.
 
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 23.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 29.
 (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 23.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 29.
 
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 23.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 29.
 
 
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 23.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 29.
 
 
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 23.
+(Font)              <12> on input line 29.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 23.
+(Font)              <8> on input line 29.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 23.
-LaTeX Font Info:    Try loading font information for U+msa on input line 23.
+(Font)              <6> on input line 29.
+LaTeX Font Info:    Try loading font information for U+msa on input line 29.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -666,7 +676,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 23.
+LaTeX Font Info:    Try loading font information for U+msb on input line 29.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -680,62 +690,47 @@ ination with the same identifier (name{page.1}) has been already used, duplicat
 e ignored
 <to be read again> 
                    \relax 
-l.23 \part{Les bases}
+l.29 \part{Les bases}
                       [1
 
 ] [2]
 Chapitre 1.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 32.
-
-Underfull \hbox (badness 10000) in paragraph at lines 37--38
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 39--40
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 41--42
-
- []
-
+(Font)              <10.95> on input line 38.
 
 Underfull \hbox (badness 10000) in paragraph at lines 43--44
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 63--64
+Underfull \hbox (badness 10000) in paragraph at lines 45--46
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 47--48
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 49--50
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 69--70
 
  []
 
 [3
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 65--67
+Underfull \hbox (badness 10000) in paragraph at lines 71--73
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 68--69
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 99--100
-
- []
-
-[4]
-Underfull \hbox (badness 10000) in paragraph at lines 101--102
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 103--104
+Underfull \hbox (badness 10000) in paragraph at lines 74--75
 
  []
 
@@ -744,8 +739,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 105--106
 
  []
 
-
+[4]
 Underfull \hbox (badness 10000) in paragraph at lines 107--108
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 109--110
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 111--112
 
  []
 
@@ -754,33 +759,38 @@ Underfull \hbox (badness 10000) in paragraph at lines 113--114
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 119--120
+
+ []
+
 [5] [6] [7] [8]
-Underfull \hbox (badness 10000) in paragraph at lines 319--321
+Underfull \hbox (badness 10000) in paragraph at lines 325--327
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 322--323
+Underfull \hbox (badness 10000) in paragraph at lines 328--329
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 336--337
+Underfull \hbox (badness 10000) in paragraph at lines 342--343
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 339--340
+Underfull \hbox (badness 10000) in paragraph at lines 345--346
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 341--342
+Underfull \hbox (badness 10000) in paragraph at lines 347--348
 
  []
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 343--344
+Underfull \hbox (badness 10000) in paragraph at lines 349--350
 
  []
 
@@ -789,111 +799,99 @@ Chapitre 2.
 [11
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 418--419
+Underfull \hbox (badness 10000) in paragraph at lines 424--425
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 420--421
+Underfull \hbox (badness 10000) in paragraph at lines 426--427
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 422--423
+Underfull \hbox (badness 10000) in paragraph at lines 428--429
 
  []
 
 
-LaTeX Warning: Command \' invalid in math mode on input line 434.
+LaTeX Warning: Command \' invalid in math mode on input line 440.
 
 
-LaTeX Warning: Command \' invalid in math mode on input line 435.
+LaTeX Warning: Command \' invalid in math mode on input line 441.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 438--439
+Underfull \hbox (badness 10000) in paragraph at lines 444--445
 
  []
 
 [12]
-Underfull \hbox (badness 10000) in paragraph at lines 440--441
+Underfull \hbox (badness 10000) in paragraph at lines 446--447
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 442--443
+Underfull \hbox (badness 10000) in paragraph at lines 448--449
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 444--446
+Underfull \hbox (badness 10000) in paragraph at lines 450--452
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 447--448
+Underfull \hbox (badness 10000) in paragraph at lines 453--454
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 464--465
+Underfull \hbox (badness 10000) in paragraph at lines 470--471
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 466--467
+Underfull \hbox (badness 10000) in paragraph at lines 472--473
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 472--474
+Underfull \hbox (badness 10000) in paragraph at lines 478--480
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 475--476
+Underfull \hbox (badness 10000) in paragraph at lines 481--482
 
  []
 
 [13]
-Underfull \hbox (badness 10000) in paragraph at lines 477--478
+Underfull \hbox (badness 10000) in paragraph at lines 483--484
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 479--480
+Underfull \hbox (badness 10000) in paragraph at lines 485--486
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 493--494
+Underfull \hbox (badness 10000) in paragraph at lines 499--500
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 501--502
+Underfull \hbox (badness 10000) in paragraph at lines 507--508
 
  []
 
 [14] [15]
 Chapitre 3.
 
-Underfull \hbox (badness 10000) in paragraph at lines 568--569
+Underfull \hbox (badness 10000) in paragraph at lines 574--575
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 588--589
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 590--591
-
- []
-
-[16
-
-]
 Underfull \hbox (badness 10000) in paragraph at lines 594--595
 
  []
@@ -903,137 +901,149 @@ Underfull \hbox (badness 10000) in paragraph at lines 596--597
 
  []
 
+[16
 
-Underfull \hbox (badness 10000) in paragraph at lines 598--599
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 612--613
+]
+Underfull \hbox (badness 10000) in paragraph at lines 600--601
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 614--615
+Underfull \hbox (badness 10000) in paragraph at lines 602--603
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 622--623
+Underfull \hbox (badness 10000) in paragraph at lines 604--605
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 618--619
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 620--621
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 628--629
 
  []
 
 [17]
-Underfull \hbox (badness 10000) in paragraph at lines 635--636
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 637--638
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 639--640
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 641--642
 
  []
 
-[18]
+
+Underfull \hbox (badness 10000) in paragraph at lines 643--644
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 645--646
+
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 647--648
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 671--672
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 673--675
+[18]
+Underfull \hbox (badness 10000) in paragraph at lines 653--654
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 676--677
+Underfull \hbox (badness 10000) in paragraph at lines 677--678
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 679--681
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 682--683
 
  []
 
 [19]
-Underfull \hbox (badness 10000) in paragraph at lines 678--679
+Underfull \hbox (badness 10000) in paragraph at lines 684--685
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 680--681
+Underfull \hbox (badness 10000) in paragraph at lines 686--687
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 694--695
+Underfull \hbox (badness 10000) in paragraph at lines 700--701
 
  []
 
 [20]
-Underfull \hbox (badness 10000) in paragraph at lines 742--743
+Underfull \hbox (badness 10000) in paragraph at lines 748--749
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 744--745
+Underfull \hbox (badness 10000) in paragraph at lines 750--751
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 746--747
+Underfull \hbox (badness 10000) in paragraph at lines 752--753
 
  []
 
 [21] [22]
 Chapitre 4.
 
-Underfull \hbox (badness 10000) in paragraph at lines 771--772
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 773--774
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 777--778
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 779--780
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 783--784
 
  []
 
 [23
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 794--795
+Underfull \hbox (badness 10000) in paragraph at lines 800--801
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 796--797
+Underfull \hbox (badness 10000) in paragraph at lines 802--803
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 809--810
+Underfull \hbox (badness 10000) in paragraph at lines 815--816
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 811--812
+Underfull \hbox (badness 10000) in paragraph at lines 817--818
 
  []
 
 [24]
-Underfull \hbox (badness 10000) in paragraph at lines 851--852
+Underfull \hbox (badness 10000) in paragraph at lines 857--858
 
  []
 
@@ -1042,54 +1052,44 @@ Underfull \hbox (badness 10000) in paragraph at lines 851--852
 ]
 Chapitre 5.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1015--1016
+Underfull \hbox (badness 10000) in paragraph at lines 1021--1022
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1023--1024
+Underfull \hbox (badness 10000) in paragraph at lines 1029--1030
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1025--1026
+Underfull \hbox (badness 10000) in paragraph at lines 1031--1032
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1035--1036
+Underfull \hbox (badness 10000) in paragraph at lines 1041--1042
 
  []
 
 [29
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 1047--1048
+Underfull \hbox (badness 10000) in paragraph at lines 1053--1054
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1049--1050
+Underfull \hbox (badness 10000) in paragraph at lines 1055--1056
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1063--1064
+Underfull \hbox (badness 10000) in paragraph at lines 1069--1070
 
  []
 
 [30]
-Underfull \hbox (badness 10000) in paragraph at lines 1095--1096
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1097--1098
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1099--1100
+Underfull \hbox (badness 10000) in paragraph at lines 1101--1102
 
  []
 
@@ -1103,32 +1103,25 @@ Underfull \hbox (badness 10000) in paragraph at lines 1105--1106
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 1109--1110
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1111--1112
+
+ []
+
 [31] [32]
 Chapitre 6.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1130--1131
+Underfull \hbox (badness 10000) in paragraph at lines 1136--1137
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1132--1133
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1146--1147
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1148--1149
-
- []
-
-[33
-
-]
-Underfull \hbox (badness 10000) in paragraph at lines 1150--1151
+Underfull \hbox (badness 10000) in paragraph at lines 1138--1139
 
  []
 
@@ -1138,17 +1131,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 1152--1153
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1162--1163
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1155
+
+ []
+
+[33
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 1156--1157
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1164--1165
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1166--1167
+Underfull \hbox (badness 10000) in paragraph at lines 1158--1159
 
  []
 
@@ -1157,17 +1152,27 @@ Underfull \hbox (badness 10000) in paragraph at lines 1168--1169
 
  []
 
-[34]
 
-LaTeX Warning: Command \' invalid in math mode on input line 1176.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1180--1181
+Underfull \hbox (badness 10000) in paragraph at lines 1170--1171
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1194--1195
+Underfull \hbox (badness 10000) in paragraph at lines 1172--1173
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1174--1175
+
+ []
+
+[34]
+
+LaTeX Warning: Command \' invalid in math mode on input line 1182.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1186--1187
 
  []
 
@@ -1176,26 +1181,31 @@ Underfull \hbox (badness 10000) in paragraph at lines 1200--1201
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 1206--1207
+
+ []
+
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/lmr/m/sc/10.95'.
 (microtype)             Ignoring protrusion settings for this character.
 [35]
-Underfull \hbox (badness 10000) in paragraph at lines 1223--1224
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1225--1226
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1227--1228
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 1229--1230
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1231--1232
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1233--1234
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1235--1236
 
  []
 
@@ -1208,11 +1218,11 @@ Chapitre 7.
 ] [40]
 Chapitre 8.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1276--1277
+Underfull \hbox (badness 10000) in paragraph at lines 1282--1283
 
  []
 
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 1280
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 1286
 .
 (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
@@ -1222,45 +1232,90 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-Overfull \hbox (7.6285pt too wide) in paragraph at lines 1286--1287
+Overfull \hbox (7.6285pt too wide) in paragraph at lines 1292--1293
 [] \T1/lmtt/m/n/10.95 i,j do v[i,j] += (u[i-1,j] + u[i+1,j] + u[i,j-1] + u[i,j+
 1])/4 - u[i,j]; 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1299--1300
+Underfull \hbox (badness 10000) in paragraph at lines 1305--1306
 
  []
 
 [41
 
-] [42]
+]
+<fluid-sims-images/fil-infinitesimal.png, id=520, 589.4522pt x 161.10187pt>
+File: fluid-sims-images/fil-infinitesimal.png Graphic file (type png)
+
+<use fluid-sims-images/fil-infinitesimal.png>
+Package pdftex.def Info: fluid-sims-images/fil-infinitesimal.png used on input 
+line 1366.
+(pdftex.def)             Requested size: 294.72537pt x 80.55074pt.
+ [42 <./fluid-sims-images/fil-infinitesimal.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1391--1392
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1393--1394
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1395--1396
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1397--1398
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1401--1402
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1403--1404
+
+ []
+
+[43] [44]
 Chapitre 9.
-[43
+[45
+
+] [46] [47]
+
+LaTeX Warning: Command \' invalid in math mode on input line 1534.
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 1540.
+
+[48]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1660.
+ [49
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1453.
- [44
-
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1453.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1660.
  (./Fluid Sims - Raoelisolonarivony.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1453.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1453.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1660.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1660.
 
 Package rerunfilecheck Info: File `"Fluid Sims - Raoelisolonarivony".out' has n
 ot changed.
-(rerunfilecheck)             Checksum: 7B957B5EA434F7456FBB4A9E8FD97C4A;2748.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1453.
+(rerunfilecheck)             Checksum: C8B6B7416899AF15D8E6C38B6132DE15;3226.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1660.
  ) 
 Here is how much of TeX's memory you used:
- 9135 strings out of 493304
- 136983 string characters out of 6139872
- 268667 words of memory out of 5000000
- 12046 multiletter control sequences out of 15000+600000
- 98434 words of font info for 161 fonts, out of 8000000 for 9000
+ 9237 strings out of 493304
+ 138656 string characters out of 6139872
+ 269049 words of memory out of 5000000
+ 12103 multiletter control sequences out of 15000+600000
+ 98647 words of font info for 163 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 35i,18n,35p,1434b,475s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 35i,18n,35p,1679b,476s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dv
 ips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share
 /texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm
@@ -1276,11 +1331,11 @@ f/fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10
 .pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts
 /type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></
 usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb>
-Output written on "Fluid Sims - Raoelisolonarivony.pdf" (45 pages, 477505 bytes
+Output written on "Fluid Sims - Raoelisolonarivony.pdf" (50 pages, 525520 bytes
 ).
 PDF statistics:
- 627 PDF objects out of 1000 (max. 8388607)
- 556 compressed objects within 6 object streams
- 203 named destinations out of 1000 (max. 500000)
- 25905 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 717 PDF objects out of 1000 (max. 8388607)
+ 639 compressed objects within 7 object streams
+ 237 named destinations out of 1000 (max. 500000)
+ 25966 words of extra memory for PDF output out of 29859 (max. 10000000)
 

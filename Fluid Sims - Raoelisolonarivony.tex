@@ -13,10 +13,16 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{microtype}
-\usepackage{hyperref}
+\usepackage[colorlinks=true,
+            linkcolor=red,
+            urlcolor=blue,
+            citecolor=blue]{hyperref}
+            
 \title{La simulation des fluides}
 \author{Raoelisolonarivony - MISA M2}
 \date{Décembre 2016}
+
+\graphicspath{ {fluid-sims-images/} }
 
 \begin{document}
 \maketitle
@@ -33,6 +39,8 @@ Les écoulement des fluides sont gouvernés par les fameuses équations des flui
 \frac{\partial \overrightarrow{u}}{\partial t} + (\overrightarrow{u} . \nabla ) \overrightarrow{u} + \frac{1}{\rho} \nabla p & = & \overrightarrow{g} + \nu \nabla . \nabla \overrightarrow{u} \\
 \nabla . \overrightarrow{u} & = & 0
 \end{eqnarray}
+
+\section{Les symboles}
 
 Le symbole $ \overrightarrow{u} $ représente la vitesse du fluide. \newline
 
@@ -1005,8 +1013,17 @@ Si une cellule de la grille fluide se trouve à la frontière, il faut se rappel
 
 Trois remarques peuvent être faites sur ces équations, à être prises en compte dans le code d'implémentation. Premièrement, pour la condition à la limite des cellules d'air, il faudra enlever $p$ de l'équation. Deuxièmement, pour la condition à la limite des cellules solides, $p$ sera encore éliminé mais aussi la réduction du coefficient devant $p_{i,j}$, qui est normalement 4, par 1 - en d'autres termes, le coefficient devant $p_{i,j}$ est égale au nombre de cellules voisines de la cellule de la grille qui ne sont pas solides (c'est la même chose en dimension 3). Il faut changer la divergence mesurée dans le côté droit par la vélocité de la paroi solide $u_{solid}$ à la place de l'ancienne vélocité $u_{i+1/2,j}$: des remplacements similaires seront effectués d'autres frontières se heurtent à la surface solide.
 
-\subsection{Les mettre tous dans la matrice de vecteurs}
+\subsection{Les mettre sous la forme de matrices et de vecteurs}
 
+Nous avons maintenant défini un large système d'équations linéaires pour les valeurs de pression inconnues. Nous pouvons conceptuellement considérer ce système comme une large matrice de coefficients $A$, multipliée par un vecteur constitué de toutes les pressions inconnues, $p$, et est égale à un vecteur composé des divergences de chaque cellule de fluide de la grille, $d$ (avec des modifications appropriées des divergences sur les bordures solides):
+
+\begin{equation}
+A\,\, p = d
+\end{equation} 
+
+Dans une implémentation, en fait, $p$ et $d$ sont probablement stockés dans une structure de grille à deux ou trois dimensions (puisque chaque entrée correspond à une cellule de la grille), et si toutes les cellules de la grille ne sont pas fluide, elles ne seront pas stockées comme des vecteurs contig\ddot{u}s dans la mémoire.
+
+Nous n'avons non plus besoin de stocker $A$ directement comme une matrice. Noter que chaque ligne de la matrice $A$ correspond à une équation, i.e. une cellule de fluide.
 
 \part{Les différents types de fluides}
 
@@ -1332,7 +1349,7 @@ u: (x,y),t \,\, \longrightarrow \,\, u(x,y,t)
 
 qui représente la hauteur du fluide $u$ à chaque localisation $(x,y)$ dans le plan et à chaque instant $t$. En second lieu, nous avons besoin d'une équation gouvernante qui nous dis comment le champ de hauteur se comporte dans le temps étant donné les valeurs initiales des heightfields $u(x,y,0) = u0(x,y)$. Comme dans l'approche 3D complète, nous avons recours à la seconde loi de mouvement de Newton $f = ma$ mais cette fois-ci l'adapter à la configuration spéciale des "heightfields". Puisque dériver les équations en dimension 1 est plus simple, nous allons voir simplement dans un fil à une dimension et ensuite généraliser la situation dans les membranes et les surfaces de l'eau en dimension 2.
 
-Considérons le fil à une dimension schématisé par la figure \ref{fig:heightfields-string}. Nous décrivons sa déviation de l'axe des x par la fonction continue $u(x,t)$ qui nous montre à quelle distance un élément se trouvant à la position $x$ est déplacé suivant l'axe de $u$ à l'instant $t$. Nous accordons alors plus d'attention à un élément infinitésimal du fil entre la position $x$ et $x + dx$. Supposons que le fil est sous un (stress) constant $\sigma$. Alors, la force agissant suivant la normal à la section croisée $A$ est $f = \sigma A$. Sur les deux positions $x$ et $x + dx$, les normales à la surface de l'élément sont de signes opposées et c'est aussi vrai pour les forces intérieures. Puisque nous voulons savoir comment ces forces transforment la fonction $u(x,t)$, nous ne nous intéressons alors qu'à leurs composantes suivant l'axe $u$, c'est-à-dire perpendiculaires à l'axe des $x$. Pour de petites déviations, ces composantes peuvent être approximées par 
+Considérons le fil à une dimension schématisé par la figure \ref{figure/fil-infinitesimal}. Nous décrivons sa déviation de l'axe des x par la fonction continue $u(x,t)$ qui nous montre à quelle distance un élément se trouvant à la position $x$ est déplacé suivant l'axe de $u$ à l'instant $t$. Nous accordons alors plus d'attention à un élément infinitésimal du fil entre la position $x$ et $x + dx$. Supposons que le fil est sous un (stress) constant $\sigma$. Alors, la force agissant suivant la normal à la section croisée $A$ est $f = \sigma A$. Sur les deux positions $x$ et $x + dx$, les normales à la surface de l'élément sont de signes opposées et c'est aussi vrai pour les forces intérieures. Puisque nous voulons savoir comment ces forces transforment la fonction $u(x,t)$, nous ne nous intéressons alors qu'à leurs composantes suivant l'axe $u$, c'est-à-dire perpendiculaires à l'axe des $x$. Pour de petites déviations, ces composantes peuvent être approximées par 
 
 \begin{equation}
 f_u \approx u_x \sigma A,
@@ -1357,9 +1374,9 @@ u_{tt} = c^2 u_{xx}
 \end{equation}
 
 \begin{figure}
-
+\includegraphics[scale=0.5]{fil-infinitesimal}
 \caption{Application de la seconde loi de mouvement de Newton à un élémen infinitésimal d'un fil sous l'équation en dimension 1 $u_{tt} = c^2 u_{xx}$}
-\label{fig:heightfields-string}
+\label{figure/fil-infinitesimal}
 \end{figure}
 
 Par substitution, on peut vérifier facilement que $u(x,t) = a\,.\, f(x+ct) \,+\, b\,.\,f(x-ct)$ est la solution de l'équation de la vague pour une fonction arbitraire $f()$. Cette solution générale montre que des solutions particulières de l'équation de la vague sont les vagues voyageant avec une vitesse $c$ dans les mêmes directions. Le scalaire $c$, alors, représente la vitesse du son or la vitesse de la vague dans le matériel en question. Intuitivement, l'équation de la vague nous indique que ce matériel dans les régions à courbure positive est accéléré vers le haut alors que le matériel se trouvant dans les régions à courbure négative est accéléré par le bas. L'équation de la vague se généralise naturellement pour les dimensions supérieures. Pour des fluides "heightfields", nous nous intéressons particulièrement au cas de la dimension 2:
@@ -1368,13 +1385,212 @@ Par substitution, on peut vérifier facilement que $u(x,t) = a\,.\, f(x+ct) \,+\
 u_{tt} = c^2 (u_{xx} + u_{yy})
 \end{equation}
 
-qui est la forme spécifique en dimension 2
+qui est la forme spécifique en dimension 2 de l'équation plus générale $u_{tt} = c^2 \Delta u$ ou $u_{tt} = c^2 \nabla^2 u$. C'est une equation aux dérivées partielles de second ordre (DPE) qui nous montre comment le heightfield $u(x,y,t)$ à deux-plus-une dimensions évolue pendant le temps. Pour le résoudre, nous le remplaçons tout d'abord par deux EDP du premier ordre dans le temps:
+
+\begin{eqnarray}
+u_t & = & v\\
+v_t & = & c^2(u_xx+u_yy)
+\end{eqnarray}
+
+Ensuite, nous discrétisons ce système d'équation en utilisant une grille régulière d'espacement $h$ et un pas de temps constant $\Delta h$, produisant:
+
+\begin{eqnarray}
+v^{t+1}[i,j] &=& v^{t}[i,j] + \Delta t\,\,c^2 (u[i+1,j] + u[i-1,j] + u[i,j-1] - 4\,\,u[i,j])\,\,/\,\,h^2\\
+u^{t+1}[i,j] &=& u^t[i,j] + \Delta t \,\,v^{t+1}[i,j]
+\end{eqnarray}
+
+Nous avons rendu le schéma d'intégration plus stable qu'une étape de la méthode d'Euler explicite en échangeant l'ordre des instructions de mise à jour et en utilisant la nouvelle vélocité $v^{t+1}[i,j]$ pour les calculs des nouvelles positions, qui est des fois appelée une étape d'Euler semi-implicite.\newline
+
+Maintenant nous sommes presque là où nous avions commencé avec certaines différences importantes de la version \textit{hello world} des fluides "heightfields". Cette version ne refroidit pas la vélocité. Le refroidissement est important et peut grandement faire augmenter la stabilité de la simulation. D'un autre côté, le refroidissement supprime les détails de hautes fréquences d'une animation. Nous avons aussi les paramètres significatifs $h$, $\Delta t$ et $c$ pour controller la simulation. Puisque nous avions utilisé l'intégration implicit d'Euler pour la discrétisation du temps, notre algorithme est seulement stable suivant \textit{certaines conditions}. En particulier, la condition de stabilité de \textit{Courant-Friedrichs-Lewy} maintient le fait que l'information doit traverser plus d'une cellule de la grille par pas de temps, i.e. $\Delta t < h$.\newline
+
+De même, les conditions aux bords dans l'espace doivent être définies. Nous avons déjà eu affaire à une condition possible, appelée la condition du mirroir ou  la condition de la réflection. Jusque-là, nous avons répliqué les valeurs "height" au delà des bords   pour que les bords se comportent comme des murs qui reflètent les vagues. D'autres possibilités sont ceux qu'on appelle les \textit{conditions de bord périodiques}. Ici, nous imaginons que le domaine entier de la simulation à reproduire dans l'espace est formé de carreaux. Quand une valeur au delà du côté gauche du domaine est nécessaire, nous accédons à la cellule la plus à droite, i.e. réaliser une enveloppe autour. De cette façon, les vagues qui quittent le domaine de simulation d'un côté sont réintroduites d'un autre.\newline
+
+Nous finissons ce chapitre sur les fluides "heightfield" avec des commentaires sur comment implémenter l'intéraction avec d'autres types d'objets et des bords plus généralisés.\newline
+
+\begin{itemize}
+
+	\item[$\bullet$] Le domaine de simulation n'est pas obligatoirement rectangulaire. Les conditions "mirroir" ou périodiques peuvent être appliquées à toute localisation d'une cellule marquée en tant que bord. Alors, en marquant une cellule arbitraire en tant que cellule de bordure, un domaine arbitraire peut être simulé.\\
+
+	\item[$\bullet$] Un moyen d'implémenter l'interaction de fluides "heightfields" avec des systèmes de particules est d'absorber les particules qui sont en contact avec le haut d'une colonne d'eau. Dans ce cas, une certaine quantité d'eau est ajoutée à la colonne et la particule est supprimée. \cite{Obrien-95}\\
+	
+	\item[$\bullet$]L'intéraction des "heightfields" avec des corps rigides peut être simulée en laissant les corps rigides presser vers le bas les colonnes d'eau. Les colonnes d'eau en dessous des corps rigides ont besoin de pousser ces corps vers le haut. Elles peuvent faire cela en exerçant une force proportionnelle  à leurs surfaces représentées multipliée par la pression de l'eau en dessous de ce corps. La pression peut être calculée à partir de la différence en hauteur "height" de la colonne et la hauteur moyenne des colonnes.	
+	
+\end{itemize}
 
 \chapter{Smoothed Particle Hydrodynamics}\label{chap:sph}
 
+\section{Les systèmes de particules simples}
+
+Comme discuté précédemment, pour les éclaboussures, les jets d'eau et les pulvérisations, la représentation en particules est le meilleur choix. Dans ces cas simples, il est souvent même nécessaire de simuler l'interaction des particules entre elles-mêmes. Nous appelons un système de particule sans interaction entre particules un système à particule \textit{simple}. Un tel système peut être implémenter très efficacement, c'est-à-dire qu'un grand nombre de particules peuvent être simulées en temps réel. Ce dont nous avons besoin est un ensemble de $N$ particules ($0 \leq i < N$) de masses $m_i$, de positions $x_i$, de vélocités $v_i$ et des forces extérieures accumulées $f_i$. Ces particules sont soit créées et initialisées avec des positions et des vélocités significatives avant que la simulation ne commence, ou générées pendant la simulation par des \textit{émetteurs}. Un émetteur génère typiquement les particules avec un certain débit [particule/s] et une certaine distribution de vélocité autour d'une direction principale. Pour s'assurer que les particules ne sont pas uniquement générées mais disparaissent au bout d'un certain  temps, elles ont une durée de vie définie. Quand la fin de leur durée de vie est proche, elles disparaissent discrètement. Leur durée de vie peut être également utilisée pour les teindre de couleur plus appropriée. Puisqu'il n'y a aucune interaction particule-particule, seules les forces propres des particules existent et l'équation dirigeante est formée d'équations différentielles ordinaires découplées:
+
+\begin{eqnarray}
+\dot{x_i} &=& v_i\\
+\dot{v_i} &=& \frac{f_i}{m_i}
+\end{eqnarray}
+
+qui peuvent être efficacement intégrées en utilisant le schéma d'intégration implicite d'Euler par exemple.
+
+\section{Intéractions particule-particule}
+
+Si nous cherchons à simuler de petits amas d'eau avec des particules, il est bien essentiel que ces particules intéragissent entre elles. Sinon, elles s'amasseront à un point unique dans un coin ou suivant un pont. En général, une force d'interaction pour les particules prend la forme:
+
+\begin{equation}
+f(x_i, x_j) = F(|x_i - x_j|) . \frac{x_i - x_j}{|x_i - x_j|}
+\end{equation}
+
+où $F()$ est l'intensité de la force qui dépend uniquement de la distance entre les particules, sinon cela introduit un "torque". Un choix populaire est la force de \textit{Lennard-Jones} souvent employée dans les simulations dynamiques moléculaires:
+
+\begin{equation}
+f(x_i, x_j) = \left(\frac{k_1}{|x_i - x_j|^m} - \frac{k_2}{|x_i - x_j|^n} \right)  . \frac{x_i - x_j}{|x_i - x_j|}
+\end{equation}
+
+avec $k_1$, $k_2$, $m$ et $n$ sont des paramètres de contrôles. Les choix les plus usités sont $k_1 = k_2 = k$, $m = 4$ et $n = 2$.
+
+Avec $N$ particules, il y a $O(N^2)$ interactions possibles dont on a besoin d'évaluer. Cette complexité quadratique peut être le grand blocage. Supposons que nous soyons capable de simuler dix milles particules sans interactions en temps réel. Cela signifie que nous aurions besoin de calculer maintenant cent millions d'interactions également en temps réel. Pour éviter cette complexité quadratique, nous introduisons une distance "cutoff"  $d$ au delà delaquelle les particules n'interagissent plus les unes par rapport aux autres. Dans le but de garder la simulation stable, il est important que la fonction $F()$ ne soit pas simplement reléguer ("cutoff to") à zéro à partir de la distance $d$ mais que cette fonction soit aussi continue $C^0$ et $C^1$ sur $d$. Maintenant à chaque pas de temps, les particules remplissent une grille régulière avec des espacements de cellules $d$. Après cela, les partenaires d'interaction potentielles pour une particule donnée se trouvent parmi les mêmes cellules ou celles adjacentes à elles. Si les particules sont également distribuées et que le nombre de particules par cellule se limite à une constante, les interactions peuvent être évaluées en temps linéaire.
+
+\section{SPH}
+
+La prochaine question à se poser est: pouvons nous faire mieux que d'utiliser les forces d'interaction de Lennard-Jones? Est-il possible d'utiliser les équations de Navier-Stokes et de les résoudre sur les particules? L a réponse est oui (\cite{muller-charypar-2003}). Le premier problème que nous avons à résoudre est de générer un champs continu et fluide à partir des grandeurs qui sont données uniquement pour les particules, i.e. dans des locations discrètes de l'espace. La méthode SPH (Smoothed Particule Hydrodynamics), originellement élaborée pour la simulation des étoiles \cite{monaghan-1992} résout ce problème. En son c\oe ur, il définit un moyen de lisser discrètement des champs d'attribut d'échantillon. Cela est effectué par ce qu'on appelle noyaux lissant "smoothing kernels" $W(r)$. La fonction noyau a besoin également d'être normalisée, c'est-à-dire que $ \int{W(| x-x_i|)dx} = 1 $.
+Un choix populaire est le noyau \textit{poly6}:
+
+\begin{equation}
+W_{poly6}(r) = \frac{315}{64 \pi d^9} \left\{
+\begin{array}{rl}
+&(d^2 - r^2)^3 \;\; \mbox{ si } 0 \leq r \leq  d\\
+&0 \:\:\:\:\:\:\:\: \mbox{ sinon } 
+\end{array}
+\right.
+\end{equation}
+
+parce que $r$ apparait uniquement au carré et qu'aucune racine carrée n'est à évaluer. Nous avons alors tous les ingrédients pour calculer un champ de densité lisse à partir des positions et des masses individuelles des particules:
+
+\begin{equation}\label{equation/yields-density}
+\rho (x) = \sum_{\scriptstyle j} m_j W(|x - x_j|).
+\end{equation}
+
+La masse volumique de la particule $i$ est simplement $\rho_i = \rho (x_i)$. Maintenant, il est plus évident de remarquer la nécessité de normaliser le noyaux. Avec cette restriction, la masse totale du système calculée comme l'intégrale du champ de masse volumique devient
+
+\begin{equation}
+\int \rho (x)dx = \sum_j \left( 
+m_j \,\, \int W(|x - x_j|dx )
+\right) = \sum_j m_j
+\end{equation}
+
+Après le calcul des valeurs des masses volumiques des particules individuelles, nous pouvons maintenant évaluer les champs lisses $A_s$ des attributs arbitraires $A_i$ des particules tels que:
+
+\begin{equation}
+A_s(x) = \sum_j m_j\,\, \frac{A_j}{\rho_j}\,\, W(|x - x_j|).
+\end{equation}
+
+Une propriété appréciable de cette formulation est que le gradient d'un tel champ peut être facilement évalué en remplaçant le noyau par le gradient du noyau:
+
+\begin{equation}\label{equation/sph-99}
+\nabla A_s(x) = \sum_j m_j\,\, \frac{A_j}{\rho_j}\,\,\nabla W(|x - x_j|).
+\end{equation}
+
+Dans une formulation Eulerienne (basée sur les grilles), les fluides sont décrites par un champs de vélocités $v$, un champ de masses volumiques $\rho$ et un champ de pression $p$. L'évolution de ces grandeurs à tout instant est donnée par deux équations. La première équation assure la conservation de la masse
+
+\begin{equation}
+\frac{\partial \rho}{\partial t} + \nabla . (\rho v) = 0
+\end{equation}
+
+alors que l'équation de Navier-Stokes formule la conservation de mouvement
+
+\begin{equation}
+\rho \left( \frac{\partial v}{\partial t} + v . \nabla v  \right) = - \nabla p + \rho g + \mu\,\, \nabla^2 v
+\end{equation}
+
+où $g$ est une force externe sur le corps et $\mu$ la viscosité du fluide. L'utilisation de particules à la place d'une grille stationnaire simplifie ces deux équations substentiellement. Premièrement, étant donné que le nombre de particules est constant et que chaque particule a une masse constante, la conservation de la masse est préservée et la première équation  peut être complètement ignorée. Deuxièmement, l'expression  $\frac{\partial v}{\partial t} + v . \nabla v $ dans le terme de gauche de l'équation de Navier-Stokes peut être remplacée par une dérivée substantielle $\frac{Dv}{Dt}$. Puisque les particules se déplacent avec le fluide, la dérivée substantielle du champ de vélocités se réduit simplement à la dérivée par rapport au temps de la vélocité des particules, ce qui signifie que le terme de convection $v.\nabla v$ n'est pas nécessaire pour des systèmes de particules.
+
+
+Il restent les trois forces (dont l'unité est le $N.m^{-3}$) du terme de droite de l'équation de Navier-Stokes qui représentent la pression ($-\nabla p$), les forces externes ($\rho g$) et la viscosité ($\mu \nabla^2 v$). La somme des forces $f = -\nabla p + \rho g + \mu \nabla^2 v$ détermine  la modification du mouvement "momentum" $\rho \frac{partial v}{\partial t}$ de la particule sur le terme de gauche de l'équation. Pour l'accélération de la particule $i$ nous avons alors:
+
+\begin{equation}
+a_i = \frac{\partial v_i}{\partial t} = \frac{f_i}{\rho_i}
+\end{equation}
+
+où $v_i$ est la vélocité de la particule $i$ et $f_i$ et $\rho_i$  sont la force et le champ de masse volumique respectivement calculées de la particule $i$ sur une localisation donnée . Nous allons voir comment les forces appliquées sont évaluées en utilisant la méthode SPH.
+
+\subsection{La pression}
+
+L'application de la règle SPH décrite dans l'équation \ref{equation/sph-99} sur le terme  de pression $-\nabla p$ donne
+
+\begin{equation}\label{equation/pressure-force}
+f_i^{pressure} = - \nabla p(x_i) = - \sum_j m_j \frac{p_j}{\rho_j} \nabla W(|x_i - x_j|)
+\end{equation}
+
+Malheureusement, cette force n'est pas symétrique comme on peut le voir dans l'interaction de deux particules seulement. Puisque le gradient du noyau est zéro à son centre, la particule $i$ utilise uniquement la pression de la particule $j$ pour calculer sa force de pression et vice versa. Etant donné que les pressions sur ces localisations des deux particules ne sont pas égales en général, les force de pression ne seront pas symétriques. D'autres méthodes de symétrisation de l'équation \ref{equation/pressure-force} ont été proposé. Voici une solution très simple qui est à la fois stable et rapide à calculer:
+
+\begin{equation}
+f_i^{pressure} = - \sum_j m_j \frac{p_i + p_j}{2\rho_j} \nabla W(|x_i - x_j|)
+\end{equation}
+
+Puisque les particules portent uniquement les trois grandeurs masse, position et vélocité, la pression aux localisations de la particule doivent être évaluées en premier. Cela se fait en deux étapes. L'équation \ref{equation/yields-density} donne la masse volume à la localisation de la particule. Ensuite, la pression peut être calculer à partir de l'équation d'état des gaz parfait:
+
+\begin{equation}
+p = k(\rho - \rho_0)
+\end{equation}
+
+où $k$ est la constante des gaz qui dépend de la température et $\rho_0$ est la pression de l'environnement. Puisque les forces de pression dépendent du gradient du champ de pression, la différence (compensation) "offset"
+ n'a aucun effet mathématiquement sur les forces de pression. Cependant, la compensation influence le gradient du champ lissé par la méthode SPH et rend la simulation numériquement stable.
+ 
+ Cependant, l'incompressibilité n'est pas strictement imposée comme dans le cas de la simulation eulérienne. Les forces de pression ne sont que générées après le fait, quand les variations de la masse volumique eurent été formées. C'est clairement une méthode pénalisante et produit des comportement de rebond du fluide. Pour éviter cet effet, soit on peut prédire les masses volumiques et calculer les forces de pression sur les prédictions ou soit estimer la divergence du champ de vélocité en utilisant la méthode SPH et en résolvant l'équation de Poisson sur les particules \cite{premoze-2003}
+ 
+ 
+\subsection{La viscosité} 
+ 
+ L'application de la règle SPH sur  le terme de viscosité $\mu \nabla^2 v$ produit également des forces asymétriques
+ 
+ \begin{equation}
+ f_i^{viscosité} = \mu \nabla^2 v(x_i) = \mu \sum_j m_j \frac{v_j}{\rho_j} \nabla^2 W(|x_i - x_j|)
+ \end{equation}
+ 
+ parce que le champ de vélocités varie d'une particule à une autre. Puisque la force de viscosité dépend uniquement des différences de vélocité et non pas des vélocités absolues, il y a une manière naturelle de rendre symétriques les forces de viscosité en utilisant les différences de vélocités:
+ 
+ \begin{equation}\label{equation/viscosity_symetrization}
+ f_i^{viscosité} = \mu \sum_j m_j \frac{v_j - v_i}{\rho_j} \nabla^2 W(|x_i - x_j|)
+\end{equation}  
+ 
+ Une interprétation possible de l'équation \ref{equation/viscosity_symetrization}
+est de voir les voisins de la particule $i$  à partir du frame de référence de mouvement de $i$ lui-même. Ensuite la particule $i$  est accélérée dans la direction de la vitesse relative de son environnement.
+
+
+\subsection{Les forces externes}
+
+Les forces externes comme la gravité, les forces de collision et les forces causées par l'interaction d'un utilisateur sont appliquées directement sur les particules comme le cas de systèmes de particules simples sans l'usage de SPH.
+
+\section{Le rendu}
+
+Il y a plusieurs méthodes pour faire le rendu des fluides qui sont définis comme des particules. Une des méthodes les plus simples et les plus rapides est l'utilisation de sprites. Si un filtre de lissage est appliqué sur les buffer profond "depth buffer" avant que les sprites soient dessinés, la granularité des particules peut être dissimulée à un certain degré. Un autre moyen de faire un rendu de particules fluides est de dessiner des isosurface du champ de masse volumique et de le triangulariser par un algorithme de "marching cubes". 
 
 \newpage
 \begin{thebibliography}{2}
+
+
+
+\bibitem{premoze-2003}
+Simon PREMOZE, Tolga TASDIZEN, James BIGLER, Aaron LEFOHN, and Ross WHITAKER:
+\textit{Particle–based
+simulation of fluids}.
+In Comp. Graph. Forum (Eurographics Proc.), volume 22, pages 401–410, 2003.
+
+\bibitem{monaghan-1992}
+J. J. MONAGHAN:
+\textit{Smoothed particle hydrodynamics}.
+Annu. Rev. Astron. Astrophys., 30:543–574, 1992.
+
+\bibitem{muller-charypar-2003}
+Matthias M$\ddot{U}$LLER, David CHARYPAR, and Markus GROSS:
+\textit{Particle-based fluid simulation for interactive
+applications}.
+In Proc. ACM SIGGRAPH/Eurographics Symp. Comp. Anim., pages 154–159, 2003.
+
+\bibitem{Obrien-95}
+J. O’BRIEN and J. HODGINS:
+\textit{Dynamic simulation of splashing fluids}.
+In Computer Animation, pages
+198–205, 1995.
+
 \bibitem{Hong-05}
 Jeong-Mo HONG and Chang-Hun KIM:
 \textit{Discontinuous fluids}.
