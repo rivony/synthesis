@@ -1,0 +1,201 @@
+% The following lines are provided in case you want to 
+% build this document using arara:
+% arara: pdflatex: { synctex: on }
+% arara: pdflatex: { synctex: on }
+\documentclass[oneside,12pt]{scrbook}
+
+\usepackage{scrhack}
+
+\usepackage{amsmath}
+\usepackage[standard]{ntheorem}
+\usepackage[algo2e]{algorithm2e}
+\usepackage{siunitx}
+
+\theoremstyle{break}
+\theorembodyfont{\normalfont}
+\newtheorem{algorithm}[algocf]{Algorithm}
+
+\usepackage{setspace}
+\usepackage{scrpage2}
+\usepackage{listings}
+
+\pagestyle{scrheadings}
+\ihead{}
+\chead{}
+\ohead[]{\headmark}
+\ifoot[123456789]{123456789}% registration number
+\cfoot[]{}
+\ofoot[\pagemark]{\pagemark}
+
+\renewcommand*{\headfont}{\normalfont \itshape}
+\renewcommand*{\pnumfont}{\normalfont \bfseries}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+\vspace*{1in}
+\begin{Large}\bfseries
+A Sample PhD Thesis\par
+\end{Large}
+\vspace{1.5in}
+\begin{large}\bfseries
+A. N. Other\par
+\end{large}
+\vfill
+A Thesis submitted for the degree of Doctor of Philosophy
+\par
+\vspace{0.5in}
+School of Something
+\par
+University of Somewhere
+\par
+\vspace{0.5in}
+July 2012
+\par
+\end{titlepage}
+
+\doublespacing
+
+\frontmatter
+\tableofcontents
+\listoffigures
+\listoftables
+\lstlistoflistings
+
+\chapter{Acknowledgements}
+
+I would like to thank my supervisor, Professor Someone. This
+research was funded by the Imaginary Research Council.
+
+\chapter{Abstract}
+
+A brief summary of the project goes here.
+
+\mainmatter
+
+\chapter{Introduction}
+\label{ch:intro}
+
+
+\chapter{Technical Introduction}
+\label{ch:techintro}
+
+\section{Listings}
+
+Some sample code is shown in Listing~\ref{lst:sample}.
+
+\lstset{language=C,basicstyle={\ttfamily\singlespacing}}
+\begin{lstlisting}[mathescape=true,caption={Sample},label={lst:sample}]
+#include <stdio.h> /* needed for printf */
+#include <math.h> /* needed for sqrt */
+
+int main()
+{
+   double x = sqrt(2.0); /* $x = \sqrt{2}$ */
+
+   printf("x = %f\n", x);
+
+   return 1;
+}
+\end{lstlisting} 
+
+\section{Theorems}
+
+\begin{Definition}[Tautology]
+A \emph{tautology} is a proposition that is always true for any
+value of its variables.
+\end{Definition}
+
+\begin{Definition}[Contradiction]
+A \emph{contradiction} is a proposition that is always false for any
+value of its variables.
+\end{Definition}
+
+\begin{Theorem}
+If proposition $P$ is a tautology
+then $\sim P$ is a contradiction,
+and conversely.
+\end{Theorem}
+
+\begin{Example}\label{ex:rain}
+``It is raining or it is not raining'' is a tautology,
+but ``it is not raining and it is raining'' is a contradiction.
+\end{Example}
+
+\begin{Remark}
+Example~\ref{ex:rain} used De Morgan’s Law
+$\sim (p \vee q) \equiv \sim p \wedge \sim q$.
+\end{Remark}
+
+\section{Algorithms}
+
+Using algorithm (theorem-like) and tabbing environments:
+
+\begin{algorithm}[Gauss-Seidel Algorithm]
+\begin{tabbing}
+1. \=For $k=1$ to maximum number of iterations\\
+\>2. For \=$i=1$ to $n$\\
+\>\>Set
+\begin{math}
+x_i^{(k)} =
+\frac{b_i-\sum_{j=1}^{i-1}a_{ij}x_j^{(k)}
+-\sum_{j=i+1}^{n}a_{ij}x_j^{(k-1)}}%
+{a_{ii}}
+\end{math}
+\\
+\>3. If $\lvert\vec{x}^{(k)}-\vec{x}^{(k-1)}\rvert < \epsilon$,
+where $\epsilon$ is a specified stopping criteria, stop.
+\end{tabbing}
+\end{algorithm}
+
+Using floating algorithm2e environment:
+
+\begin{algorithm2e}
+\caption{Gauss-Seidel Algorithm}\label{alg:gauss-seidel}
+\For{$k\leftarrow 1$ \KwTo maximum iterations}
+{
+   \For{$i\leftarrow 1$ \KwTo $n$}
+   {
+     $
+      x_i^{(k)} =
+      \frac{b_i-\sum_{j=1}^{i-1}a_{ij}x_j^{(k)}
+      -\sum_{j=i+1}^{n}a_{ij}x_j^{(k-1)}}%
+      {a_{ii}}
+      $\;
+   }
+   \If{$\lvert\vec{x}^{(k)}-\vec{x}^{(k-1)}\rvert < \epsilon$}{Stop}
+}
+\end{algorithm2e}
+
+
+\chapter{Method}
+\label{ch:method}
+
+The distance was measured in \si{\kilo\metre} and the area in
+\si{\kilo\metre\squared}. The acceleration was given in
+\si{\metre\per\square\second}.
+
+\chapter{Results}
+\label{ch:results}
+
+Out of \num{12890} experiments, \num{1289} of them had a mean
+squared error of \num{.346} and \num{128} of them had a mean
+squared error of \num{1.23e-6}.
+
+The acceleration was approximately
+\SI{9.78}{\metre\per\square\second}.
+
+
+\chapter{Conclusions}
+\label{ch:conc}
+
+
+\backmatter
+
+% A glossary and list of acronyms may go here
+% or may go in the front matter after the abstract.
+
+% The bibliography will go here
+
+\end{document}
