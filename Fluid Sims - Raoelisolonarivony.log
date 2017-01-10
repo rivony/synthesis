@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.6.8)  9 JAN 2017 22:33
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.6.8)  10 JAN 2017 02:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1092,59 +1092,63 @@ Underfull \hbox (badness 10000) in paragraph at lines 1046--1047
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 1054--1055
+
+ []
+
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <9> on input line 1056.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 1056.
 [29] [30
 
 ]
 Chapitre 5.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1059--1060
+Underfull \hbox (badness 10000) in paragraph at lines 1063--1064
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1067--1068
+Underfull \hbox (badness 10000) in paragraph at lines 1071--1072
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1069--1070
+Underfull \hbox (badness 10000) in paragraph at lines 1073--1074
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1079--1080
+Underfull \hbox (badness 10000) in paragraph at lines 1083--1084
 
  []
 
 [31
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 1091--1092
+Underfull \hbox (badness 10000) in paragraph at lines 1095--1096
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1093--1094
+Underfull \hbox (badness 10000) in paragraph at lines 1097--1098
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1107--1108
+Underfull \hbox (badness 10000) in paragraph at lines 1111--1112
 
  []
 
 [32]
-Underfull \hbox (badness 10000) in paragraph at lines 1139--1140
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1141--1142
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 1143--1144
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1145--1146
 
  []
 
@@ -1154,35 +1158,28 @@ Underfull \hbox (badness 10000) in paragraph at lines 1147--1148
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1149--1150
+Underfull \hbox (badness 10000) in paragraph at lines 1151--1152
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1153--1154
 
  []
 
 [33] [34]
 Chapitre 6.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1174--1175
+Underfull \hbox (badness 10000) in paragraph at lines 1178--1179
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1176--1177
+Underfull \hbox (badness 10000) in paragraph at lines 1180--1181
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1190--1191
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1192--1193
-
- []
-
-[35
-
-]
 Underfull \hbox (badness 10000) in paragraph at lines 1194--1195
 
  []
@@ -1192,13 +1189,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 1196--1197
 
  []
 
+[35
 
-Underfull \hbox (badness 10000) in paragraph at lines 1206--1207
+]
+Underfull \hbox (badness 10000) in paragraph at lines 1198--1199
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1208--1209
+Underfull \hbox (badness 10000) in paragraph at lines 1200--1201
 
  []
 
@@ -1212,22 +1211,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 1212--1213
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 1214--1215
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1216--1217
+
+ []
+
 [36]
 
-LaTeX Warning: Command \' invalid in math mode on input line 1220.
+LaTeX Warning: Command \' invalid in math mode on input line 1224.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1224--1225
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1238--1239
+Underfull \hbox (badness 10000) in paragraph at lines 1228--1229
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1244--1245
+Underfull \hbox (badness 10000) in paragraph at lines 1242--1243
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1248--1249
 
  []
 
@@ -1235,22 +1244,22 @@ Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/lmr/m/sc/10.95'.
 (microtype)             Ignoring protrusion settings for this character.
 [37]
-Underfull \hbox (badness 10000) in paragraph at lines 1267--1268
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1269--1270
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 1271--1272
 
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 1273--1274
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1275--1276
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1277--1278
 
  []
 
@@ -1263,11 +1272,11 @@ Chapitre 7.
 ] [42]
 Chapitre 8.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1320--1321
+Underfull \hbox (badness 10000) in paragraph at lines 1324--1325
 
  []
 
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 1324
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 1328
 .
 (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
@@ -1277,37 +1286,27 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-Overfull \hbox (7.6285pt too wide) in paragraph at lines 1330--1331
+Overfull \hbox (7.6285pt too wide) in paragraph at lines 1334--1335
 [] \T1/lmtt/m/n/10.95 i,j do v[i,j] += (u[i-1,j] + u[i+1,j] + u[i,j-1] + u[i,j+
 1])/4 - u[i,j]; 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1343--1344
+Underfull \hbox (badness 10000) in paragraph at lines 1347--1348
 
  []
 
 [43
 
 ]
-<fluid-sims-images/fil-infinitesimal.png, id=539, 589.4522pt x 161.10187pt>
+<fluid-sims-images/fil-infinitesimal.png, id=543, 589.4522pt x 161.10187pt>
 File: fluid-sims-images/fil-infinitesimal.png Graphic file (type png)
 
 <use fluid-sims-images/fil-infinitesimal.png>
 Package pdftex.def Info: fluid-sims-images/fil-infinitesimal.png used on input 
-line 1404.
+line 1408.
 (pdftex.def)             Requested size: 294.72537pt x 80.55074pt.
  [44 <./fluid-sims-images/fil-infinitesimal.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1429--1430
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1431--1432
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 1433--1434
 
  []
@@ -1318,12 +1317,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 1435--1436
  []
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 1437--1438
+
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 1439--1440
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1441--1442
+Underfull \hbox (badness 10000) in paragraph at lines 1443--1444
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1445--1446
 
  []
 
@@ -1333,54 +1342,55 @@ Chapitre 9.
 
 ] [48] [49]
 
-LaTeX Warning: Command \' invalid in math mode on input line 1572.
+LaTeX Warning: Command \' invalid in math mode on input line 1576.
 
 
-LaTeX Warning: Command \' invalid in math mode on input line 1578.
+LaTeX Warning: Command \' invalid in math mode on input line 1582.
 
 [50]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1698.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1702.
  [51
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1698.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1702.
  (./Fluid Sims - Raoelisolonarivony.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1698.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1698.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1702.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1702.
 
 Package rerunfilecheck Info: File `"Fluid Sims - Raoelisolonarivony".out' has n
 ot changed.
 (rerunfilecheck)             Checksum: A4E3BC8397B001BE5BAA2DC2D8F54548;3383.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1698.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1702.
  ) 
 Here is how much of TeX's memory you used:
- 9245 strings out of 493304
- 138758 string characters out of 6139872
+ 9297 strings out of 493304
+ 139485 string characters out of 6139872
  269049 words of memory out of 5000000
- 12105 multiletter control sequences out of 15000+600000
- 98647 words of font info for 163 fonts, out of 8000000 for 9000
+ 12137 multiletter control sequences out of 15000+600000
+ 121403 words of font info for 181 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  35i,18n,35p,1679b,476s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dv
-ips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share
-/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm
+ips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share
+/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm
 -mathex.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texm
 f/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmcs
 c10.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fo
 nts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pf
 b></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/typ
-e1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/
-share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/publi
-c/lm/lmr6.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texm
-f/fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10
-.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts
-/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></
-usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb>
-Output written on "Fluid Sims - Raoelisolonarivony.pdf" (52 pages, 537300 bytes
+e1/public/lm/lmmi9.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/
+share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/publi
+c/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr6.pfb></usr/share/tex
+mf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr9.
+pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/
+type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></
+usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/p
+ublic/lm/lmtt10.pfb>
+Output written on "Fluid Sims - Raoelisolonarivony.pdf" (52 pages, 542369 bytes
 ).
 PDF statistics:
- 736 PDF objects out of 1000 (max. 8388607)
- 656 compressed objects within 7 object streams
- 243 named destinations out of 1000 (max. 500000)
- 25982 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 744 PDF objects out of 1000 (max. 8388607)
+ 663 compressed objects within 7 object streams
+ 244 named destinations out of 1000 (max. 500000)
+ 32126 words of extra memory for PDF output out of 35830 (max. 10000000)
 

@@ -1051,6 +1051,10 @@ Avant que nous entrons dans les détails de PCG, nous avons besoin de discuter �
 r_i = d - Ap_i
 \end{equation}
 
+Donc, si $p_i$ est la $i^eme$ supposition de la vraie solution, le résidu $r_i$ est juste à quel point elle est loin de satisfaire l'équation $Ap=d$. Quand nous touchons la solution exacte, le résidu est exactement zéro. En conséquence, nous arrêtons notre itération aussitôt que la norme du résidu est assez petite, au delà d'une certaine tolérance. \newline
+
+Ce qui nous ramène à la question suivante: c'est petite comment "assez petite"? En fait, quelle norme allez-vous utiliser pour mesurer $r_i$? Réfléchissez à ce que signifie $r_i$ physiquement. Ces équations résultent de la dérivation, que $d-Ap$ est l'estimation de la différence finie de la divergence de $\overrightarrow{u}^{n+1}$, que nous avons besoin de réduire à zéro. Alors le résidu est exactement quelle quantité de divergence il y aura dans le champ de vélocité après que nous ayons mis à jour cette divergence avec notre estimation de la pression \footnote{S'il vous plait, noter que cela suppose que nous n'avons pas divisé par $\Delta / (\rho \Delta x^2)$ ce qui évidement changent les équations}. Il semble   senser, alors, de prendre la norme infinie du résidu (la valeur maximale absolue d'une entrée) et le comparer à certain nombre petit $tol$, alors nous saurons à quel point la compressibilité de notre nouveau champ de vélocité peut être le plus pire possible. Les dimensions de $tol$ sont une par rapport au temps (one over time): $O(1/tol)$ une borne inférieure sur pendant combien de temps prend notre champ de vélocité inexact pour compresser le fluid par des fragments. Alors $tol$ doit être probablement inversement proportionnel à la durée de notre simulation. Dans la pratique, soit cela ne varie pas beaucoup (quelques secondes pour les plus grands jets) ou  
+
 
 \part{Les différents types de fluides}
 
