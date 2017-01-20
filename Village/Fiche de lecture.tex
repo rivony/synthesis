@@ -1,4 +1,4 @@
-\documentclass[11pt]{article}
+\documentclass[11pt]{report}
 \usepackage{geometry}
 \geometry{
  a4paper,
@@ -35,25 +35,26 @@
 
 \maketitle
 
-\section{A Survey of Procedural Methods for Terrain Modelling (2009) de Ruben M. Smelik et al.}
+\part{A Survey of Procedural Methods for Terrain Modelling (2009) de Ruben M. Smelik et al.}
 
-\subsection{Abstract}
+\chapter{Survey}
+\section{Abstract}
 
-Les méthodes procédurales sont des alternatives négligées de la création de contenu manuelle. Les points négatifs de ces méthodes concernent surtout l'imprévisibilité et le manque de contrôle sur les résultats et l'absence de solutions intégrées, bien que des publications récentes commencent de plus en plus à résoudre ces problèmes. Ce papier recense les méthodes procédurales appliquées sur la modélisation de terrain, évaluant le réalisme de leur résultat, la performance et le contrôle que les utilisateurs peuvent avoir sur la procédure.
+Les \textbf{méthodes procédurales} sont des alternatives négligées pour la création manuelle de contenu. Les points négatifs de ces méthodes concernent surtout l'\textit{imprévisibilité et le manque de contrôle sur les résultats et l'absence de solutions intégrées}, bien que des publications récentes traitent de plus en plus la résolution de ces problèmes. Cette note recense les méthodes procédurales appliquées sur la \textbf{modélisation de terrain}, évaluant le réalisme de leur résultat, la performance et le contrôle que les utilisateurs peuvent avoir sur la procédure.
 
-\subsection{Introduction}
+\section{Introduction}
 
-Les mondes virtuels 3D sont de plus en plus complexes. Cependant, le processus, les outils et les techniques de modélisation de ces mondes sont laborieuses et répétitives nécessitant des qualités de spécialistes en modélisation graphique 3D.
-La modélisation procédurale: sa philosophie est au lieu de créer les contenus à la main, créer ses contenus automatiquement. Cette approche a été appliquée avec success pour générer, par exemple, les textures, les modèles géométriques, les animations et même les sons. Un sujet majeur dans la modélisation procédurale est la génération automatique de modèles de terrain, qui a commencé par les phénomènes naturels comme les élévation de terrain et la croissance des plantes dans les années 80 et 90 puis a étendue son champ aux environnements urbains au début du nouveau millénaire. \newline
+Les mondes virtuels 3D sont de plus en plus complexes. Cependant, le processus, les outils et les techniques de modélisation de ces mondes sont laborieuses et répétitives, nécessitant des qualités de spécialiste en modélisation graphique 3D.
+Pour la modélisation procédurale, la philosophie est au lieu de créer les contenus à la main, \textit{créer ses contenus automatiquement}. Cette approche a été appliquée avec succès pour générer, par exemple, \textit{les textures, les modèles géométriques, les animations et même les sons}. Un sujet majeur dans la modélisation procédurale est la \textbf{génération automatique de modèles de terrain}, qui a commencé par les \textit{phénomènes naturels comme les élévation de terrain et la croissance des plantes} dans les années 80 et 90 puis a étendue son champ aux environnements urbains au début du nouveau millénaire. \newline
 
-En dépit des résultats encourageants, la modélisation procédurale n'est pas souvent appliquée à la modelisation de terrain en entier (mainstream terrain modelling). Plusieurs facteurs limitent cette transition de la modélisation manuelle vers la modélisation automatisée. Pour l'une, les articles de recherche autant que les outils commerciaux se concentrent sur un seul aspect de la modélisation de terrain (mt), (par exemple, la génération de profils d'élévation d'intérêt) et gère les aspects restants à un degré limité ou pas du tout. L'intégration et l'ajustement des méthodes procédurales (mp) pour qu'elles puissent automatiquement générer un mt complet et consistent demeurent jusqu'à maintenant irrésolus. Un autre problème connue des mp est le manque de contrôle qu'elles procurent. L'aléa inhérent au résultat obtenu force souvent les utilisateurs à modéliser par "trial and error" (essayer et ré-essayer si erreur). De récentes publications traite ce problème avec des solutions spécifiques, mais elle n'a pas assez reçu encore d'attention suffisante. \newline
+En dépit de résultats encourageants, la modélisation procédurale n'est pas souvent appliquée à la modelisation entière de terrain (mainstream terrain modelling). Plusieurs facteurs limitent cette transition de la modélisation manuelle vers la modélisation automatisée. Parmi  eux, les articles de recherche autant que les outils commerciaux se concentrent sur un seul aspect de la modélisation de terrain (mt), (par exemple, la génération de profils d'élévation d'intérêt) et gère les aspects restants à un degré limité ou pas du tout. L'intégration et l'ajustement des méthodes procédurales (mp) pour qu'elles puissent automatiquement générer un mt complet et consistent demeurent jusqu'à maintenant irrésolus. Un autre problème connue des méthodes procédurales est le manque de contrôle qu'elles procurent. L'aléa inhérent au résultat obtenu force souvent les utilisateurs à modéliser par "trial and error" (generate and test). De récentes publications traite ce problème avec des solutions spécifiques, mais elle n'a pas assez reçu encore d'attention suffisante. \newline
 
-Cette note présente un court recensement des méthodes procédurales appliquées à la mt. Nous discutons sur les propriétés importantes des méthodes, comme le réalisme du résultat, la performance de l'algorithme et les facilités qu'il offre aux utilisateurs sur le contrôle du processus de génération. L'objectif de cette note est double: donner aux lecteurs intéressés par le domaine de la mt procédurale une vue d'ensemble des recherches faites jusqu'à maintenant, vérifier les possibilités que les problèmes connus liés aux mt sont en cours de traitement et ce qui reste à faire. \newline
+Cette note présente un court recensement des méthodes procédurales appliquées à la mt. Nous discutons sur les propriétés importantes des méthodes, comme le réalisme du résultat, la performance de l'algorithme et les facilités qu'il offre aux utilisateurs sur le contrôle du processus de génération. L'objectif de cette note est double: donner aux lecteurs intéressés par le domaine de la modélisation de terrain procédurale une vue d'ensemble des recherches faites jusqu'à maintenant, vérifier les possibilités que les problèmes connus liés aux modèles de terrain sont en cours de traitement et ce qui reste à faire. \newline
 
-Dans (Smellik et al., 2008, 2009), nous avons identifié plusieurs conditions à remplir qu'un framework de mp doit remplir pour être qualitativement acceptable et représenter un alternative productive au workflow de modélisation existant. Nous décrivons le design conceptuel d'un tel framework. Il intègre les mp et gère les dépendances entre les particularités des terrains dans le but de générer un modèle de terrain complet et consistent, qui correspond à un schéma grossier dessiné du terrain fait par l'utilisateur. Il concerne la distinction de plusieurs couches dans le modèle du terrain, chacune contenant des caractéristiques naturelles (terre, eau, couches de végétation) et faites par l'homme (route et couches urbaines). Nous présentons le design, l'implémentation et les résultats de deux de ces couches. Dans cette note, la distinction des couches du terrain est aussi pratique pour  structurer le travail que nous recensons.
+Dans (Smellik et al., 2008, 2009), nous avons identifié plusieurs conditions à remplir qu'un framework de modélisation procédurale doit remplir pour être qualitativement acceptable et représenter une alternative productive au workflow de modélisation existant. Nous décrivons le design conceptuel d'un tel framework. Il intègre les modélisations procédurales et gère les dépendances entre les particularités des terrains dans le but de générer un modèle de terrain complet et consistent, qui correspond à un schéma grossier dessiné du terrain fait par l'utilisateur. Il concerne la distinction de plusieurs couches dans le modèle du terrain, chacune contenant des caractéristiques naturelles (terre, eau, couches de végétation) et faites par l'homme (route et couches urbaines). Nous présentons le design, l'implémentation et les résultats de deux de ces couches. Dans cette note, la distinction des couches du terrain est aussi pratique pour  structurer le travail que nous recensons.
 Les sections suivantes discutent des méthodes procédurales pour les données d'élévation, les corps d'eau, la végétation, les réseaux routiers et les environnements urbains, suivi d'une concludion de l'état de l'art.  
 
-\subsection{Height-maps}
+\section{Height-maps}
 
 Height-maps, i.e. des grilles à deux dimensions contenant des valeurs d'élévation, sont souvent utilisés comme la base d'un modèle de terrain. Il y a beaucoup d'algorihtmes procédurales pour créer les height-maps. \newline
 
@@ -71,7 +72,7 @@ Une limitation inhérente aux height-map est qu'ils ne supportent pas les rocher
 
 Comme illustration de l'état-de-l'art parmi les outils de support, (Voir Fig. 1d) pour un rendu d'un height-map généré par L3DT (Torpy, 2009), un des outils commerciaux pour la création de height-maps.
 
-\subsection{Rivières, Océans et Lacs}
+\section{Rivières, Océans et Lacs}
 
 Pour générer des rivières, plusieurs auteurs ont proposés des algorihtmes qui s'exécutent soit pendant soit après la génération height-map. Kelley et al (1988) prennent un réseau de rivière comme la base d'un height-map. Ils commencent par une unique rivière bien droite et le subdivisent récursivement, produisant un réseau de courants. Cela forme un squelette pour le height-map, qui est complété en utilisant une fonction d'interpolation de données éparpillées. Le type de climat et le matériau du sol influencent la forme du réseau du courant. \newline
 
@@ -81,7 +82,7 @@ Une approche plus avancée décrite par Belhadj et Audibert (2005) crée un heig
  
  A l'exception des rivières, les corps d'eau procédurale, comme les océans et les lacs et leurs connections, réseaux de courants, deltas et chutes d'eau, ont retenu peu d'attention jusqu'à maintenant. La formation des lacs n'est pas considéré du tout. Les océans sont communément générés en  prenant un niveau fixe d'eau (ex. $0m$) ou en commençant par un algorithme d'inondation à partir des points à faible élévation. Teoh (2008) a également déclaré que la recherche sur ce domaine est incomplète: plusieurs rivières et caractéristiques côtières n'ont pas été traitées. Il propose des algorithmes simples et rapides pour les rivières sinueux, les deltas et la formation de la plage, qui requiert plus de travail pour augmenter le réalisme.
  
-\subsection{Les modèles de plantes et la distribution de la végétation}
+\section{Les modèles de plantes et la distribution de la végétation}
 
 A propos de la végétation, des auteurs ont développé plusieurs procédures de génération d'arbres et de modèles de plantes et des méthodes de placement automatique de la végétation dans un modèle de terrain. Les premières sont utilisées pour obtenir rapidement un ensemble de modèles de plantes similaires mais variables d'une même espèce; les secondes délestent les modeleurs de terrain de la tâche laborieuse de placer manuellement tous ces modèles de végétation individuels dans une forêt large. \newline
 
@@ -89,13 +90,13 @@ Les modèles de plantes procéduraux croissent, en commençant à la racine, ajo
 
 Lintermann et Deussen (1999) proposent un système plus intuitif  pour modéliser procéduralement les plantes, en plaçant les composantes de la plante (ex. une feuille) dans un graphe. Les composantes connexes peuvent être structurées dans un sous-graphe (ex. une brindille). Le système parcours le graphe, générant et plaçant les instances des composantes dans un graphe intermédiaire qui est utilisé pour la génération géométrique. La figure 1e) montre un arbre créé avec leur logiciel de modélisation de plante commercial XFrog.\newline
 
-Deussen et al. (1998) décrivent un  modèle de simulation d'écosystème pour remplir une surface de végétation. L'entrée pour le modèle de simulation est le height-map et une carte de l'eau, plusieurs propriétés d'espèces de plantes, comme le taux de croissance, et, optionnelement une distribution initiale de plantes. Basé sur cela et en prenant compte  les règles sur la compétition du sol, des rayons de lumière et de l'eau, une distribution de plantes à l'intérieur d'une surface est itérativement déterminée (voir Fig. 1b), s'exécutant pendant plusieurs minutes. \newline
+Deussen et al. (1998) décrivent un  modèle de simulation d'écosystème pour remplir une surface de végétation. L'entrée pour le modèle de simulation est le height-map et une carte de l'eau, plusieurs propriétés d'espèces de plantes, comme le taux de croissance, et, optionnelement une distribution initiale de plantes. Basé sur cela et en prenant en compte  les règles sur la compétition du sol, des rayons de lumière et de l'eau, une distribution de plantes à l'intérieur d'une surface est itérativement déterminée (voir Fig. 1b), s'exécutant pendant plusieurs minutes. \newline
 
 Une autre procédure de placement de la végétation par Hammes (2001) est fondée sur les écosystèmes. Il utilise des données d'élévation, des élévations relatives, des pente, direction de la pente et des bruits multi fractals pour sélectionner un des écosystèmes définis. Les textures des végétations du sol sont générés à la volée, dépendant du niveau de détails et de l'écosystème. L'écosystème détermine également le nombre de plantes par espèce, lesquelles sont placées aléatoirement. \newline
 
 La modélisation procédurale de la végétation produit des résultats fiables et sont déjà bien appliquées dans les jeux vidéos modernes, par exemple en utilisant le package commercial SpeedTree.
 
-\subsection{Les réseaux routiers}
+\section{Les réseaux routiers}
 
 La génération de réseaux routiers pour les villes peut être faite par des méthodes variées, parmi lesquelles nous traitons les approches basées sur les pattern, L-systems, les simulations d'agents et les champs tensoriels. La plus simple technique est de générer une grille de carré dense (comme dans Greuter et al. (2003)). Le bruit de déplacement peut être ajouté aux points de la grille pour créer un réseau moin répétitif, mais le réalisme de cette technique est toujours limité. \newline
 
@@ -113,7 +114,7 @@ Chen et al. (2008) proposent une modélisation interactive de réseaux routier e
 
 Dans les méthodes discutées, l'influence de la carte du terrain sous-jacente et du profil d'élévation est à degré variable prise en compte. La plupart des méthodes prennent seulement des mesures basiques pour éviter des routes montantes avec des pentes trop raides et des routes qui traversent des corps d'eau. Kelly and McCabe (2007) planifient le chemin précis de leurs routes principales entre les noeuds mis en place par l'utilisateur pour avoir autant de possibilités dans l'élévation que possible. Seulement, pour les terrains durs cette mesure ne sera pas adéquate et le terrain doit être modifié pour l'accomodation de la route. Bruneton and Neyret (2008) proposent une méthode simple et efficace pour mixer les profiles des routes dans les height-map en utilisant les shaders.
 
-\subsection{Les environnements urbains}
+\section{Les environnements urbains}
 
 Kelly and McCabe (2006) donnent un point de vue élaboré de plusieurs approches pour la génération d'environnement urbains. Watson et al. (2008) donne un point de vue pratique de l'état de l'art. \newline
 
@@ -121,7 +122,7 @@ L'approche la plus commune pour générer des villes procéduralement est de com
 
 Greuter et al. (2003) génère des immeubles de bureau en combinant plusieurs formes primitives dans un plan d'étage et en faisant l'extrusion de cette forme pour différentes hauteurs. Parish and Müller (2001) commençent par un plan d'étage rectangulaire et appliquent un L-system pour affiner l'immeuble. Ces approches sont surtout utiles pour des modèles simples d'immeubles de bureau.  \newline
 
-Wonka et al. (2003) introduisent le concept de \textit{split grammar}, une grammaire formel indépendante du contexte (context-free formal grammar) dont le design est fait pour produire des modèles d'immeubles. Le split grammar ressemble à un L-system, mais il est bas" sur des formes comme éléments primitifs à la place des symboles. Dans leur système, un style spécific d'immeuble peut être acquise en prennant un attribut au début du symbole, lequel est propagé pendant la réécriture. Dans un modèle d'immeuble, le style peut être différent pour chaque étage (ex. un immeuble d'appartement avec des boutiques au le rez-de-chaussé). Leur approche repose surtout sur la génération cohérente et plausible des façades pour des immeubles au forme relativement simple. Larive and Gaildrat (2006) utilise un grammaire de la même sorte, appelé \textit{wall grammar}. Avec cette grammaire, ils sont capables de générer des murs d'immeuble avec des détails géométriques additionnels, comme les balcons. \newline
+Wonka et al. (2003) introduisent le concept de \textit{split grammar}, une grammaire formelle indépendante du contexte (context-free formal grammar) dont le design est fait pour produire des modèles d'immeubles. Le split grammar ressemble à un L-system, mais il est bas" sur des formes comme éléments primitifs à la place des symboles. Dans leur système, un style spécific d'immeuble peut être acquise en prennant un attribut au début du symbole, lequel est propagé pendant la réécriture. Dans un modèle d'immeuble, le style peut être différent pour chaque étage (ex. un immeuble d'appartement avec des boutiques au le rez-de-chaussé). Leur approche repose surtout sur la génération cohérente et plausible des façades pour des immeubles au forme relativement simple. Larive and Gaildrat (2006) utilise un grammaire de la même sorte, appelé \textit{wall grammar}. Avec cette grammaire, ils sont capables de générer des murs d'immeuble avec des détails géométriques additionnels, comme les balcons. \newline
 
 Müller et al. (2006) appliquent une autre type de grammaire, appelée \textit{shape grammar}. La propriété principale d'un shape grammar est qu'il utilise des règles dépendant du contexte (context-sensitive), tandis qu'une split grammar utilisent des règles indépendantes du contexte (context-free), qui dans ce cas permet la possibilité de modéliser les toits et les formes arrondies (rotated shapes). Ils commencent avec une réunion de plusieurs formes volumétriques lesquelles définissent les bords des immeubles. Cette forme est ensuite divisée en étages et les façades produites sont subdivisées en murs, fenêtres, et portes par le moyen d'un système de grammaire. Dans une étape finale, le toit est construit sur le sommet de l'immeuble. Fig 1f montre un réseau routier et Fig 1g la ville correspondante générée par leur produit commercial, CityEngine (Procedural, inc. 2009). En plus des immeubles d'affaire bien connus, la grammaire peut aussi modéliser des immeubles résidentiels, ex. les maisons suburbaines ou les anciennes villas romaines. \newline
 
@@ -133,12 +134,185 @@ Müller et al. (2007) utilisent une approche très différente pour la construct
 
 Bien que les méthodes ci-dessys donne rapidement et visuellement des résultats plaisants, les villes qu'elles génèrent manque de structure réaliste. Une nouvelle recherche incorpore les théories et les modèles d'aménagement de territoire urbain existantes dans le processus de génération. Groenewegen et al. (2009) présentent une méthode qui génère une distribution de différents types de districts selon les modèles d'aménagement urbain dans l'Europe de l'Ouest et l'Amérique du Nord. Ils prennent en compte un grand éventail de facteurs significatifs, incluant le plan historique de la ville et de l'attraction que certains types de terrain (côteaus, océans, rivières) peuvent avoir par ex. les districs industriels ou résidentiels de grande classe. Weber et al. (2009) utilisent des modèles comparables (comparaison un peu simplifiée) pour une simulation d'une ville dans le temps. Leur système est rapide (environ 1s pour un an de simulation) et interactif, ce qui veut dire que l'utilisateur peut guider la simulation en changeant les routes ou en mettant une peinture pour le sol utilisé sur le terrain.
 
-\subsection{Conclusions}
+\section{Conclusions}
 
 Les méthodes procédurales pour la modélisation de terrain deviennent de plus en plus attractif pour l'industrie et le domaine académique. Nous avons classifié ces méthodes dans cinq domaines principales, et discuté d'une grande variété d'approches de recherche et des résultats obtenus grâce à elles: l'élévation de terrain, les éléments d'eau, la végétation, les réseaux routiers et les environnements urbains. \newline
 
 Depuis les tous débuts, où l'intérêt se focalisait surtout sur la génération de height-map, jusqu'à maintenant, avec un déplacement vers de plus en plus d'environnements urbains réalistes, il y a un considérable corps de résultats disponibles. Beaucoup de méthodes procédurales basiques déployent des blocs communs de construction comme le bruit, la réécriture formelle ou les simples systèmes de simulation, pour chacune un large nombre de variantes, souvent spécifique à un domaine, sont de nos jours proposées, en particulier pour la route et les catégories urbaines. Parmi toutes les catégories discutées, les zones relatives à l'eau sont clairement les plus sous-développées.\newline
 
 Concernant les recherches à venir, plusieurs intéressantes tendances ont été identifiées. Parmi elles, trois directions prometeuses peuvent être résumées comme suit. Premièrement, la performance et l'intéractivité des méthodes procédurales continuent de progresser, souvent au moyen de programmation parallèle sur le GPU. Deuxièmement, les réseaux routiers et les zones urbaines continueront certainement de s'améliorer dans le sens de la variété et des niveaux de détails, mais le bond du réalisme sera fourni probablement par le déployement de plus de sémantiques autant dans le processus de génération procédurale que dans les modèles générés (Tutenel et al., 2008). Et enfin, la clé du déploiement répandu des méthodes procédurales par les non-experts (ex. les designers de jeux, les artistes, les designers de scénarios) sera l'intégration des méthodes procédurales dans un framework, offrant entre autre chose, plus de contrôles intuitifs, d'outils pour générer des modèles complets de terrain et des mécanismes non intrusives pour le maintien de la consistence parmi les caractéristiques générés  (Smelik et al., 2009)
+
+\part{Génération automatique d’environnements virtuels urbains (2016) de Tiavina NIVOLALA}
+
+\chapter*{}
+
+\section*{Résumé}
+
+La génération automatique d’environnements virtuels urbains trouve une application dans la planification urbaine.
+
+Deux approches de génération:
+\begin{itemize}
+\item la génération direct à partir d’un modèle statique
+\item la génération procédurale
+\end{itemize}
+
+
+La méthode de Tiavina est une combinaison de ces deux approches.
+En deux étapes:
+\begin{itemize}
+\item[i)] créer un \textit{modèle de base de données hiérarchisée} contenant les \textit{éléments fondamentaux d’un environnement urbain}
+\item[ii)] appliquer des techniques procédurales pour générer automatiquement un environnement urbain à partir du \textit{style architectural} correspondant à des éléments de la base nouvellement créée
+\end{itemize}
+
+\section*{Introduction générale}
+
+A partir des villes existantes, on a simulé les villes virtuelles.
+Les villes virtuelles sont utilisées et représentent des plateformes pour l'intégration d'information.\newline
+
+La visualisation et l'exploration des paysages urbains pour assister à:
+\begin{itemize}
+\item la planification urbaine 
+\item le contrôle de trafic
+\item la gestion de désastres
+\item la création de mondes virtuels
+\item la réalité augmentée (superposition au monde réel)
+\end{itemize}
+
+Les villes ont des structures complexes d'où le besoin d'avoir un \textit{modèle de données normalisé} pour obtenir une \textbf{structuration de données cohérente et interopérable?}.
+
+L'augmentation de la qualité des jeux vidéo à base de polygones en conjonction avec l'augmentation des performances des cartes graphiques demandent et permettent la \textbf{visualisation de grande quantité de données}. Il n'est pas commode de créer manuelle de grandes quantités de modèles, d'où le besoin de techniques procédurales. 
+Sinon construite à la main, la construction de la ville virtuelle prendrait d'énorme délai.
+
+La génération des objets avec une approche procédurale est aggrémentée de caractère aléatoire contrôlable.
+Le souci est qu'elle produit des résultats imprévisibles en forme et en apparence.
+
+Chapitre 1: 
+\begin{itemize}
+\item Aperçu des différents standards et modèles déjà crées pour le stockage et la représentation des villes
+\item Quelques techniques de visualisation basés sur des modèles déjà existants
+\item Méthodes de visualisation purement procédurales.
+\end{itemize}
+
+Chapitre 2: son approche pour la création du système
+\begin{itemize}
+\item La conception et l’alimentation de la base
+\item La génération des villes à partir de cette base
+\item Méthodes de visualisation purement procédurales.
+\end{itemize}
+
+Chapitre 3:
+\begin{itemize}
+\item Outils utilisés pour la création du système
+\item Interface du système
+\end{itemize}
+
+\chapter{Etat de l'art}
+
+\section{Introduction}
+
+Generation de villes:
+
+\begin{itemize}
+	\item depuis modèle existant $\rightarrow$ normes de représentation $\rightarrow$ représentation du modèle $\rightarrow$ visualisation (lecture du modèle) 
+	\item depuis photo (aériennes ou terrestres)
+	\item de façon procédurale (sans modèle)
+\end{itemize}
+
+En deux parties: 
+\begin{itemize}
+	\item les standards dans la modélisation des villes
+	\item les techniques de visualisation de ces dernières
+\end{itemize}
+
+\section{Représentation des bâtiments et des villes}
+
+Plusieurs sources (modèles, procédures) $\Rightarrow$ besoin d'adoption d'une forme de représentation.
+
+Objectifs:
+\begin{itemize}
+\item[$\times$] décrire (représentation)
+\item[$\times$] gérer
+\item[$\times$] stocker
+\end{itemize}
+
+\subsection{IFC}
+
+Format neutre? pour:
+\begin{itemize}
+\item[$\times$] décrire + échanger des infos de construction de bâtiment
+\item[$\times$] norme pour openIBM?
+\item[$\times$] objectif: fournir une base universelle pour échanger des données concernant les bâtiments
+\item[$\times$] orienté BdD, sur des définitions de classes d'objets (éléments, processus, formes) pour les projets de construction (ex. d'entités: \textit{IfcWall}, de repr. de géométrie: \textit{IfcExtrudedAreaSolid}
+\item[$\times$] IFC structure qui renfèrme des espaces: \textit{IfcSpatialStructureElement} $\Rightarrow$ résultent en sites/buildings/étages ($\longleftarrow$ dérive) \textit{IfcProduct} $\Rightarrow$ a un lieu, une représentation géométrique (modèles solides)
+\end{itemize}
+
+\subsection{CityGML} 
+
+\subsubsection{Vue d'ensemble}
+
+Standard d'échanges et de représentation de données 3D
+Pour les modèles virtuels de villes et de paysages
+
+\begin{itemize}
+\item [$\times$] infos: géométrie/apparence/sémantique/topologie des objets
+\item [$\times$] Basé sur XML, ISO 19100??, Version 3.1.1 de Geography Markup Language (GML 3.1.1)
+\item [$\times$] Norme de l'Open Geospatial Consortium (OGC)
+\end{itemize}
+
+Modularisation de l'info géospatiale urbaine
+
+\subsubsection{Modules}
+
+Ville complexe $\approx$ Couverture de plusieurs thématiques des objets urbains
+CityGML rassemble:
+\begin{itemize}
+\item [$\times$] Modèle de base: concepts et composantes basiques
+\item [$\times$] Module d'ext. thématique: dépend du module de base\newline
+\end{itemize}
+
+Les onzes modules d'extension thématiques:
+\begin{itemize}
+\item [$\times$] Building
+\item [$\times$] Apparences ??
+\item [$\times$] CityFurniture ??
+\item [$\times$] CityObjectGroup ?
+\item [$\times$] GenericCityObject ?
+\item [$\times$] Landuse
+\item [$\times$] Relief
+\item [$\times$] Transportation
+\item [$\times$] Vegetation
+\item [$\times$] WaterBody
+\item [$\times$] TexturedSurface
+\end{itemize}
+
+\subsubsection{LoD}
+
+Pour faire les actions suivantes, CityGML utilise 5 LoD:
+\begin{itemize}
+	\item mode de collecte
+	\item application diverses
+\end{itemize}
+
+\begin{itemize}
+\item [$\times$] Building
+\item [$\times$] Apparences ??
+\item [$\times$] CityFurniture ??
+\item [$\times$] CityObjectGroup ?
+\item [$\times$] GenericCityObject ?
+\item [$\times$] Landuse
+\item [$\times$] Relief
+\item [$\times$] Transportation
+\item [$\times$] Vegetation
+\item [$\times$] WaterBody
+\item [$\times$] TexturedSurface
+\end{itemize}
+
+
+
+\part{Level detail for 3D Graphics - Terrain Level of detail (2003) de David Luebke et al.}
+
+\chapter*{}
+
+\section*{Résumé}
 
 \end{document}

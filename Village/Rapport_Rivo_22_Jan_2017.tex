@@ -1,0 +1,132 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage[colorlinks=true,
+            linkcolor=red,
+            urlcolor=blue,
+            citecolor=blue]{hyperref}
+\title{Rapport de documentation}
+\author{Raoelisolonarivony - MISA M2}
+\date{22 Janvier 2017}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\linespread{1.3}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\renewcommand{\headrulewidth}{0.5pt}
+\fancyhead[L]{RAOELISOLONARIVONY - MISA M2 - \textit{Rapport de documentation}}
+\fancyhead[C]{}
+\fancyhead[R]{22 Janvier 2017}
+
+\begin{document}
+
+\maketitle
+
+\section*{A Survey of Procedural Methods for Terrain Modelling (2009) de Ruben M. Smelik et al.}
+
+La création manuelle de contenus des mondes virtuels 3D est laborieuse et répétitive. 
+Le principe de la modélisation procédurale est de créer les contenus (les textures, les modèles géométriques, ...) automatiquement. Un sujet majeur traité est la \textbf{génération automatique de modèles de terrain}: les phénomènes naturels comme les élévations de terrain et la croissance des plantes, puis les environnements urbains créés par l'homme. \newline
+
+ Cette note recense les méthodes procédurales appliquées sur la \textbf{modélisation de terrain}, évaluant le réalisme de leur résultat, la performance et le contrôle que les utilisateurs peuvent avoir sur la procédure. \newline
+ 
+ En dépit de résultats encourageants, la modélisation procédurale n'est pas souvent appliquée à la modelisation de terrain dans sa totalité: les articles et les outils ne gèrent qu'un aspect particulier de la modélisation de terrain et l'adaptation des méthodes procédurales pour générer un modélisation de terrain complet et consistent demeurent jusqu'à maintenant irrésolus. Un autre problème connue des méthodes procédurales est le manque de contrôle qu'elles procurent. L'aléa inhérent au résultat obtenu force souvent les utilisateurs à modéliser par "trial and error". 
+
+
+\subsection*{Les modèles de plantes et la distribution de la végétation}
+
+Procédures de génération d'arbres et de modèles de plantes: obtenir un ensemble de plantes variées et des méthodes de placement automatique de la végétation dans un modèle de terrain (trop laborieux à la main).
+
+Les modèles de plantes procéduraux croissent, en commençant à la racine, ajoutant de plus en plus de petites branches et terminant par les feuilles. Ils sont fondés sur la grammaire formelle (grammar rewriting). Prusinkiewicz et Lindenmayer (1990) discutent du Lindenmayer-system, ou \textit{L-system}, un système de réécriture souvent utilisé. Ils expliquent comment les règles de production peuvent être appliquées en 3D, et présentent plusieurs exemples d'arbres générés ensemble avec leur grammaire. \newline
+
+Lintermann et Deussen (1999) proposent un système plus intuitif, en plaçant les composantes de la plante (ex. une feuille) dans un graphe. Les composantes connexes peuvent être structurées dans un sous-graphe (ex. une brindille). Le système parcours le graphe, générant et plaçant les instances des composantes dans un graphe intermédiaire qui est utilisé pour la génération géométrique. La figure 1e) montre un arbre créé avec leur logiciel de modélisation de plante commercial XFrog.\newline
+
+
+\newpage
+\begin{thebibliography}{2} 
+
+\bibitem{chern-2016}
+Albert CHERN, Felix KN$\ddot{O}$PPEL, Ulrich PINKALL, Peter SCHR$\ddot{O}$DER, and Steffen WEIßMANN. 2016.
+\textit{Schr$\ddot{o}$dinger's smoke}.
+ ACM Trans. Graph. 35, 4, Article 77 (July 2016), 13 pages. 
+
+\bibitem{da-2016}
+Fang DA, David HAHN, Christopher BATTY, Chris WOJTAN, and Eitan GRINSPUN. 2016.
+\textit{Surface-only liquids}.
+ ACM Trans. Graph. 35, 4, Article 78 (July 2016), 12 pages.
+
+\bibitem{fedkiw-stam-jensen-01}
+R. FEDKIW, J. STAM, and H. JENSEN. 2001.
+\textit{Visual simulation of smoke}.
+In Proc. SIGGRAPH, pages 15–22.
+
+\bibitem{Foster-96}
+Nick FOSTER and Dimitri METAXAS. 1996.
+\textit{Realistic animation of liquids}.
+Graph. Models Image Process. 58, 5, 471-483.
+
+\bibitem{harlow-65}
+F. HARLOW and J. WELCH. 1965.
+\textit{Numerical Calculation of Time-Dependent Viscous Incompressible Flow of Fluid with Free Surface}.
+Phys. Fluids, 8:2182–2189.
+
+\bibitem{Hong-05}
+Jeong-Mo HONG and Chang-Hun KIM. 2005.
+\textit{Discontinuous fluids}.
+ACM Trans. Graph. (Proc. SIGGRAPH),24:915–920.
+
+\bibitem{ladicky-2015}
+L'ubor LADICK\'{Y}, SoHyeon JEONG, Barbara SOLENTHALER, Marc POLLEFEYS, and Markus GROSS. 2015.
+\textit{Data-driven fluid simulations using regression forests}.
+ACM Trans. Graph. 34, 6, Article 199 (October 2015), 9 pages.
+
+\bibitem{muller-2003}
+Matthias M$\ddot{U}$LLER, David CHARYPAR, and Markus GROSS. 2003.
+\textit{Particle-based fluid simulation for interactive applications}.
+In Proceedings of the 2003 ACM SIGGRAPH/Eurographics symposium on Computer animation (SCA '03). Eurographics Association, Aire-la-Ville, Switzerland, Switzerland, 154-159.
+
+\bibitem{osher-fedkiw-2002}
+S. OSHER and R. FEDKIW. 2002.
+\textit{Level Set Methods and Dynamic Implicit Surfaces}.
+Springer-Verlag. New York, NY.
+
+\bibitem{peer-2015}
+Andreas PEER, Markus IHMSEN, Jens CORNELIS, and Matthias TESCHNER. 2015.
+\textit{An implicit viscosity formulation for SPH fluids}.
+ACM Trans. Graph. 34, 4, Article 114 (July 2015), 10 pages.
+
+\bibitem{reisch-2016}
+Jon REISCH, Stephen MARSHALL, Magnus WRENNINGE, Tolga GOKTEKIN, Michael HALL, Michael O'BRIEN, Jason JOHNSTON, Jordan REMPEL, and Andy LIN. 2016.
+\textit{ Simulating rivers in the good dinosaur}.
+ In ACM SIGGRAPH 2016 Talks (SIGGRAPH '16). ACM, New York, NY, USA, Article 40 , 1 pages
+
+\bibitem{Selle-2005}
+Andrew SELLE, Nick RASMUSSEN, and Ronald FEDKIW. 2005.
+\textit{A vortex particle method for smoke, water and explosions}.
+ACM Trans. Graph. (Proc. SIGGRAPH), pages 910–914.
+
+\bibitem{serritella-2016}
+Vincent SERRITELLA, Hosuk CHANG, Leon J. W. PARK, Ferdi SCHEEPERS, and Brett LEVIN. 2016.
+\textit{Lapping water effects in Piper}.
+In ACM SIGGRAPH 2016 Talks (SIGGRAPH '16). ACM, New York, NY, USA, Article 39 , 1 pages
+
+\bibitem{stam-99}
+Jos STAM. 1999.
+\textit{Stable fluids}.
+In Proc. SIGGRAPH, pages 121–128.
+
+\end{thebibliography}
+
+\end{document}

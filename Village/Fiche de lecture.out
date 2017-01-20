@@ -1,9 +1,16 @@
-\BOOKMARK [1][-]{section.1}{A Survey of Procedural Methods for Terrain Modelling \(2009\) de Ruben M. Smelik et al.}{}% 1
-\BOOKMARK [2][-]{subsection.1.1}{Abstract}{section.1}% 2
-\BOOKMARK [2][-]{subsection.1.2}{Introduction}{section.1}% 3
-\BOOKMARK [2][-]{subsection.1.3}{Height-maps}{section.1}% 4
-\BOOKMARK [2][-]{subsection.1.4}{Rivi\350res, Oc\351ans et Lacs}{section.1}% 5
-\BOOKMARK [2][-]{subsection.1.5}{Les mod\350les de plantes et la distribution de la v\351g\351tation}{section.1}% 6
-\BOOKMARK [2][-]{subsection.1.6}{Les r\351seaux routiers}{section.1}% 7
-\BOOKMARK [2][-]{subsection.1.7}{Les environnements urbains}{section.1}% 8
-\BOOKMARK [2][-]{subsection.1.8}{Conclusions}{section.1}% 9
+\BOOKMARK [-1][-]{part.1}{I A Survey of Procedural Methods for Terrain Modelling \(2009\) de Ruben M. Smelik et al.}{}% 1
+\BOOKMARK [0][-]{chapter.1}{Survey}{part.1}% 2
+\BOOKMARK [1][-]{section.1.1}{Abstract}{chapter.1}% 3
+\BOOKMARK [1][-]{section.1.2}{Introduction}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.3}{Height-maps}{chapter.1}% 5
+\BOOKMARK [1][-]{section.1.4}{Rivi\350res, Oc\351ans et Lacs}{chapter.1}% 6
+\BOOKMARK [1][-]{section.1.5}{Les mod\350les de plantes et la distribution de la v\351g\351tation}{chapter.1}% 7
+\BOOKMARK [1][-]{section.1.6}{Les r\351seaux routiers}{chapter.1}% 8
+\BOOKMARK [1][-]{section.1.7}{Les environnements urbains}{chapter.1}% 9
+\BOOKMARK [1][-]{section.1.8}{Conclusions}{chapter.1}% 10
+\BOOKMARK [-1][-]{part.2}{II G\351n\351ration automatique d\220environnements virtuels urbains \(2016\) de Tiavina NIVOLALA}{}% 11
+\BOOKMARK [0][-]{chapter.2}{Etat de l'art}{part.2}% 12
+\BOOKMARK [1][-]{section.2.1}{Introduction}{chapter.2}% 13
+\BOOKMARK [1][-]{section.2.2}{Repr\351sentation des b\342timents et des villes}{chapter.2}% 14
+\BOOKMARK [2][-]{subsection.2.2.1}{IFC}{section.2.2}% 15
+\BOOKMARK [2][-]{subsection.2.2.2}{CityGML}{section.2.2}% 16
