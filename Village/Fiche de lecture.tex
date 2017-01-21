@@ -66,7 +66,19 @@ Ces height-maps peuvent être transformés sur la base de filtres  communs d'ima
 
 Bien que ces algorithmes d'érosions ajoutent beaucoup de réalisme aux terrains montagneux, ils sont réputés lents, ayant besoin de faire des centaines, voire des milliers d'itérations. Une récente recherche s'est penchée sur des algorithmes d'érosion interractifs, souvent en portant l'algorithmes sur le GPU. Des exemples prométeuses comprennent (Anh et al. 2007) et (Stava et al., 2008). \newline
 
-La génération de height-map basée sur le bruit basique produit des résultats bien aléatoires; les utilisateurs contrôlent le résultat seulement à un niveau global, souvent utilisant des paramètres non intuitifs. Plusieurs chercheurs se sont penchés sur ce problème. Stachniak and Stuerwlinger (2005) propose une méthode qui intègre les contraintes (exprimées comme des masques d'images) dans le processus de génération de terrain. Il emploie un algorithme de recherche qui cherche un ensemble d'opérations de déformation acceptable à appliquer à un terrain aléatoire dans le but d'obtenir un terrain qui est conforme à ces contraintes. Schneider et al. (2006) introduisent un environnement d'édition dans lequel l'utilisateur peut changer le terrain en modifiant interactivement les fonctions de base du générateur de bruits (en remplaçant le bruit de Perlin par un ensemble d'images en niveau de gris dessinées par l'utilisateur). Zhou et al. (2007) décrivent une technique qui génère le terrain basé sur un exemple en entrée height-map et une ligne dessinée par l'utilisateur qui définie l'occurence de caractéristiques de ligne courbée en niveau de gris, comme une crête de montagne. Les caractéristiques sont extraites de l'exemple height-map et doivent correspondre aux courbes dessinées et être recousu sur le height-map résultant. De Carpentier et Bidarra (2009) introduisent les pinceaux procéduraux (procedural brushes): les utilisateurs peignent le terrain en height-map directement en 3D en appliquant simplement les pinceaux élévante de terrain (terrain raising brushes) mais également des pinceaux basés sur le GPU qui génère plusieurs types de bruit en temps réel (voir Fig. 1a). Saunders (2006) propose un méthode très différente, laquelle synthétise un height-map en se basant sur des Modèles d'élévation  digitale (ou DEM: Digital Elevation Models) du terrain réel. Un utilisateur de son système Terrainosaurus dessine un carte 2D de régions polygonales, chacune d'elle est marquée pour avoir un certain profile d'élévation. Pour le réalisme, les bords direct (straight boundaries) de la région sont perturbés puis rastériser dans une grille. Un height-map est instantié en utilisant un algorithme génétique qui sélectionne les données DEM qui correspondent au profil d'élévation requis. Kamal et Uddin (2007) présente un algorithme de déplacement en milieu de point sous contrainte (constrained mid-point displacement algorithm) qui crée une seule montagne correspondante à des propriétés comme l'élévation et l'étalement de la base. Belhadj (2007) introduit un système plus général où un ensemble de valeurs élévations connues contraignent le processus de déplacement en milieu de point (mid-point deplacement). Des applications possibles sont l'interpolation grossière et incomplète de DEM ou des lignes dessinées par l'utilisateur. \newline
+La génération de height-map basée sur le bruit basique produit des résultats bien aléatoires; les utilisateurs contrôlent le résultat seulement à un niveau global, souvent utilisant des paramètres non intuitifs. 
+
+Plusieurs chercheurs se sont penchés sur ce problème. Stachniak and Stuerwlinger (2005) propose une méthode qui intègre les contraintes (exprimées comme des masques d'images) dans le processus de génération de terrain. Il emploie un algorithme de recherche qui cherche un ensemble d'opérations de déformation acceptable à appliquer à un terrain aléatoire dans le but d'obtenir un terrain qui est conforme à ces contraintes. 
+
+Schneider et al. (2006) introduisent un environnement d'édition dans lequel l'utilisateur peut changer le terrain en modifiant interactivement les fonctions de base du générateur de bruits (en remplaçant le bruit de Perlin par un ensemble d'images en niveau de gris dessinées par l'utilisateur). 
+
+Zhou et al. (2007) décrivent une technique qui génère le terrain basé sur un exemple en entrée height-map et une ligne dessinée par l'utilisateur qui définie l'occurence de caractéristiques de ligne courbée en niveau de gris, comme une crête de montagne. Les caractéristiques sont extraites de l'exemple height-map et doivent correspondre aux courbes dessinées et être recousu sur le height-map résultant. 
+
+De Carpentier et Bidarra (2009) introduisent les pinceaux procéduraux (procedural brushes): les utilisateurs peignent le terrain en height-map directement en 3D en appliquant simplement les pinceaux élévante de terrain (terrain raising brushes) mais également des pinceaux basés sur le GPU qui génère plusieurs types de bruit en temps réel (voir Fig. 1a). 
+
+Saunders (2006) propose un méthode très différente, laquelle synthétise un height-map en se basant sur des Modèles d'élévation  digitale (ou DEM: Digital Elevation Models) du terrain réel. Un utilisateur de son système Terrainosaurus dessine un carte 2D de régions polygonales, chacune d'elle est marquée pour avoir un certain profile d'élévation. Pour le réalisme, les bords direct (straight boundaries) de la région sont perturbés puis rastériser dans une grille. Un height-map est instantié en utilisant un algorithme génétique qui sélectionne les données DEM qui correspondent au profil d'élévation requis. 
+
+Kamal et Uddin (2007) présente un algorithme de déplacement en milieu de point sous contrainte (constrained mid-point displacement algorithm) qui crée une seule montagne correspondante à des propriétés comme l'élévation et l'étalement de la base. Belhadj (2007) introduit un système plus général où un ensemble de valeurs élévations connues contraignent le processus de déplacement en milieu de point (mid-point deplacement). Des applications possibles sont l'interpolation grossière et incomplète de DEM ou des lignes dessinées par l'utilisateur. \newline
 
 Une limitation inhérente aux height-map est qu'ils ne supportent pas les rochers surplombants et les grottes (cavités). Gamito et Musgrave (2001) proposent un système de gauchissement de terrain qui résulte à un surplomb régulier artificiel. Une méthode récente (Peytavie et al., 2009) procure une structure plus élaborée avec différentes couches de matériaux qui supportent les rochers, les arches, les surplombs et les grottes. Leurs modèles de terrain sont visuellement plausibles et naturels.\newline
 
@@ -74,7 +86,7 @@ Comme illustration de l'état-de-l'art parmi les outils de support, (Voir Fig. 1
 
 \section{Rivières, Océans et Lacs}
 
-Pour générer des rivières, plusieurs auteurs ont proposés des algorihtmes qui s'exécutent soit pendant soit après la génération height-map. Kelley et al (1988) prennent un réseau de rivière comme la base d'un height-map. Ils commencent par une unique rivière bien droite et le subdivisent récursivement, produisant un réseau de courants. Cela forme un squelette pour le height-map, qui est complété en utilisant une fonction d'interpolation de données éparpillées. Le type de climat et le matériau du sol influencent la forme du réseau du courant. \newline
+Pour générer des rivières, plusieurs auteurs ont proposés des algorihtmes qui s'exécutent soit pendant soit après la génération height-map. Kelley et al (1988) \cite{kelley-88} prennent un réseau de rivière comme la base d'un height-map. Ils commencent par une unique rivière bien droite et le subdivisent récursivement, produisant un réseau de courants. Cela forme un squelette pour le height-map, qui est complété en utilisant une fonction d'interpolation de données éparpillées. Le type de climat et le matériau du sol influencent la forme du réseau du courant. \newline
 
 Prusinkiewicz et Hammel (1993) combinent la génération d'une rivière courbée avec un schéma de subdivision de height-map. Du triangle de départ d'une rivière, un bord est marqué comme l'entrée et l'autre bord comme la sortie d'une rivière. Dans l'étape de subdivision, le triangle est divisé en triangles plus petites, et la course de la rivière à partir de l'entrée jusqu'à la sortie peut prendre maintenant plusieurs formes alternatives. L'élévation des triangles contenant la rivière est prise comme la somme des déplacements négatives de la rivière sur tous les niveaux de récursion (produisant le lit de la rivière), les autres triangles sont traités en utilisant le déplacement de milieu de point standard. Après huit ou plus récursions, la course de la rivière résultante parait raisonnablement naturelle. Un point négatif majeur de l'approche est que la rivière est placée à un niveau d'élévation constant et bas, et alors les cisailements s'enfoncent à travers un terrain montagneux de manière non naturelle. \newline
 
@@ -314,5 +326,105 @@ Pour faire les actions suivantes, CityGML utilise 5 LoD:
 \chapter*{}
 
 \section*{Résumé}
+
+
+\part{Julien Pettre and Ming Lin. 2014. New generation crowd simulation algorithms. ACM SIGGRAPH 2014 Courses}
+
+Les foules sont souvent simulées par des algorithmes microscopiques parce qu'ils permettent de générer des trajectoires fluides pour les individus, ils sont basés sur les intéractions locales entre les agents (le mouvement est la combinaison entre les mouvements locaux et les interactions).
+
+Les principaux problèmes sont les mouvements émergents (l'apparition de nouveau mouvement) qui sont imprévisibles.
+Des algorithmes de simulation de modèles de mouvements et d'interaction consistent à associer chaque modèle à  un mouvement spécifique de la foule avec des trajectoires spécifiques. Le point négatif est le manque d'oscillations dans les trajectoires, les trajectoires improbables, les collisions résiduelles et les agents tombant dans des cul-de-sac.
+
+Le document détaille les progrès effectués dans les algorithmes de simulation basés sur la vélocité (velocity-based), l'impact de la qualité du réalisme du mouvement dans l'industrie et ses applications.
+
+Première partie: la définition des modèles microscopiques de simulation avec les principales solutions proposées (les algorithmes basés sur la vélocité par rapport aux autres approches).
+
+Deuxième partie: La technique: les solutions les plus utilisées basées sur la RVO (Reciprocal Velocity Obstacles)
+
+Troisième partie: Comment utiliser les algorithmes en pratique: dans les situations d'urgence, les films
+
+La foule est constitué d'un ensemble d'individus dans un même endroit partageant les mêmes objectifs.
+
+Chaque individu a des interactions avec ses voisins (dépend de facteurs individuels et du milieu ie. physique, psychologique, social et environnemental)
+
+La foule en mouvement dans les places publiques, les immeubles ou les évènements forment surtout des interactions physiques (les individus s'évitent, se suivent, se regroupent ou se dispersent). Combinées, ces interactions forment une structure émergent à plus grande échelle qui consistuent les principales caractéristiques des mouvements.
+
+Ces études sont importantes pour:
+\begin{itemize}
+\item les architectes pour prédire le traffic piéton et améliorer les niveaux de services dans les immeubles publics
+\item les designers pour simuler le champ de bataille ou créer les populations de scènes virtuels
+\item les designers de jeux vidéos pour créer des scénarios convaincants de villes virtuelles
+\end{itemize}
+
+Deux classes majeures d'approches: l'approche macroscopique (considérer l'aspect global du mouvement de la foule comme la modélisation comme un fluide visqueux) et l'approche microscopique
+
+L'approche microscopique: donne des trajectoires d'agent individuel lisses, basée sur les modèles d'interactions entre les agents, le comportement global est un phénomène émergent (plusieurs interactions entre les agents)
+
+Les éléments de la simulation sont:
+1. La séléction des voisins: trouver l'ensemble de voisins en interaction avec l'agent
+2. Le modèle d'interaction locale: comment chaque interaction influence le mouvement des agents
+3. La combinaison des interactions: intégration de toutes les interactions pour un agent donné
+
+Les nouveaux modèles d'interaction locale: les nouveautés des modèles basées sur la vélocité (déjà dix ans plutôt) sont capables de simuler comment les humains dirige leur mouvement en anticipant ceux des autres, une percée dans le niveau de réalisme.
+
+Partie 1: Définition du modèle local d'intéractions basé sur la vélocité, de quelle manière permet-il d'anticiper les réactions
+
+Partie 2: Un modèle populaire: RVO et ses variantes
+
+Partie 3: Les applications, chez la compagnie Gelaem avec les scènes de foules dans les films. Les bénéfices de la RVO et Unity3D.
+
+L'algorithme de simulation basé sur la vélocité:
+
+Objectif du microscopique: calculer les comportements macroscopiques en simulant les interactions entre le peuple à une échelle locale (par exemple, la simulation des piétons)
+
+Prédiction des conditions du trafic global depuis des modèles numériques d'interactions physiques d'une foule en mouvement: éviter les obstacles statiques ou en mouvement dans le voisinage, ie. éviter les collisions et l'interpénétration entre les corps simulés
+
+Basé sur la vélocité: nouveau type de modèles numériques (2007) pour le besoin de réalisme dans toutes les échelles (même les plus petites).
+
+Les soucis des techniques précédentes: manque d'anticipation, les agents bloqués dans des situations de cul-de-sac, les oscillations de mouvement étranges
+
+Eviter la collision avec anticipation: les manoeuvres d'évitement sont effectués bien avant que les agents soit proches les uns des autres.
+
+L'anticipation ne peut pas provenir de modèles microscopiques formulant l'interaction comme une fonction de la distance entre les agents (comme les systèmes de particules et les modèles inspirés par la physique)
+
+Dans les modèles basés sur la vélocité, les intéractions sont définies en fonction de la position de chaque agent (son état) et de sa vélocité (dérivée de la position par rapport au temps)
+
+Une décomposition, pour chaque agent, du domaine de vélocités atteignable (tous les mouvements global qu'un agent peut effectuer) en deux composantes: le domaine des vélocités admissible et celui des vélocités inadmissibles.
+
+L'espace admissible est l'ensemble des vélocités avec lesquelles un agent peut se déplacer sans risque de future collision.
+
+Le domaine inadmissible contient les vélocités provoquant des collisions.
+
+La notion de temps est liée à celle du risque de collision par la TTC (Time-to-collision) qui  décrit le risque suivant la dimension de temps.
+
+Comment trouver les domaines, quand il y a des obstacles en mouvement, quand chaque agent effectue une adaptation indépendamment les un des autres?
+
+En travaillant sur de courtes fenêtres de temps et en mettant à jour constamment l'état et les décisions de l'agent, on obtient des résultats de simulations fluides. Les modèles peuvent être ensuite évaluer avec des données réelles pour avoir des simulations réalistes.
+
+L'objectif de la note: un aperçu des solutions existantes
+Section 2 les modèles basés sur la vélocité par rapport aux autres méthodes et liste des modèles basés sur la vélocité
+Section 3 Les modèles basés sur la vélocité ajoutés à la réalité
+Section 4 Trois modèles basés sur la vélocité pour la description pédagogique et leurs singularités
+Section 5 Les différences entre les modèles + les axes futures de développement pour ces nouvelles catégories de modèles
+
+
+
+\newpage
+\begin{thebibliography}{2} 
+
+\bibitem{kelley-88}
+Kelley, A. D., Malin, M. C., and Nielson, G. M.. 1988.
+\textit{Terrain Simulation Using a Model of Stream Erosion}.
+In SIGGRAPH ’88: Proceedings of the 15 th Annual Conference on Computer
+Graphics and Interactive Techniques, pages 263–268, New York, NY, USA. ACM.
+
+\bibitem{smelik-10}
+Smelik, R., de Kraker, K. J., Tutenel, T., and Bidarra, R.. 2010.
+\textit{Declarative Terrain Modeling for Military Training Games}.
+International Journal of Computer Games Technology
+
+
+
+\end{thebibliography}
 
 \end{document}
