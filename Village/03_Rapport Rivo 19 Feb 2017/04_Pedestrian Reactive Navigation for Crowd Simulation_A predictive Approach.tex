@@ -1,0 +1,93 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage[colorlinks=true,
+            linkcolor=red,
+            urlcolor=blue,
+            citecolor=blue]{hyperref}
+            
+\title{Pedestrian Reactive Navigation for Crowd Simulation: a Predictive Approach}
+\author{Sébastien Paris}
+\date{IRISA, Campus de Beaulieu, F-35042 Rennes, FRANCE, 2007}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\linespread{1}
+
+\begin{document}
+
+\maketitle
+
+\section*{Abstract}
+
+L'article décrit l'approche de résolution du \textit{problème de déplacement autonome des piétons} dans le domaine de la simulation de la foule. 
+
+La méthode a pour but de \textit{résoudre les interactions entre les piétons et l'évitement de collision}. Elle est basée sur les agents et est prédictive, c'est-à-dire que chaque agent percoit les trajectoires des agents environants et fait leur extrapolation  pour réagir en avance à des collisions potentielles. 
+
+Les auteurs veulent des \textit{résultats réalistes}, ils effectuent une calibration du modèle depuis des données expérimentales de capture de mouvement. Les résultats obtenus sont valides et résolvent les points négatifs (le manque d'anticipation) des approches précédentes (les oscillations).
+
+Dans l'article, ils font une représentation mathématique et décrivent l'implémentation du modèle. Pour finir, ils discutent de la calibration et de la validation par rapport à des données réels.
+
+\section{Introduction}
+
+Simuler les interactions entre les piétons est difficile à cause de la \textit{complexité croissante à mesure que la densité de la population augmente}. Le \textit{réalisme est mis à mal par notre capacité à détecter les artifices de la simulation} vu notre habitude à cotoyer de mouvements réels de piétons dans notre quotidien.
+Cette technique de navigation réactive peut être appliquée dans le \textit{domaine de l'architecture, de la sécurité, de l'ergonomie de l'espace, du divertissement}.
+L'attente de voir \textit{émerger un mouvement de foule naturel} depuis notre simulation microscopique de piétons est compréhensible. 
+
+Les inputs du modèle sont:
+\begin{itemize}
+	\item la définition de l'environement
+	\item un plan de navigation
+		\begin{itemize}
+			\item l'état courant de chaque piéton
+			\item la destination de chaque piéton\newline
+		\end{itemize}
+\end{itemize}
+
+La méthode consiste à vérifier les interactions futures des piétons: l'évolution de leurs positions par extrapolation de leur état actuel.
+
+Le modèle est calibré par les données de capture de mouvement effectuée en deux temps:
+\begin{itemize}
+\item la calibration du modèle avec les premières données acquises en mesurant les interactions entre deux participants
+\item la capture des mouvements de plusieurs participants (le maximum supporté par notre système) pour tester et valider la simulation avec les données acquises.\newline
+\end{itemize}
+
+Nous avons contribuer sur deux plans:
+\begin{itemize}
+\item la résolution des points négatifs des approches précédentes (oscillations, jams) qui manquent d'anticipation et réagissent trop simplement face aux collisions
+\item la mise en place d'une calibration/validation par capture de mouvement qui permet la décomposition en temps et dans l'espace de la réaction vis-à-vis des collisions potentielles. Les méthodes de validation classiques reposant sur des séquences de vidéos configurées manuellement. Elles manquent de précision. Notre méthode permet d'extraire un critère pour détecter le besoin de réaction et calculer les corrections pour une trajectoire adéquate.
+\end{itemize}
+
+\section{Travaux relatifs à notre méthode}
+
+Il affirme que la navigation des humains virtuels dans un environnement est une tâche encore irrésolue. Elle dépend non seulement de la géométrie des lieux, mais également de la visibilité et de la topologie d'où l'importance d'un environnement structuré et informatif.
+
+Il décrit l'importance de la prédiction et de l'anticipation à travers les travaux de Goffman (1971) qui a étudié le sujet des interactions entre les piétons d'un point de vue géométrique et sociologique (causé par l'indifférence entre étrangers). Il énonce trois techniques de Goffman: externalisation, scanning, minimisation de l'ajustement. Il parle des notions introduites comme celle de la région de sécurité ovale et de modification minimale de trajectoire pour l'anticipation.
+
+Les flux de piétons marchant dans des sens opposés générent une séparation en deux groupes dans les deux sens. Si la densité de piétons augmente, le flux est approximé par les lois de la dynamique des fluides [TCP06]. Dans les situations de panique, les mouvements s'accélèrent et ces règles sociales cèdent la place à des comportements de mime consistant à reproduire les mouvements du personnages de devant dans le flux.
+
+Pour Yamori [Yam98], la notion de régulation est inévitable, une convention entre les personnes évoluant dans une macro structure. Musse et al. [MT01] note cependant l'existence de petits groupes leaders qui gouvernent le comportement dans l'ensemble. Boles [Bol81] fait le même constat avec l'existance de bande de piétons, configuration optimale pour réguler le flux opposé.
+
+Pour Yamori, le problème le plus crucial concerne la relation entre les structures microscopique et macroscopique: comment un individu est contraint par l'institution d'un côté et comment la communauté est touchée par le comportement d'un individu. 
+
+Historiquement, les méthodes macroscopiques ont été les premières a retenir l'attention par leur coût en calcul faible. Le piéton est traité comme un composant d'une structure macroscopique [Hen71, PM78], Sung et al. [SGC04] (l'animation).
+Les simulations microscopiques reposent sur la gestion du déplacement de chaque individu du groupe. Un système dynamique d'évitement de collision est nécessaire pour ces simulations, par exemple le système de particule ou le système de troupeau. Les \textbf{systèmes de particules} sont basés sur les forces physiques d'attraction/répulsion vis-à-vis des obstacles dont les effets permettent de calculer la nouvelle direction/vitesse d'un piéton [HFV00, BMdOB03, LKF05]. Ce modèle est utile pour simuler des foules denses dans des zones restreintes, surtout en situation d'urgence [Pes71].\footnote{paramètres: vélocités aléatoires entre 0: pseudo-statique et 1: usain bolt, besoin d'une distribution de Gauss, ce paramètre peut définir la situation de panique vs la situation normale, mettre un seuil 0.7: fast et 0.8: furious}
+Il affirme que ce modèle ne prend pas en compte l'anticipation et les lois sociales. En inspectant les trajectoires des individus, il affirme que des oscillations comme des mouvements de marche arrière du dernier piéton repoussé par le piéton devant lui ou les changements de directions. Un autre point négatif est le petit temps de convergence.
+Les \textbf{systèmes d'attroupement} sont basés sur la définition de règles de comportement avec les piétons voisins. Ces systèmes sont très adaptés pour les mouvements de groupes d'animaux sous la direction d'un leader.
+
+Loscos et al. [LMM03] utilise des grilles régulières fines pour gérer une navigation réactive et pour stocker les informations sur les mouvements des piétons, ce qui rend possible l'émergence de flux de piétons. Shao et al. [ST05] utilise une carte de quatree pour le planning du chemin et une grille régulière fine pour l'évitement des obstacles.
+
+
+\end{document}

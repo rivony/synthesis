@@ -1,0 +1,41 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage[colorlinks=true,
+            linkcolor=red,
+            urlcolor=blue,
+            citecolor=blue]{hyperref}
+            
+\title{Modeling Landscapes with Ridges and Rivers: a bottom up approach}
+\author{Farès Belhadj and Pierre Audibert}
+\date{Université Paris 8 - 2005}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\linespread{1}
+
+\begin{document}
+
+\maketitle
+
+Cet article décrit une génération procédurale de terrains à partir des chaînes de montagnes et des réseaux de rivières. Elle se déroule en trois étapes: (1) la création de réseaux de chaînes de montagnes et de rivières qui constituent le squelette de départ du terrain sous forme de carte \textbf{DEM} (Digital Elevation Map), (2) l'extrapolation préliminaire des coordonnées manquantes à partir d'une \textbf{MDI} (Midpoint Displacement's Inverse) pour enrichir les données d'élévation de base (3) suivi d'une subdivision normale \textbf{MD} (Midpoint displacement) pour combler les données des points restants.
+
+La génération de chaînes de montagnes se fait en utilisant des paires de particules $(r_i, r_{i+1})$ placées initialement à une même hauteur $y_0$, à une position commune $P_{0}$ aléatoirement définie, lancées avec des angles initiaux opposés et influencées pour décrire un mouvement "Fractional Brownian" sur le plan $(xz)$. A chaque étape notée par la distance $\delta$ et chaque itération $i$ , c'est-à-dire sur la distance parcourue $i \times \delta$, l'altitude de chaque particule diminue suivant une courbe gaussienne $\mathcal{G}_1$ centrée sur la position de départ $P_{0}$ dont la déviation est $\sigma = \frac{1}{4} \times largeur(DEM)$. Sur le parcours de la section $[P_i, P_{i+1}]$, un DEM initialement vide stocke les valeurs successives des altitudes de chaque particule. Chaque point $p \in [P_i, P_{i+1}]$  décrit à leur tour une deuxième courbe gaussienne $\mathcal{G}_2(p, \sigma^{\prime} = \frac{1}{4}\sigma)$ perpendiculaire à la section $[P_i, P_{i+1}]$ avec une amplitude égale à $altitude(p)$. Le processus de traçage de crêtes de montagne pour une particule se termine quand la particule devient statique (altitude nulle) ou qu'elle intersecte le chemin d'une autre particule.
+
+Le réseau de rivières est similairement généré, procédant cette fois-ci avec des particules de rivière, possédant une masse (utilisée pour la génération de la largeur/profondeur) et soumises à la force de la gravité avec une vélocité, et un identifiant. Ces particules de rivières sont disposées aléatoirement sur les sommets des chaînes de montagnes, dont le mouvement est simulé par des modèles de la physique. Chaque position de la particule est stockée dans une liste de coordonnées $path(r_i)$ et sur la carte. Quand une particule $r_i$ croise un chemin $path(r_j)$, il s'arrête et la particule $r_j$ est repositionnée (par backtracking) à l'intersection telle que sa masse soit la somme des masses des deux particules $mass(r_j) = mass(r_j) + mass(r_i)$ et sa vélocité $\overrightarrow{velocity(r_j)} = \overrightarrow{velocity(r_j)} + \overrightarrow{velocity(r_i)}$. Le processus se termine quand toutes les particules sont statiques ou qu'elles dépassent les limites du terrain.
+
+Après les deux premières étapes, seules les coordonnées du squelette du réseaux de chaîne et de rivières sont préservées sur la carte DEM, les autres coordonnées sont réinitialisées. Ils définissent quatre états: l'état \textit{NULL} pour les coordonnées non calculées, l'état RIDGE dont la coordonnée est l'altitude de la particule à cette position, l'état RIVER valué avec l'altitude d'une particule de rivière et l'état DONE indiquant qu'elle est déterminée. Seules les coordonnées à l'état NULL sont à déterminer pour la carte DEM. L'interpolation des données manquantes pour générer le terrain fractale se déroule en deux étapes. La première permet d'éviter des discontinuités sur le modèle de terrain, cette étape utilisant la méthode MDI consiste à trouver les points parents (coins initiaux) des triangles enfants de la subdivision en mettant les parents possibles dans une liste, les données sont enrichies. La deuxième étapes est l'interpolation par subdivision MD pour calculer toutes valeurs des coordonnées à l'état NULL: deux modèles de subdivision ont été testés, \textit{Triangle-Edge} et \textit{Diamond-Square}. 
+
+\end{document}
