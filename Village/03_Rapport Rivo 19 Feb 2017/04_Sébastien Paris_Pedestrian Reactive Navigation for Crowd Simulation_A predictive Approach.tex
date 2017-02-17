@@ -1,0 +1,231 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage[colorlinks=true,
+            linkcolor=red,
+            urlcolor=blue,
+            citecolor=blue]{hyperref}
+            
+\title{Pedestrian Reactive Navigation for Crowd Simulation: a Predictive Approach}
+\author{Sébastien Paris}
+\date{IRISA, Campus de Beaulieu, F-35042 Rennes, FRANCE, 2007}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\linespread{1}
+
+\begin{document}
+
+\maketitle
+
+\section*{Abstract}
+
+L'article décrit l'approche de résolution du \textit{problème de déplacement autonome des piétons} dans le domaine de la simulation de la foule. 
+
+La méthode a pour but de \textit{résoudre les interactions entre les piétons et l'évitement de collision}. Elle est basée sur les agents et est prédictive, c'est-à-dire que chaque agent percoit les trajectoires des agents environants et fait leur extrapolation  pour réagir en avance à des collisions potentielles. 
+
+Les auteurs veulent des \textit{résultats réalistes}, ils effectuent une calibration du modèle depuis des données expérimentales de capture de mouvement. Les résultats obtenus sont valides et résolvent les points négatifs (le manque d'anticipation) des approches précédentes (les oscillations).
+
+Dans l'article, ils font une représentation mathématique et décrivent l'implémentation du modèle. Pour finir, ils discutent de la calibration et de la validation par rapport à des données réels.
+
+\section{Introduction}
+
+Simuler les interactions entre les piétons est difficile à cause de la \textit{complexité croissante à mesure que la densité de la population augmente}. Le \textit{réalisme est mis à mal par notre capacité à détecter les artifices de la simulation} vu notre habitude à cotoyer de mouvements réels de piétons dans notre quotidien.
+Cette technique de navigation réactive peut être appliquée dans le \textit{domaine de l'architecture, de la sécurité, de l'ergonomie de l'espace, du divertissement}.
+L'attente de voir \textit{émerger un mouvement de foule naturel} depuis notre simulation microscopique de piétons est compréhensible. 
+
+Les inputs du modèle sont:
+\begin{itemize}
+	\item la définition de l'environement
+	\item un plan de navigation
+		\begin{itemize}
+			\item l'état courant de chaque piéton
+			\item la destination de chaque piéton\newline
+		\end{itemize}
+\end{itemize}
+
+La méthode consiste à vérifier les interactions futures des piétons: l'évolution de leurs positions par extrapolation de leur état actuel.
+
+Le modèle est calibré par les données de capture de mouvement effectuée en deux temps:
+\begin{itemize}
+\item la calibration du modèle avec les premières données acquises en mesurant les interactions entre deux participants
+\item la capture des mouvements de plusieurs participants (le maximum supporté par notre système) pour tester et valider la simulation avec les données acquises.\newline
+\end{itemize}
+
+Nous avons contribuer sur deux plans:
+\begin{itemize}
+\item la résolution des points négatifs des approches précédentes (oscillations, jams) qui manquent d'anticipation et réagissent trop simplement face aux collisions
+\item la mise en place d'une calibration/validation par capture de mouvement qui permet la décomposition en temps et dans l'espace de la réaction vis-à-vis des collisions potentielles. Les méthodes de validation classiques reposant sur des séquences de vidéos configurées manuellement. Elles manquent de précision. Notre méthode permet d'extraire un critère pour détecter le besoin de réaction et calculer les corrections pour une trajectoire adéquate.
+\end{itemize}
+
+\section{Travaux relatifs à notre méthode}
+
+Il affirme que la navigation des humains virtuels dans un environnement est une tâche encore irrésolue. Elle dépend non seulement de la géométrie des lieux, mais également de la visibilité et de la topologie d'où l'importance d'un environnement structuré et informatif.
+
+Il décrit l'importance de la prédiction et de l'anticipation à travers les travaux de Goffman (1971) qui a étudié le sujet des interactions entre les piétons d'un point de vue géométrique et sociologique (causé par l'indifférence entre étrangers). Il énonce trois techniques de Goffman: externalisation, scanning, minimisation de l'ajustement. Il parle des notions introduites comme celle de la région de sécurité ovale et de modification minimale de trajectoire pour l'anticipation.
+
+Les flux de piétons marchant dans des sens opposés générent une séparation en deux groupes dans les deux sens. Si la densité de piétons augmente, le flux est approximé par les lois de la dynamique des fluides [TCP06]. Dans les situations de panique, les mouvements s'accélèrent et ces règles sociales cèdent la place à des comportements de mime consistant à reproduire les mouvements du personnages de devant dans le flux.
+
+Pour Yamori [Yam98], la notion de régulation est inévitable, une convention entre les personnes évoluant dans une macro structure. Musse et al. [MT01] note cependant l'existence de petits groupes leaders qui gouvernent le comportement dans l'ensemble. Boles [Bol81] fait le même constat avec l'existance de bande de piétons, configuration optimale pour réguler le flux opposé.
+
+Pour Yamori, le problème le plus crucial concerne la relation entre les structures microscopique et macroscopique: comment un individu est contraint par l'institution d'un côté et comment la communauté est touchée par le comportement d'un individu. 
+
+Historiquement, les méthodes macroscopiques ont été les premières a retenir l'attention par leur coût en calcul faible. Le piéton est traité comme un composant d'une structure macroscopique [Hen71, PM78], Sung et al. [SGC04] (l'animation).
+Les simulations microscopiques reposent sur la gestion du déplacement de chaque individu du groupe. Un système dynamique d'évitement de collision est nécessaire pour ces simulations, par exemple le système de particule ou le système de troupeau. Les \textbf{systèmes de particules} sont basés sur les forces physiques d'attraction/répulsion vis-à-vis des obstacles dont les effets permettent de calculer la nouvelle direction/vitesse d'un piéton [HFV00, BMdOB03, LKF05]. Ce modèle est utile pour simuler des foules denses dans des zones restreintes, surtout en situation d'urgence [Pes71].\footnote{paramètres: vélocités aléatoires entre 0: pseudo-statique et 1: usain bolt, besoin d'une distribution de Gauss, ce paramètre peut définir la situation de panique vs la situation normale, mettre un seuil 0.7: fast et 0.8: furious}
+Il affirme que ce modèle ne prend pas en compte l'anticipation et les lois sociales. En inspectant les trajectoires des individus, il affirme que des oscillations comme des mouvements de marche arrière du dernier piéton repoussé par le piéton devant lui ou les changements de directions. Un autre point négatif est le petit temps de convergence.
+Les \textbf{systèmes d'attroupement} sont basés sur la définition de règles de comportement avec les piétons voisins. Ces systèmes sont très adaptés pour les mouvements de groupes d'animaux sous la direction d'un leader.
+
+Loscos et al. [LMM03] utilise des grilles régulières fines pour gérer une navigation réactive et pour stocker les informations sur les mouvements des piétons, ce qui rend possible l'émergence de flux de piétons. Shao et al. [ST05] utilise une carte de quatree pour le planning du chemin et une grille régulière fine pour l'évitement des obstacles.
+
+Lakoba et al. [LKF05] insistent sur le fait que les modèles existants ont besoin de deux améliorations: ajouter des capacités de décision et comparer les résultats par rapport aux données des piétons. S Goldenstein et al. [GKM*01] propose comme alternative aux systèmes de particules ou aux modèles classiques de la simulation basée sur la dynamique des fluides souhaitables pour les larges foules, une approche multi-couche pour modéliser le comportement des participants dans la foule.
+
+Nous travaillons également dans un modèle multi-couche de chaque humain nous permettant simultanément de prendre en compte les mécanismes d'attraction/répulsion comme les systèmes de particules, le calcul dynamic du voisinage pour des foules dispersées, la gestion des règles sociales, le planning de chemins et d'activité. Dans cet article, seront seulement traité le modèle de navigation réactive et la validation/calibration de notre approche par rapport à des données expérimentales.
+
+\section{Prédiction et résolution d'intéractions}
+
+\subsection{Principe}
+
+L'architecture globale d'une simulation y est mentionnée.
+La navigation réactive influe les entités en respectant deux entrées possiblement en conflit: le but du piéton considéré à partir de l'étape de planning du chemin et l'état de l'environnement (particulièrement les autres piétons). La sortie de la méthode consiste en une vitesse et une orientation mis à jour permettant au piéton d'éviter les obstacles statiques ou en mouvements tout en respectant les contraintes de réalisme.
+
+C'est une approche prédictive. Pour chaque entité, à des taux désirés, il cherche une solution de mouvement satisfaisant les contraintes et garantie être valide pendant une fenêtre de temps désirée (du moins au moment d'invocation de la navigation réactive). 
+
+L'idée est illustrée par l'identification de la zone de futures collisions en définissant pour l'entité de référence une zone conique tracée par rapport à une vitesse définie des localisations atteignables pour cette entité, et pour une entité voisine un cylindre désignant sa trajectoire formé de cercles successifs dont chaque rayon est pour un instant donné la somme du rayon de l'entité de référence et celui de l'entité voisine. La représentation se fait dans un espace $(x, y, t)$ et l'intersection des deux forment la zone de collision. Puisqu'il faut explorer plusieurs solutions possibles et le cas de plusieurs entités voisines en plus des obstacles classiques, il considère leur solution avec une expression à temps-discret pour éviter le problème de complexité.
+
+Les trois principales étapes:
+1- La prise en compte des entités dynamiques voisines, depuis lesquelles des ensembles d'intervalles de vitesse/orientation qui permettent un mouvement hors collision pour une fenêtre de temps future.
+
+2- Les obstacles statiques sont également pris en compte et fournissent de nouveaux intervalles valeurs de vitesses/orientations admissibles.
+
+3- Les solutions valides sont comparées pour en retenir que la meilleure des solutions.
+
+\subsection{Les entités dynamiques}
+
+Soit une entité de référence $E_{ref}$ en présence d'une entité voisine en mouvement $E_{nhb}$, le cas de plusieurs entités est décrit à la section \ref{several-entities}.
+
+\subsubsection*{Discrétisation du temps}
+
+Soit l'état de l'environnement à $t = t_0$ pour rechercher l'espace des collisions potentielles de $E_{ref}$. On considère successivement des intervalles de temps  ayant différentes durées: $[0, k^0\, \Delta t]$, $[k^0\, \Delta t, k^1\, \Delta t]$, $[k^1\, \Delta t, k^2\, \Delta t]$, etc
+$\Delta t (> 0)$ est la précision de la discrétisation, plus elle est petite mieux c'est, est égale au temps nécessaire à l'entité pour faire un déplacement.
+$k (> 1)$ rend la discrétisation non-uniform pendant la durée anticipée, plus $k$ est grand mieux c'est, l'anticipation devient plus précise dans un future proche que pour un futur de distance 1.
+Il utilise $\Delta t = 1$ et $k = 2$ pour son model.
+
+\subsubsection*{Le sectionnement de l'espace atteignable}
+
+Pour chaque intervalle de temps, une trajectoire linéaire de $E_{nhb}$ est prédite et une section d'orientation en est déduite pour $E_{ref}$ dans laquelle une collision potentielle peut se produire. Au final, plusieurs sections sont définies pour toutes les intervalles de temps. L'intervalle de temps $[t_1,t_2]$ est enregistré.
+
+\subsubsection*{Calcul des vitesses critiques}
+
+Pour chaque section, ie. intervalle $[t_i, t_{i+1}]$, les vitesses critiques $V_1$ et $V_2$ (respectivement la vitesse maximale autorisée pour éviter la collision en laissant passer $E_{nhb}$ et la vitesse minimale requise pour passer avant ce dernier):
+\begin{eqnarray}
+V_1 = \min_{t=t_1}^{t_2}\;\; \{\frac{\| \overrightarrow{P_rP_n(t)} \| - R}{t}\} \\
+V_2 = \max_{t=t_1}^{t_2}\;\; \{\frac{\| \overrightarrow{P_rP_n(t)} \| + R}{t}\}
+\end{eqnarray} 
+
+avec $P_n(t) = P_n + \overrightarrow{v_n}\,\,t$, où $\overrightarrow{v_n}$ est la vélocité de $E_{nhb}$ , ensuite $P_r$ et $P_n$ sont les positions respectives de $E_{ref}$ et $E_{nhb}$ à l'instant $t_0$,  et enfin $R$ est la somme des rayons des cercles des entités en question, plus un facteur de sécurité pour éviter tout contact.
+
+\subsubsection*{La fusion des sections}
+
+Il arrive que des sections (deux ou plusieurs) se superposent, chacune possédant leurs propres caractéristiques ($V_1, V_2$, intervalle $[t_1,t_2]$). Pour obtenir un ensemble de sections adjacentes, elles sont subdivisées en sous-sections ayant les caractéristiques suivantes: $V_{1\,new} = \min (V_{1\,i}, V_{1\,j}), \;V_{2\,new} = \max (V_{2\,i}, V_{2\,j}), \; t_{1\,new} = \min (t_{1\,i}, t_{1\,j}), \;t_{2\,new} = \max (t_{2\,i}, t_{2\,j}), $ où $i$ et $j$ sont les index des sections à fusionner. Le processus est itéré dans le cas de plus de deux sections en les considérant par paire.
+
+\subsection{Les entités statiques}
+
+L'étape numéro deux est la navigation réactive vis-à-vis des obstacles statiques qui est traitée de la même manière que les obstacles dynamiques à la différence près que la vitesse minimale $V_2$ pour passer avant l'obstacle (chose impossible par rapport aux entités statiques) est considérer comme $+\infty$. Les bords des obstacles statiques sont modélisés dans la base de données de l'environnement comme des lignes de segments. Soit une ligne à proximité de $E_{ref}$, l'objectif est de subdiviser la section $S_{obst}$ en calculant les points de collisions possibles de l'entité sur l'obstacle: $P_0, P_1, P_2, P_3, P_4$ et leurs homologues $P_1\prime, P_2\prime, P_3\prime, P_4\prime$ tels que: $P_0$ soit le point de $S_{obst}$ le plus proche de $E_{ref}$. $P_1$ et $P_1\prime$ s'ils existent vérifie $P_0P_1 = P_0P_1\prime = v_{ref}\, \Delta t$ où $v_{ref}$ est la vitesse de $E_{ref}$, similairement $P_2$ et $P_2\prime$ vérifie $P_0P_2 = P_0P_2\prime = k^1 v_{ref}\,\Delta t$ etc...Cet ensemble de points permet d'évaluer les vitesses vis-à-vis  de l'obstacle avec précision.
+
+Un ensemble de sections d'orientation est calculé dont les caractéristiques de chaque sont déterminés comme ceux des obstacles dynamiques, seule la vitesse maximale $V_1$ de non collision est différente: 
+\begin{equation}
+V_{1\,i} = \frac{\| \overrightarrow{P_iE_{ref}} \|}{t_{2\,i}} 
+\end{equation}
+
+avec $i$ indexant les sections d'orientation de l'obstacle statique.
+
+\subsection{Résoudre les interactions}
+
+La dernière étape consiste à extraire la solution (le déplacement) pour l'entité en question. Successivement, les trois marches à suivre pour cette tâche consistent à assigner des poids à chaque section d'orientation grâce à une fonction de coût qui se base sur les caractéristiques de la section, ensuite la fusion des sections superposées (en relation avec les entités voisines et les obstacles) en additionnant les poids des sections fusionnées et pour finir la meilleure des sections sert à trouver les nouvelles valeurs de vitesse et d'orientation.
+
+\subsubsection*{Le coût d'une section d'orientation}
+
+L'entité de référence doit choisir son prochain déplacement (vitesse et orientation) à partir de l'état de l'environnement et de sa cible. Une fonction de coût permet de trouver le meilleur choix parmi plusieurs critères: 
+
+\begin{enumerate}
+\item les intervalles de vitesse valides (étant donné $V_1$ et $V_2$ pour chaque section) doivent être plus proches de la vitesse désirée $V_{des}$ et dans sa fourchette de vitesses atteignables $[0, V_{max}]$.
+\item les limites d'orientation des sections $[\theta_1, \theta_2]$ doivent être plus proches de l'orientation désirée $\theta_{des}$
+\item les accélérations requises pour atteindre les nouvelles vitesse et orientation doivent autant que possible (une limite stricte n'est pas souhaitable car l'homme est capable d'importantes accélérations)
+\item plus l'intervalle de temps de la section est proche du future, plus son coût est évalué avec assurance.
+\end{enumerate} 
+
+Le coût associés aux variations de vitesse et la distance par rapport à la vitesse désirée est déterminé comme suit: 
+
+\[
+\begin{array}{cc}
+C_{decel} = 
+	\left\lbrace
+		\begin{array}{c}
+			0 \;\;\;\;\;\;\;\; si \;\; V_{des} \leq V_1 \\
+			\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\! 1 - \frac{V_1}{V_{des}}
+		\end{array}
+	\right.
+	&
+	C_{accel} = 
+	\left\lbrace
+		\begin{array}{c}
+			0 \;\;\;\;\;\;\;\;\;\; si \;\; V_{des} \geq V_2 \\
+			\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\frac{V_2 - V_{des}}{V_{max} - V_{des}}
+		\end{array}
+	\right.
+\end{array}
+\]
+
+\begin{equation}
+C_{speed} = \alpha \,.\, \min(C_{accel}, C_{decel})
+\end{equation}
+
+où $\alpha \in ]0,1[$ pour permettre d'avoir un compromi entre les changements de vitesses et les changements d'orientations. Le coût associé aux changements d'orientation (déviation) est déterminé comme suit:
+
+\begin{equation}
+C_{dev} = (1-\alpha) \frac{1 - \cos\theta}{2}
+\end{equation}
+
+où $\theta$ est la différence minimale entre l'orientation désirée et les angles limites des orientations de sections. On remarque que $0 \leq C_{speed} + C_{dev} \leq 1$. En considérant $t_1$ comme le bord le plus inférieur à la limite de l'intervalle de temps, une prédiction du coût  de confidence:
+
+\begin{equation}
+C_{pred} = 1 - \frac{t_1}{T + \beta} \;\;\; avec \;\;\; 0 \leq C_{pred} \leq 1
+\end{equation}
+
+où $T$ est le temps maximal considéré pour la prédiction, et $\beta \in [0;+\infty]$ est un paramètre défini par l'utilisateur pour obtenir une certaine assurance sur la prédiction (pour changer le temps d'adaptation du piéton avant une collision potentielle). Le coût total pour une section donnée est alors:
+
+\begin{equation}
+C_{total} = (C_{speed} + C_{dev}). C_{pred} . C_{add}
+\end{equation} 
+où  $0 \leq C_{add} \leq + \infty$ est un coût additif qu'il est possible d'introduire pour prendre en compte les facteurs externes (eg. marcher à côté d'une autre entité, préférer une déviation vers la gauche ou vers la droite, etc.) La valeur neutre est $C_{add} = 1$
+
+\subsubsection*{Fusion des coûts}
+
+Parmi toutes les sections (ensembles entiers de sections d'orientation) correspondant aux entités et obstacles statiques proche de $E_{ref}$. Pour chaque section de chaque ensemble, un coût y est associé. Ces coûts sont fusionnés de la même manière que les fusions précédentes (max/min). Le coût de chaque sous-section alors créée est la somme des coût de toutes les sections qui étaient superposées et divisées pour la créer.
+
+La sous-section la plus appropriée est celle avec le coût le plus bas. Dans les intervalles d'orientations et de vitesses valides, on calcule les plus proches des valeurs désirées par l'entité de référence, qui est la sortie finale du module de navigation réactive de Paris.
+
+\subsection{Discussions}
+\label{several-entities}
+
+\subsubsection*{Visibilité des entités voisines}
+
+Le modèle prédit les trajectoires des entités voisines pour prendre la bonne direction/vitesse de réaction, les humains agissent similairement. Seulement, cette réaction est visible tant que la personne peut percevoir ses voisins. Pour avoir plus de réalisme, deux champs de perceptions sont considérés. Quand une entité n'est pas dans le champ de vision de l'entité parce qu'il est occulté par un obstacle, il est mis à l'écart de la sélection des voisins. Ainsi, ce voisin occulté n'a aucune incidence dans le résultat. Il y a aussi le cas de deux ou plusieurs entités ne se percevant pas mais convergeant vers un même point (cas des coins de rues d'immeubles ou des mûrs): ils s'arrêtent abruptement quand finallement ils s'appercoivent, alors que les humains anticiperaient cette possibilité et marchent soigneusement. Pour ce cas, l'entité voisin hors champ de vision est introduit dans les voisins en interaction avec comme vitesse nulle pour les calculs. Enfin, si les humains sentent qu'il y une personne derrière sans pouvoir prédire leur trajectoire, cette disposition évite le risque de collision avec une entité en arrière.
+
+\subsubsection*{Connection avec un module d'animation de locomotion} 
+
+Le résultat du module de navigation réactive est connecté avec un module de locomotion, une synchronisation est faite entre les deux modules pour obtenir plus de réalisme . Les modification s'effectue aux instants pieds-sol (gauche ou droite).
+
+\end{document}

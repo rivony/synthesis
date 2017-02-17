@@ -1,0 +1,17 @@
+\begin{tabular}{|c|c|c|c|}
+\hline 
+\textbf{Méthodes} & \textbf{Précision} & \textbf{Rappel} & \textbf{F-score ($\beta=$1)} \\ 
+\hline 
+\textbf{TF-IDF} & 0.106087 & 0.224141 & 0.141037 \\ 
+\hline 
+\textbf{TopicRank} & 0.099130 & 0.212381 & 0.132436 \\ 
+\hline 
+\textbf{TextRank} & 0.075193 & 0.152595 & 0.098943 \\ 
+\hline 
+\textbf{SingleRank} & 0.076522 & 0.168444 & 0.102826 \\ 
+\hline 
+\textbf{K-kore} & 0.062609 & 0.131232 & 0.083278 \\ 
+\hline 
+\textbf{WK-kore} & 0.066957 & 0.139348 & 0.088917 \\ 
+\hline 
+\end{tabular} 

@@ -1,0 +1,108 @@
+1-@article{smeulders2000content,
+  title={Content-based image retrieval at the end of the early years},
+  author={Smeulders, Arnold WM and Worring, Marcel and Santini, Simone and Gupta, Amarnath and Jain, Ramesh},
+  journal={IEEE Transactions on pattern analysis and machine intelligence},
+  volume={22},
+  number={12},
+  pages={1349--1380},
+  year={2000},
+  publisher={IEEE}
+}
+
+2-@article{boujemaa2004evaluation,
+  title={Evaluation des systemes de traitement de l’information, chapter Evaluation des systemes de recherche par le contenu visuel: pertinence et criteres},
+  author={Boujemaa, N and Ferecatu, M},
+  journal={Number ISBN},
+  pages={2--7462},
+  year={2004}
+}
+3-@phdthesis{herve2009vers,
+  title={Vers une description efficace du contenu visuel pour l'annotation automatique d'images},
+  author={Herv{\'e}, Nicolas},
+  year={2009},
+  school={Universit{\'e} Paris Sud-Paris XI}
+}
+
+4-Smeulders et al. [12]
+5-@inproceedings{krizhevsky2012imagenet,
+  title={Imagenet classification with deep convolutional neural networks},
+  author={Krizhevsky, Alex and Sutskever, Ilya and Hinton, Geoffrey E},
+  booktitle={Advances in neural information processing systems},
+  pages={1097--1105},
+  year={2012}
+}
+
+6-VERY DEEP CONVOLUTIONAL NETWORKS FOR LARGE-SCALE IMAGE RECOGNITION
+7-Going Deeper with Convolutions
+8-CNN Features off-the-shelf: an Astounding Baseline for Recognition
+9-Learning Deep Features for Scene Recognition using Places Database
+10-"Automatic Image Annotation using Deep Learning Representations."
+11- Deep Correlation for Matching Images and Text Fei Yan
+12-From Captions to Visual Concepts and Back
+13-Deep Visual-Semantic Alignments for Generating Image Descriptionsx
+14-Show Attend and tell
+15-Guiding Long-Short Term Memory for Image Caption Generation
+16-Explain Images with Multimodal Recurrent Neural Networks/m-RNN
+17-learning like a child
+18-Mitchell (1997)
+19-[Rosenblatt, Frank. "The perceptron: a probabilistic model for information storage and organization in the brain." Psychological review 65.6 (1958): 386.]
+20-[McCulloch, Warren S., and Walter Pitts. "A logical calculus of the ideas immanent in nervous activity." The bulletin of mathematical biophysics 5.4 (1943): 115-133.]
+21- LeCun, Yann, et al. "Gradient-based learning applied to document recognition." Proceedings of the IEEE 86.11 (1998): 2278-2324.
+22-Krizhevsky, Alex, Ilya Sutskever, and Geoffrey E. Hinton. "Imagenet  classification  with deep convolutional neural networks." Advances in neural information processing systems. 2012.
+23-Baldi, P. and Hornik, K. (1989). Neural networks and principal component analysis: Learning from examples without local minima. Neural Networks, 2, 53–58
+24-Simonyan, Karen, and Andrew Zisserman. "Very deep convolutional networks for large-scale image recognition." arXiv preprint arXiv:1409.1556 (2014).
+25-Szegedy, Christian, et al. "Going deeper with convolutions." Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2015. 
+26-Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift
+27-Rethinking the Inception Architecture for Computer Vision
+28-Russakovsky, Olga, et al. "Imagenet large scale visual recognition challenge." International Journal of Computer Vision 115.3 (2015): 211-252.
+29-Image Classification for Dogs and Cats
+30-Indoor-Outdoor Image Classication
+31-Zhou, Bolei, et al. "Learning deep features for scene recognition using places database." Advances in neural information processing systems. 2014.
+32-Rich feature hierarchies for accurate object detection and semantic segmentation
+33-Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks
+34-CNN: Single-label to Multi-label Zhi-Hua Zhou
+35-"Visualizing data using t-SNE."
+36-Harris, Z. S. (1954). Distributional structure
+37-Distributed representations of words and phrases and their compositionality
+38-Réseaux de Neurones pour la Représentation de Contextes Continus des Mots
+39-Efficient Estimation of Word Representations in Vector Space
+40-Recurrent neural network based language model
+41-Extensions of recurrent neural network language model
+42-Deep learning in neural networks: An overview
+43-A neural probabilistic language model
+44-Backpropagation through time: what it does and how to do it
+45-The vanishing gradient problem during learning recurrent neural nets and problem solutions
+46-"Long short-term memory."
+47-Visualizing and understanding recurent networks
+48-Bidirectional recurrent neural networks
+49-Bidirectional recursive neural networks for token-level labeling with structure
+50-Towards end-to-end speech recognition with recurrent neural networks
+51-Sequence to sequence learning with neural networks,” On the properties of neural machine translation: Encoder-decoder approaches
+52-Show and tell: A neural image caption generator
+53-Long-term Recurrent Convolutional Networks
+54-Microsoft coco: Common objects in context
+55-Framing image description as a ranking task: Data, models and evaluation metrics
+56-From image descriptions to visual denotations: New similarity metrics for semantic inference over event descriptions
+57-Unbiased look at dataset bias
+58-Microsoft COCO Captions
+59-Im2text: Describing images using 1 million
+60-BLEU : a Method for Automatic Evaluation of Machine Translation
+61-Rouge : A package for evaluation
+62-Meteor universal: Language specific translation evaluation for any target langage
+63-Cider: Consensus-based image description evaluation
+64-A new approach to cross-modal multimedia retrieval
+65-Hardoon, David R., Sandor Szedmak, and John Shawe-Taylor. "Canonical correlation analysis: An overview with application to learning methods." Neural computation 16.12 (2004): 2639-2664.
+66-Murthy, Venkatesh N., Subhransu Maji, and R. Manmatha. "Automatic Image Annotation using Deep Learning Representations." Proceedings of the 5th ACM on International Conference on Multimedia Retrieval. ACM, 2015 
+67-Y.Gong, L.Wang , M.Hodosh, J. Hockenmaier and S. Lazebnik.Improving image-sentence embeddings using large weakly annotated photo collections. In ECCV2014
+68-A multi-view embedding space for modeling internet images, tags, and their semantics
+69-Deep Correlation for Matching Images and Text Fei Yan
+70-DeViSE: A Deep Visual-Semantic Embedding Model
+71-Learning deep structured semantic models for web search using clickthrough data.
+72-Deep Fragment Embeddings for Bidirectional Image Sentence Mapping
+73-Unifying visual-semantic embeddings with multimodal neural language models
+74-Learning Deep Structure-Preserving Image-Text Embeddings
+75-Distance metric learning for large margin nearest neighbor classification
+76-Show and Tell
+77-Automatic Description Generation from Images: A Survey of Models, Datasets, and Evaluation Measures
+78-Convolutional Architecture for Fast Feature Embedding
+79-Tensorflow: Large-scale machine learning on heterogeneous distributed systems

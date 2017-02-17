@@ -1,0 +1,64 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage[colorlinks=true,
+            linkcolor=red,
+            urlcolor=blue,
+            citecolor=blue]{hyperref}
+            
+\title{Mécanismes évolutionnistes pour la simulation comportementale d'acteurs virtuels}
+\author{Stéphane Sanchez}
+\date{
+	\begin{center}
+		PhD Thesis IRIT UT1 Social Sciences \\
+		Année 2004
+	\end{center}
+}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\linespread{1}
+
+\begin{document}
+
+\maketitle
+
+\section*{Résumé}
+
+Dans cette article, Stéphane Sanchez propose une méthode de génération de comportements pour les personnages virtuels à l'aide de systèmes de classeurs (une méthode d'apprentissage évolutionniste). Les générateurs de comportements servent à rendre les personnages plus autonomes: effectuer une tâche définie en fonction de son environnement sans la participation de l'utilisateur.
+
+Les méthodes existantes reposent sur des scripts (scénarii) ou sur des automates. Associées à des systèmes d'animation, les personnages virtuels résultants de ces méthodes effectuent des séquences d'actions complexes convaincantes. Les limites de ces méthodes sont observées quand le personnage se trouve face à des situations imprévues par les scripts ou les automates: il ne peut pas accomplir sa tâche.
+
+Sanchez propose de donner au personnage virtuel la capacité d'apprendre à résoudre ces situations indéfinies en se basant sur ses connaissances et la perception de son environnement. Généralement, les humains virtuels disposent déjà de comportements élémentaires (déplacement, saisir un objet, ...), l'objectif est de mettre à profit ses comportements en les combinant.\\
+Etant donné que l'environnement dans lequel évolue le personnage est dynamique, le choix des systèmes de classeur est justifié car ce sont des systèmes évolutifs. Pour cela, l'utilisateur contribue à l'initialisation du système en fournissant les tâches à résoudre et les situations clés pour définir des récompenses utiles à l'apprentissage du personnage. Les actions effectuées par ce personnage résultent d'une déduction à partir des informations reçues et des récompenses perçues.
+
+Sanchez définit ensuite les systèmes de classeurs. Ce sont des systèmes à bases de règles introduit par John Holland mettant en jeu les algorithmes génétiques pour identifier et classer des règles par ordre de force. Les règles les plus fortes pour une situation donnée (théorie de Darwin) permettent au système de survivre dans son environnement. L'apprentissage des règles ne requiert pas une connaissance totale de l'environnement, le système a pour but de maximiser ses récompenses. Les règles sont représentés par une série de caractères respectant le masque suivant:
+\[
+\underbrace{011}_{condition}:: \underbrace{1011}_{acion} \underbrace{0.5}_{force}
+\]
+Le terme \textit{condition} représente l'état actuel de l'environnement (une chaîne de caractères pris dans l'alphabet $\{0,1,\#\}$ de longueur fixe, \# peut être 0 ou 1). Le terme \textit{action} est l'action à entreprendre (les caractères sont pris dans $ \{0, 1\}^2$). Le dernier terme "\textit{force}" est un scalaire reflétant la performance du système.
+
+Le système de classeurs fonctionne avec trois composantes: le capteur, le classifieur (muni d'un algorithme génétique) et l'effecteur. A partir des données de l'environnement, le capteur transcrit le message (appelé \textit{situation}) et le stocke dans une liste. Ce message est transmis au système de classeurs qui recherche les classeurs à activer dont les conditions correspondent au message transmis. L'action avec la plus grande force est séléctionnée et transmise aux effecteurs. L'environnement assigne une note à cette action en fonction de sa performance. L'algorithme génétique agit sur la liste des classeurs en produisant de nouvelles règles et en remplaçant les règles moins performantes.\\
+Les systèmes de classeurs LCS\footnote{Learning Classifier Systems} ont été améliorés par des variantes comme le ZCS (Zeroth Level Classifiers) ou le XCS (eXtended Classifier Systems): le premier en éliminant la boucle interne sur la liste des messages et en introduisant le "covering" pour générer des règles en fonction des situations, le deuxième en utilisant la présicion de la prédiction de récompense pour limiter l'exploration de nouvelles solutions en faisant dominer les classeurs "forts". 
+
+Sanchez applique ensuite le système de classeur dans la simulation comportementale. En premier lieu, Pour justifier cette stratégie, il affirme que ce système satisfait aux contraintes de conception de systèmes d'agents cognitifs (en autres, les connaissances de l'agent sont représentées par les règles des classeurs, le système implémente une boucle perception-décision-action, un stimulus de l'environnement déclenche le mécanisme, etc.). En second lieu, il indique que le système est utilisable dans différentes environnements tout en réduisant la taille de la base de règles, prennant avantage de l'adaptibilité des LCS. En troisième lieu, les systèmes de classeurs peuvent être installés dans des environnements complexes (dynamiques, requérant une génération continue d'actions nouvelles, avec des buts, des informations partiels, etc.). Enfin, l'intégration des systèmes de classeurs dans des architectures de simulation est facilitée par sa structure compacte (capteurs, base de connaissance, effecteurs). Il fait remarquer que l'utilisation des systèmes de classeurs dans la simulation de personnage virtuelle a été orientée sur la génération de comportements collectifs (ex. simulation de partie de basketball).
+
+Sanchez décrit ensuite une génération de comportements individuels à travers les systèmes ViBes qui simule le comportement d'un agent en combinant des actions élémentaires formant des actions complexes afin d'atteindre un objectif. Ce système sert de base de simulation pour introduire les systèmes de classeurs dans l'animation comportementale. Le système ViBes est composé principalement d'un système de perception, d'un gestionnaire de connaissances, d'un séquenceur d'instruction (il assure le dialogue entre l'interface entrante et le système comportemental), d'un système décisionnel (un réseau hierarchisé de modules comportementaux, à un module correspond une tâche utilisateur). Le système de perception capte les informations de l'environnement avec les instructions de l'utilisateur et les transmet au séquenceur qui décompose la tâche en directives élémentaires moins complexes (sous-modules). Ces sous-modules sont combinés et mis en séquence pour définir l'action à transmettre aux effecteurs.
+
+Sanchez détaille ensuite son idée de faire l'apprentissage du personnage grâce à un système de classeurs. Le système permet de combiner et sélectionner l'action la plus cohérente pour effectuer une tâche. Il décrit le paramétrage nécessaire pour le système: la forme de la condition en tant que vecteur \textit{situation}, la forme d'une \textit{action} comme un vecteur indexé d'actions, la politique de compensation (le classeur activant une instruction irréalisable est pénalisé, tandis que le classeur activant la dernière instruction conduisant à l'objectif obtient la récompense maximale). Il indique que le système de classeur est intégré dans le système ViBes sous forme d'un module (les filtres perceptifs sont les capteurs, le système de classeur se trouve dans le solveur du module en évaluant l'action trouvée, le gestionnaire de comportement gère les récompenses).
+
+Comme résultat, il relate la mise en place du module dans le système ViBes. Le système de classeur du module choisi est GHXCS (Generic Heterogeneous Classifier Systems) qui permet d'éviter la transcription des messages dans l'alphabet ternaire et homogénéise l'ensemble du système par des vecteurs typés (bits, trits, entiers, ...). Il illustre ces résultats par le succès de l'apprentissage d'un personnage virtuel affamé qui interagit avec les appareils éléctroménagers et la cuisine pour manger une pomme. 
+
+\end{document}

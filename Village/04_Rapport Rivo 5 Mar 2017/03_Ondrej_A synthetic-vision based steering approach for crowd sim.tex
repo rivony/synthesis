@@ -1,0 +1,121 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage[colorlinks=true,
+            linkcolor=red,
+            urlcolor=blue,
+            citecolor=blue]{hyperref}
+            
+\title{A synthetic-vision based steering approach for crowd simulation}
+\author{Ondrej, J.; Pettré, J.; Olivier, A.-H. et Donikian, S.}
+\date{
+	\begin{center}
+		INRIA\\
+		INRIA-Goalem\\
+		ACM Transactions on Graphics (TOG), ACM, 2010, 29, 123
+	\end{center}
+}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\linespread{1}
+
+\begin{document}
+
+\maketitle
+
+\section*{Abstract}
+
+Pour éviter les obstacles dans leur déplacement, les humains se reposent sur le flux optique qu'ils percoivent de leur environnement. Ils sont capables de se déplacer dans une foule dense et complexe sans risque de collision. Les sciences cognitives déclarent que pour cela, seules des informations relativement suscintes extraites du flux optique sont considérées. Nous explorons une approche basée sur la vision qui détecte les futures collisions et évalue leur degré de danger. Cette réaction comprend deux composantes: une statégie de réorientation pour éviter la future collision et une stratégie de décélération pour éviter les collisions imminentes. Des comportements globaux émergents organisés de piétons se forment à partir de la somme des réactions. Les résultats démontrent que notre méthode est fidèle à la dynamique de la foule réelle et améliore même le traffic des piétons.
+
+\section{Introduction}
+
+La simulation de la foule est devenue très importante ces dix dernières années et la raison majeure de cela est les patterns organisés à large échelle qui émergent de la combinaison d'actions et d'interactions locales. A l'exemple des comportements des \textit{boids} de Reynolds  obtenus par des règles simples d'interactions. Ces règles ne sont pas transposables pour les piétons.
+
+Nous nous bornerons aux interactions consistant à éviter les collisions et notre objectif est de générer une foule virtuelle à grande échelle réaliste et issue d'interactions locales.
+
+Les modèles basés sur les agents sont des modèles géométriques s'efforçant de définir des trajectoires en respectant des vélocités appartenat à un domaine de vélocités admissibles. Le réalisme du résultat ne correspond pas au caractère humain qui évite inconsciemment les obstacles, ce qui relève la question des limites d'une approche par perception/action lors de situations complexes.
+Les modèles basés sur les règles ont des soucis pour combiner les règles lors des situations complexes.
+Les modèles basés sur les systèmes de particules ne permettent pas d'obtenir les patterns émergents de piétons et ceux basés sur les éléments continus conduisent à des mouvements irréalistes locaux comme des accélérations et des vélocités improbables.
+
+\textit{Nous dirigeons les piétons selon la perception visuelle qu'ils ont de leur environnement. Notre méthode d'évitement de collision consiste en une loi stimulation visuelle/réponse moteur (visual-stimuli/motor-response). Notre modèle s'inspire des travaux de Cutting et al. [1995] sur la locomotion humaine. Ils déclarent que les humains utilisent deux éléments majeurs appartenant à leur flux optique pour se déplacer sans risque de collision. D'abord, la dérivée de l'angle portée (bearing-angle) sous lequel l'obstacle est percue. Ensuite, le "time-to-collision" qui est déduit par le taux de croissance des obstacles dans les images successivement percues. Les "inputs" de notre modèle , les stimuli visuels, sont les obstacles percus d'un point de vue égocentrique transformés en images de dérivées par rapport au temps des "bearing-angles" et des "times-to-collision". Ces images sont directement calculées à partir des géométries et des états des obstacles statiques ou en mouvement dans la scène. Les piétons réagissent simplement à ces stimuli: ils tournent pour éviter les collisions futures et rallentissent dans le cas de collisions imminentes.}
+
+Nous avons appliqué notre méthode à des situations complexes d'interaction: la simulation résultante affiche l'émergence de pattern de piétons organisés à une échelle globale. Le traffic des piétons est globalement efficace et les animations sont plus fluides. 
+
+\section{Travaux relatifs à notre méthode}
+
+Des livres\cite{thalmann-07} [Thalmann and Raupp Musse 2007; Pelechano et al. 2008] et des tutoriels\cite{thalmann-05} [Thalmann et al. 2005; Halperin et al. 2009] ont traité le sujet de la simulation de la foule, les objectifs étant de trouver des trajectoires de déplacement globale et d'effectuer une navigation sans risque de collision vers des buts définis.
+
+Plusieurs classes de méthodes dont les automates cellulaires, les grilles, les champs de vélocités, les systèmes de particules ainsi que les forces sociales d'Helbing [1995] en plus des flux continus  permettent de simuler des foules en temps réel. Le point commun de ces approches est la performance des méthodes permettant la simulation de large foule en temps réel. Cette performance est souvent obtenu au détriment du réalisme, le nombre de buts définis sont restreints ou la méthode est simplifiée. Notre objectif est d'abord de simuler les interactions locales d'une manière réaliste, nous reproduisons le déplacement humain basé sur la vision pour diriger les piétons dans les foules. La vision synthétique génère plusieurs calculs de par nature.
+
+Notre méthode est proche de celles basées sur les règles et aussi des approches basées sur la géométrie. Il est généralement nécessaire de combiner les approches locales avec des techniques dédiés pour permettre d'atteindre des buts élevés dans les environnements complexes. Les approches géométriques arrivent à vérifier l'absence de collisions futures localement en décomposant l'espace de  vélocité du piéton en deux composantes (admissibles et inadmissibles). Cette vérification explicite permet-elle de garantir l'absence de collisions résiduelles? Oui, car les vélocités admissibles sont calculées en faisant l'hypothèse que les vélocités des obstacles restent constantes et que le domaine des vélocités admissibles est composé de composantes indépendantes. Certaine de ces composantes dégénère dans le temps à cause de la rectification de la trajectoire d'un piéton. Si la vélocité actuelle d'un piéton appartient à une composante dégénérée, le basculement vers une nouvelle composante est nécessaire. Résultat des courses, le parcours des vélocités inadmissibles est nécessaire quand l'accélération est limitée. Les accélérations non limitées provoquent des mouvements irréalistes. \textit{Notre méthode ne vérifie pas explicitement les collisions et n'est pas exempt d'erreur. Nous croyons cependant que les lois proposées de visual-stimuli/motor-response imitent mieux les déplacements basiques des humains}.
+
+La question du réalisme des trajectoires simulées pendant l'évitement de collision a été traitée dans un article précédent\cite{pettre-09}. Nous procurons une description qualitative de ces trajectoires: nous montrons expérimentalement que les humains anticipant l'évitement tel qu'aucune rectification n'est nécessaire quelques secondes avant que les piétons ne passent à une distance proche. L'évitement est un comportement dépendant du rôle (role-dependant) tel qu'un piéton passant en premier n'effectue que peu de rectifications par rapport à un autre qui cède le chemin. Nous discutons des informations visuelles que les humains peuvent exploiter pour réaliser un évitement comparable. Cependant, nous proposont une méthode géométrique pour reproduire de telles trajectoires qui est calibré à partir de nos données expérimentales. 
+\textit{Ici, nous traitons deux nouveaux sujets. Premièrement, concernant la question de la combinaison des interactions, nous développons la vision synthétique pour implicitement combiner les interactions (ex. elles sont intégrées par projection à l'image de perception, puis elles sont filtrées quand les obstacles sont invisibles, elles sont valuées par des poids définis par l'importance qu'ont les obstacles dans l'image). Deuxièmement, nous basons directement nos lois de contrôle de mouvement sur l'information visuelle supposément exploitable par des vrais humains}.
+
+Les méthodes basées sur la vision n'ont jamais été utilisées pour résoudre le problème de la simulation de la foule à notre connaissance, à l'exception des agents du logiciel Massive qui sont pourvus de vision synthétique; cependant, le contrôle des piétons est laissé à la charge des utilisateurs. Néanmoins, la vision synthétique a été utilisée pour diriger un seul ou un nombre limité d'humains virtuels. Les boids de Reynolds ont été aussi récemment pourvus de facultés de perception visuelle \cite{silva-09}. \textit{Notre méthode explore un nouveau type de stimuli visuel pour contrôler le déplacement, en se basant sur les affirmations de la science cognitive sur le sujet. Nous avons aussi amélioré la performance pour s'aligner aux besoins de la simulation interactive de la foule. Au final, le "visual-servoing" est un sujet actif dans le champ de la robotique\cite{chaumette-06}. Les principales gageures sont le traitement des flux optiques acquis par les systèmes physiques et l'extraction d'information pertinente permettant de diriger les robots. A la différence de ce domaine, nous ne traitons pas d'une manière digitale ces images mais calculons directement les inputs visuels nécessaires à notre modèle.}
+
+\section{L'évitement de collision basé sur la vision}
+
+\subsection*{Le modèle}
+
+
+
+\section{Vocabulary}
+
+\noindent \textbf{A}\\
+\textit{Appealing}: attirant \\
+\textbf{B}\\
+\textit{Bearing}: maintien \\
+\textit{Bounded}: limité \\
+\textbf{N}\\
+\textit{Nevertheless}: néanmoins \\
+
+\begin{thebibliography}{2} 
+
+\bibitem{chaumette-06}\label{CHAUMETTE AND HUTCHINSON (2006)}
+CHAUMETTE , F., AND HUTCHINSON , S. 2006.
+\textit{Visual servo control, part i: Basic approaches and part ii: Advanced approaches}. IEEE Robotics and Automation Magazine 13(4), 82–90.
+
+\bibitem{pettre-09}\label{Pettre and Ondrej (2009)}
+PETTR$\acute{E}$, J., OND$\breve{R}$EJ , J., OLIVIER , A.-H., CRETUAL , A., AND DONIKIAN , S. 2009.
+\textit{Experiment-based modeling, simulation
+and validation of interactions between virtual walkers}.
+In Proc.
+2009 ACM SIGGRAPH/Eurographics Symposium on Computer
+Animation (SCA ’09), ACM, New York, NY, USA, 189–198.
+
+\bibitem{thalmann-05}\label{THALMANN et al. (2005)}
+THALMANN , D., KERMEL , L., OPDYKE , W., AND REGELOUS ,
+S. 2005.
+\textit{Crowd and group animation}.
+In SIGGRAPH ’05: ACM
+SIGGRAPH 2005 Courses, ACM, New York, NY, USA, 1.
+
+\bibitem{thalmann-07}\label{THALMANN and MUSSE (2007)}
+THALMANN , D., AND RAUPP MUSSE , S. 2007.
+\textit{Crowd Simulation}.
+Springer, London.
+
+\bibitem{silva-09}\label{SILVA et al. (2009)}
+SILVA , A. R. D., LAGES , W. S., AND CHAIMOWICZ , L. 2009.
+\textit{Boids that see: Using self-occlusion for simulating large groups on gpus}. Comput. Entertain. 7, 4, 1–20.
+
+
+
+
+\end{thebibliography}
+
+\end{document}

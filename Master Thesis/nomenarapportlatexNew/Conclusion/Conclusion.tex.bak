@@ -1,0 +1,15 @@
+\chapter*{Conclusion générale}
+
+\qquad Dans cette mémoire, nous avons voulu mesurer la force de liaison entre le titre et le résumé des articles du journal IPM et aussi trouver une meilleur méthode d'extraction automatique de termes-clés sur un document composé que du titre et de son résumé.
+
+\smallskip
+
+\qquad Nous avons ainsi adopter une mesure très naïve pour savoir la force de liaison d'un titre et de son résumé. Mesure naïve dans le sens où nous ne comptons que le nombre de mots du titre qui apparaissent dans le résumé et le nombre d'occurences de ces mots. Nous avons efféctués plusieurs mesures  en tenant compte puis non de l'utilisation des synonymes tel que dans chaque cas, nous avons obsérvés les résultats avant et après les prétraitements ( suppression des mots vides et racinisation). Nous avons pu constater, avec ou sans utilisation des synonymes, que  les mots vides pèsent sur  la mesure de cette force de liaison parce que nous avons observé une diminution de cette mesure. Contrairement à cela, avec l'utilisation de la racinisation, nous avons constaté une augmentation de la mesure la force de liaison.
+
+\smallskip
+
+\qquad Concernant l'extraction des termes-clés, nous avons expérimenté cinq méthodes d'extraction automatique de termes-clés dont : TF-IDF\cite{bougouin2013etat}, TopicRank\cite{bougouin2013topicrank}, TextRank\cite{mihalcea2004textrank}, SingleRank\cite{wan2008single} et K-core\cite{rousseau2015main}. 
+
+\smallskip
+
+\noindent Nous avons pu constater que globalement, TF-IDF fournit les meilleurs résultats du fait que cette méthode  utilise tous les documents composant le corpus. Mais TopicRank, qui n'utilise que le document analysé, est une meilleure méthode d'extraction automatique de termes-clés si nous ne gardons que 33 \% des termes-clés générés. TopicRank serait d'autant plus performante si elle est utilisée sur un document complet au lieu d'un document composé que du titre et de son résumé (comme dans notre cas). L'utilisation de la radicalisation sur les documents avant l'extraction des termes-clés ne fournit pas de meilleurs résultats donc son intégration ne s'avère pas être utile dans notre analyse.

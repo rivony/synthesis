@@ -1,0 +1,38 @@
+\select@language {french}
+\contentsline {chapter}{\numberline {1}Introduction}{2}
+\contentsline {section}{\numberline {1.1}Motivation}{2}
+\contentsline {section}{\numberline {1.2}Contribution}{6}
+\contentsline {section}{\numberline {1.3}Organisation du document}{6}
+\contentsline {chapter}{\numberline {2}Etat de l'art de l'apprentissage profond}{8}
+\contentsline {section}{\numberline {2.1}G\IeC {\'e}n\IeC {\'e}ralit\IeC {\'e}s}{8}
+\contentsline {subsection}{\numberline {2.1.1}Apprentissage automatique et apprentissage profond}{8}
+\contentsline {subsection}{\numberline {2.1.2}Bref historique }{9}
+\contentsline {subsection}{\numberline {2.1.3}Sp\IeC {\'e}cificit\IeC {\'e} de l'apprentissage profond}{10}
+\contentsline {section}{\numberline {2.2}Application dans le cadre de nos recherches}{11}
+\contentsline {subsection}{\numberline {2.2.1}Application dans le domaine de la vision par ordinateur}{11}
+\contentsline {subsubsection}{\numberline {2.2.1.1}AlexNet \cite {krizhevsky2012imagenet}}{12}
+\contentsline {subsubsection}{\numberline {2.2.1.2}VGG - OxfordNet \cite {simonyan2014very}}{13}
+\contentsline {subsubsection}{\numberline {2.2.1.3}GoogLeNet \cite {szegedy2015going} et Inception}{13}
+\contentsline {subsection}{\numberline {2.2.2}Application sur le traitement automatique du langage naturel}{15}
+\contentsline {subsubsection}{\numberline {2.2.2.1}Repr\IeC {\'e}sentation vectorielle des mots}{15}
+\contentsline {subsubsection}{\numberline {2.2.2.2}Mod\IeC {\`e}les neuronaux pour la g\IeC {\'e}n\IeC {\'e}ration de phrases}{17}
+\contentsline {subsection}{\numberline {2.2.3}G\IeC {\'e}n\IeC {\'e}ration automatique de descriptions d'images}{19}
+\contentsline {chapter}{\numberline {3}Contribution au mod\IeC {\`e}le th\IeC {\'e}orique }{25}
+\contentsline {section}{\numberline {3.1}Pr\IeC {\'e}sentation de la contribution}{25}
+\contentsline {subsection}{\numberline {3.1.1}Classification des images}{27}
+\contentsline {subsection}{\numberline {3.1.2}G\IeC {\'e}n\IeC {\'e}ration de descriptions utilisant le vecteur de cat\IeC {\'e}gories}{28}
+\contentsline {section}{\numberline {3.2}Impl\IeC {\'e}mentations}{30}
+\contentsline {chapter}{\numberline {4}\IeC {\'E}valuation de notre proposition}{32}
+\contentsline {section}{\numberline {4.1}Ressources exp\IeC {\'e}rimentales}{32}
+\contentsline {subsection}{\numberline {4.1.1}Collection de donn\IeC {\'e}es :}{32}
+\contentsline {subsection}{\numberline {4.1.2}Mesures d'\IeC {\'e}valuation}{32}
+\contentsline {subsubsection}{\numberline {4.1.2.1}Mesures d'\IeC {\'e}valuation de la classification :}{32}
+\contentsline {subsubsection}{\numberline {4.1.2.2}Mesures d'\IeC {\'e}valuation des descriptions g\IeC {\'e}n\IeC {\'e}r\IeC {\'e}es:}{34}
+\contentsline {paragraph}{\numberline {4.1.2.2.1}BLEU \cite {papineni2002bleu}:}{34}
+\contentsline {paragraph}{\numberline {4.1.2.2.2}METEOR \cite {denkowski2014meteor}:}{35}
+\contentsline {paragraph}{\numberline {4.1.2.2.3}CIDEr \cite {vedantam2015cider}}{35}
+\contentsline {section}{\numberline {4.2}R\IeC {\'e}sultats}{36}
+\contentsline {subsection}{\numberline {4.2.1}r\IeC {\'e}sultats de la classification}{36}
+\contentsline {subsection}{\numberline {4.2.2}r\IeC {\'e}sultats de la g\IeC {\'e}n\IeC {\'e}ration de descriptions}{36}
+\contentsline {chapter}{\numberline {5}Discussions}{40}
+\contentsline {chapter}{\numberline {6}Conclusion et perspective}{41}

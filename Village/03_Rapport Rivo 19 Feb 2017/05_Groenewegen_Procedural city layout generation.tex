@@ -1,0 +1,119 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage[colorlinks=true,
+            linkcolor=red,
+            urlcolor=blue,
+            citecolor=blue]{hyperref}
+            
+\title{Procedural city layout generation based on urban land use models}
+\author{S. A. Groenewegen, R. M. Smelik , K. J. de Kraker and R. Bidarra}
+\date{
+	\begin{center}
+		EUROGRAPHICS 2009 / P. Alliez and M. Magnor\\
+		TNODefence, Security and Safety, The Netherlands\\
+		Delft University of Technology, The Netherlands\\
+		Bauhaus-Universität Weimar, Germany
+	\end{center}
+}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\linespread{1}
+
+\begin{document}
+
+\maketitle
+
+\section*{Abstract}
+
+Une méthode procédurale pour créer les tracés (layouts) de villes accessible à des utilisateurs non techniques en donnant des paramètres simples (taille de la ville, situation géographique et information historique). Le résultat est représenté par des districts de la ville disposés suivant des contraintes issues de l'aménagement du territoire (urban land use). C'est une génération rapide.
+
+\section{Introduction et travaux en relation avec la méthode}
+
+Ce qui manque aux villes générées procéduralement est le réalisme des structures. Ces effets nécessitent une expertise de la part de l'utiliateur et des données externes comme la carte de la densité de la population ou la structure d'une ville existante (cas du logiciel CityEngine de Parish et Muller). Les villes ne sont alors pas générées par la méthode de CityEngine ou celle pour CityGen (Kelly et McCabe) mais utilise des données statistiques. L'approche basée sur l'agent comme pour City-Builder se remet à plusieurs agents (développeurs en urbanisme) qui générent le tracé d'une petite ville d'une surface limitée en 15 minutes. L'objectif de leur méthode est de permettre aux non techniciens de générer rapidement des villes réalistes sans besoin de données externes, pour la simulation urbaine par exemple.
+
+\section{Les modèles d'aménagement de territoire urbain}
+
+Trouver des patterns dans les structures urbaines est essentiel en géographie urbaine. Dans les villes modernes, les districts sont distingués par des caractéristiques résidentielles et sociales (industrie, commerce, zones résidentielles "high-class" et "low-class").
+La distribution de ces districts suit des principes de l'aménagement du territoire sans oublier les influences locales et historiques. Ils utilisent deux modèles principales pour leur algorithme: celui d'une ville en Europe de l'Ouest (caractérisée par de grands édifices comme les cathédrales, un dégradé de bâtiments ordonnés plaçant les personnes aisées plus au centre, des subdivisions marquées par les guerres) et celui d'une ville nord américaine (avec les gratte-ciels et une aversion de la vie en ville caractérisée par une dispersion vers les zones éloignées le long des grands axes routiers, se caractérise aussi par les CBD ou Central Business District réunissant les hub économique, social et politique très peuplés et une couche moins dense composant les habitations, les hôtels et les services médicales, éducatives et les entreprises).
+
+\section{Méthode}
+
+La méthode ne simule pas la croissance de la ville mais un cliché de la ville en trois étapes: mis en place des paramètres basiques entrés par l'utilisateur (le diamètre de la ville, le continent pour définir la distribution des districts, les influences historiques, le nombre d'autoroutes traversant la ville), ensuite le deuxième étape est la génération des districts et enfin le placement de ces districts dans la ville (leurs positions). Ils disposent de 18 types de districts selon les paramètres choisis: 3 districts résidentiels, 2 pour l'industrie (lourde ou légère), 2 districts commerciaux, des noeuds de transport pour les personnes et les biens, les espaces verts et 8 districts spéciaux (cathédrales, squares).
+Le placement des districts est contraint par cinq facteurs: le type des districts voisins (les zones résidentielles ne sont pas enclin à cohabiter avec les industries), le type de terrain (les industries préfèrent s'implanter près des eaux et les quartiers résidentiels en hauteur de colline), la surface de la ville (pour représenter le dégradé social et économique depuis le centre vers les zones suburbaines), la localisation des rivières et celle des grandes axes routiers (autoroutes).
+Suivant les modèles d'aménagement de territoire, à chaque district est assigné à un ensemble de valeurs de ces facteurs pour désigner un degré d'attraction/répulsion entre les districts (les industries lourdes sont fortement attirées par les terrains aux bordures de l'eau et ont une forte répulsion vis-à-vis des zones résidentielles de premier plan, et à la fois sont modérément attirées par les autres industries.
+
+L'algorithme de placement des districts est basés sur ces coefficients d'attraction/répulsion:
+\begin{itemize}
+	\item la taille de la ville et sa localisation est définie par l'utilisateur
+	\item les autoroutes sont générées autour des centres et se dirigent en dehors de la ville (vers d'autres villes)
+	\item des localisations de districts aléatoires sont générées (environ le double du nombre de districts)
+	\item les meilleures localisations sont choisies
+	\item un diagramme de Voronoi est généré à partir des localisations trouvées définissant des polygones autour de ces localisations et partageant la villes en districts
+	\item Du bruit est ajouté au diagramme pour plus de réalisme
+	\item un réseau routier est généré avec des méthodes connus \cite{parish-01}\newline
+\end{itemize}
+
+La convenabilité notée $S$ de la location $l$ pour contenir un district donné $d$ indique leur degré mutuel de symbiose, en tenant compte des paramètres d'aménagement du territoire choisi. En calculant $S$ pour chaque emplacement généré $l$ et ils assignent à $d$ la location avec une convenabilité $S$ la plus élevée.
+$S$ est une fonction à cinq paramètres:
+\begin{enumerate}
+\item $S_d$: placement de $d$ par rapport aux autres $n$ districts
+\item $S_t$: type de terrain
+\item $S_a$: surface à l'intérieur de la ville
+\item $S_r$: distance par rapport aux rivières
+\item $S_h$: distance par rapport aux autoroutes\newline
+\end{enumerate}
+
+Example: 
+
+$S_d$: convenabilité d'une localisation par rapport aux districts (au nombre de $n$) environnants déjàs placés
+
+\begin{equation}
+S_d = \sum_{i=1}^n S_{d_i} = \sum_{i=1}^n A_{d_i}  \ast \frac{\Delta_{d_i}}{\Delta_{min}}
+\end{equation}
+avec:\newline
+\begin{itemize}
+\item $A_{d_i}$: attraction par rapport à un district de type $d_i$
+\item $\Delta_{d_i}$: distance par rapport à $d_i$
+\item $\Delta_{min}$: distance minimum possible entre les centres de districts\newline
+\end{itemize}
+
+Les coefficients d'attraction (entier entre $-100$ et $100$, représentant respectivement une forte répulsion et une forte attraction) dépendent du type de ville (ex. Européenne avec un cor mercantile).
+Les distances sont mesurées en pixels.
+
+Les valeurs de chaque paramètre sont alors valuées avec des poids (w) suivant leur importance dans la ville (ex. la distance par rapport aux autoroutes est importante pour une ville américaine) d'où la valeur finale de la convenabilité $S$ suivante:
+
+\begin{equation}
+S = w_d \ast S_d + w_t \ast S_t + w_a \ast S_a + w_r \ast S_r + w_h \ast S_h
+\end{equation}
+
+La location $l$ avec la valeur de $S$ la plus élévée est choisie pour le district $d$. Cette algorithme continue jusqu'à ce que tous les districts aient des emplacements, parcourant les districts centraux puis seulement après les districts du reste de la ville. Dans ces deux ensembles (central et périphérique) le placement des districts est aléatoire pour avoir des tracés variés.
+
+\begin{thebibliography}{2} 
+
+\bibitem{parish-01}\label{Parish and Muller (2001)}
+PARISH Y. I. H., MÜLLER P.. 2001.
+\textit{Procedural modeling of cities}.
+In : Proceedings of ACM SIGGRAPH 2001 (2001), ACM Press, pp. 301–308.
+
+\bibitem{ebert-03}
+SMELIK R. M., TUTENEL T., DE KRAKER K. J., BIDARRA R.. 2008.
+\textit{A Proposal for a Procedural Terrain Modelling Framework}.
+In Poster Proceedings of the 14th Eurographics Symposium on Virtual Environments EGVE08(2008).
+
+\end{thebibliography}
+
+\end{document}

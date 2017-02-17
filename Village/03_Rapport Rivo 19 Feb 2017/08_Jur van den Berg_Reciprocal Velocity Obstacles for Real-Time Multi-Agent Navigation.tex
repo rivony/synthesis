@@ -1,0 +1,132 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage[colorlinks=true,
+            linkcolor=red,
+            urlcolor=blue,
+            citecolor=blue]{hyperref}
+            
+\title{Reciprocal Velocity Obstacles for Real-Time Multi-Agent Navigation}
+\author{Jur van den Berg, Ming Lin et Dinesh Manocha}
+\date{
+	\begin{center}
+		University of North Carolina at Chapel Hill, USA. \\
+		2008 IEEE International Conference on Robotics and Automation \\
+		Pasadena, CA, USA, May 19-23, 2008
+	\end{center}
+}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\linespread{1}
+
+\begin{document}
+
+\maketitle
+
+\section*{Abstract}
+
+Dans cette article, nous proposons un nouveau concept - le RVO (Reciprocal Velocity Obstacle) - pour la navigation multi-agent en temps réel. Nous considérons le cas dans lequel chaque agent se déplace indépendamment sans communication explicite avec les autres agents. Notre formulation est une extension du concept "Velocity Obstacle", qui a été introduit pour la navigation parmi (passivement) des obstacles en mouvement. Notre approche prend en compte le comportement réacti des autres agents en supposant implicitement que les autres agents effectuent un raisonnement d'évitement de collision similaire. Nous montrons que cette méthode garantit des déplacements sans collisions et sans oscillations pour chacun des agents. Nous appliquons notre concept de navigation sur des centaines d'agents dans des environnements densément peuplés d'obstacles statiques et en mouvements, et nous montrons que la performance en temps réel est achevée dans ces sénarios à défi.
+
+\section{Résumé}
+
+Dans cette article, les auteurs proposent un nouveau concept - le RVO (Reciprocal Velocity Obstacle) - pour la navigation multi-agent en temps réel. Ils considèrent le cas dans lequel chaque agent se déplace indépendamment sans communication explicite avec les autres agents. 
+
+D'abord, ils donnent un bref apercu des travaux antérieurs sur la question. Certaines méthodes ne prennent pas en compte le comportement des autres agents, ou les considèrent simplement comme statiques. Des risques de collision sont observés pour ces méthodes, par exemple pour les vitesses élevées. Ils citent également des méthodes antérieures basées sur le concept de "Velocity Obstacle" incorporant des comportements réactifs mais générant des oscillations dans les trajectoires. Ils notent des approches créées pour gérer ces oscillations mais qui ne sont pas clarifiées comme le "Common Velocity Obstacle".
+
+Etant donné que leur formulation est une extension du concept "Velocity Obstacle", ils le reprennent. 
+
+\textbf{Velocity Obstacle.} Pour un agent $A$ (position: $p_A$, vélocité: $v_A$) en mouvement dans un plan et un obstacle $B$ ($p_B, v_B$), le "Velocity Obstacle" de l'obstacle $B$ pour l'agent A noté \textbf{$VO_B^A(v_B)$} est un \textit{ensemble constitué des vélocités $v_A$ de $A$ qui conduisent à une collision avec l'obstacle $B$ à un moment donné}. Pour la formulation mathématique, ils notent la somme de Minkowski $A \oplus B = \{a+b \,|\, a \in A, b \in B\}$ des objets $A$ et $B$ avec $-A = \{-a \,|\, a \in A \}$ la négation de l'objet $A$ ainsi que $\lambda(p,v) = \{ p + tv \,|\, t \geq 0 \}$ représentant les rayons partant de $p$ dans la direction de $v$. Si un rayon partant de $p_A$ suivant la direction de la vélocité relative de A et B, ($v_A - v_B$), intersecte la somme $B \oplus -A$ centré en $p_B$ alors la vélocité $v_A$ appartient au "Velocity Obstacle" de $B$. Il s'en suit que le "Velocity Obstacle" de $B$ pour $A$ est définie par: 
+\[
+VO_B^A(v_B) = \{ v_A \,\mbox{ tel que }\, \lambda(p_A, v_A - v_B)\; \bigcap \; B \oplus\! -A \; \; \neq\; \;  \emptyset \}
+\] 
+Si $v_A$ appartient à $VO_B^A(v_B)$, $A$ et $B$ entreront en collision. Si $v_A$ se trouve en dehors de cet ensemble,  les deux agents ne seront jamais en collision. Enfin, si $v_A$ se trouve à la frontière de $VO_B^A(v_B)$, $A$ va toucher $B$. Le Velocity Obstacle de $B$ pour $A$ forme une zone conique dont le sommet est pointé par $V_B$. Pour plannifier le déplacement d'un agent en suivant ce concept, un choix de vélocité est effectué parmi celles qui sont à l'extérieur du "Velocity Obstacle" à chaque cycle. Si la vélocité choisie figure parmi celles qui conduisent à l'objectif de l'agent, ce dernier peut suivre son chemin sans encombre. Ils ajoutent des lemmes pour définir les propriétés des "Velocity Obstacles" comme la symmétricité, l'invariance par translation et la convexité. Ils introduisent notamment le concept de régions admissibles à droite et à gauche définie par les demi-plans à gauche et à droite du domaine $VO_B^A(v_B)$.
+
+Ensuite, ils montrent que le "Velocity Obstacle" génère des oscillations quand il est utilisé pour la navigation multi-agent. Soient deux agents ($A, v_A$)  et $(B, v_B)$ en mouvement tels que $v_A \in VO_B^A(v_B)$ et $v_B \in VO_A^B(v_A)$, ils vont entrer en collision donc ils choisissent chacun de nouvelles vélocités $v_A^\prime \mbox{ et } v_B^\prime$ en dehors des obstacles de vélocité respectifs. Dans cette nouvelle situation, les vélocités antérieures se trouvent à l'extérieur des nouveaux obstacles de vélocité, en plus d'être des candidates idéales vu qu'elles conduisent aux objectifs. Donc, elles sont resélectionnées en vertu de la symmétricité des Velocity Obstacles. De nouveau, les agents doivent éviter la collision entre eux et modifier les vélocités et ainsi de suite. D'où les oscillations dans les trajectoires des agents.
+
+\textbf{Reciprocal Velocity Obstacles (RVO)}. Ils présentent ensuite leur nouveau concept, le RVO et montrent qu'il génère des déplacements sûrs et sans oscillations pour chacun des agents. Leur approche prend en compte le comportement de réaction des autres agents en supposant implicitement que les autres agents effectuent un raisonnement d'évitement de collision similaire. Leur idée est qu'au lieu de choisir une vélocité en dehors de l'obstacle de vélocité, il faut en choisir une qui est la moyenne entre la vélocité actuelle et celle à choisir. Le Reciprocal Velocity Obstacle d'un agent B pour un agent A est formalisé par la définition suivante:
+\[
+RVO_B^A(v_B, v_A) = \{ v_A^\prime \,\mbox{ tel que }\, 2\,v_A^\prime - v_A \in VO_B^A(v_B) \}
+\]
+Géométriquement, le sommet du cône du domaine de ce RVO est indiqué par la vélocité $\frac{v_A + v_B}{2}$. Ils démontrent en se basant sur les définitions et les lemmes la propriété de non-collision de cette méthode. En outre, quand les agents à risque de collision choisissent des vélocités en dehors de leurs RVO respectifs, leur chemin reste sur le même côté. De plus pour l'agent $A$, la vélocité la plus proche de $v_A$ en dehors de la RVO de  l'agent $B$ est $v_A+u$, réciproquement pour l'agent $B$ la vélocité la plus proche de $v_B$ en dehors de la RVO de $A$ est égale à $v_B-u$. Ils prouvent ensuite le caractère non oscillatoire de la méthode de la RVO par le théorème suivant:
+\[
+v_A \in RVO_B^A(v_B, v_A) \Leftrightarrow v_A \in RVO_B^A(v_B-u, v_A+u)
+\]
+Ce théorème montre que les vélocités initiales $v_A$ et $v_B$ se trouvent dans les RVO correspondants aux nouvelles vélocités $v_A+u \mbox{ et } v_B-u$. Elles ne sont pas susceptibles d'être resélectionnées pour cette méthode étant donné que les vélocités les plus proches restent les nouvelles vélocités et ainsi de suite. De par la convexité du domaine de la RVO, ils proposent une généralisation en ne se basant pas sur la moyenne mais sur un paramètre $\alpha_i^j$ définissant la proportion de participation de chaque agent pour l'évitement de la collision. La définition générale est la suivante:
+\[
+RVO_B^A(v_B, v_A, \alpha_B^A) =  \{ v_A^\prime \,\mbox{ tel que }\, \frac{1}{\alpha_B^A}\, v_A^\prime + (1 - \frac{1}{\alpha_B^A})\,v_A \;\in VO_B^A(v_B) \}
+\]
+
+\textbf{Navigation multi-agent}. Ils décrivent comment ils utilisent cette méthode pour diriger plusieurs agents dans des environnements complexes contenant des obstacles statiques et en mouvement. Ils combinent les RVO de tous les agents en faisant l'union avec les "Velocity Obstacles" des obstacles dans l'ensemble $\mathcal{O}$:
+\[
+RVO^i = \bigcup_{i \neq j} RVO_j^i(v_j, v_i, \alpha_j^i) \;\;\cup\;\; \bigcup_{o \in \mathcal{O}} VO_o^i(v_o)
+\]
+Ils définissent les contraintes de vitesse pour chaque agent par un ensemble de vélocités admissibles, en considérant les vitesses maximales $v_i^{max}$ et les accélérations maximales $a_i^{max}$ et le domaine des vélocités admissibles:
+\[
+AV^i(v_i) = \{ v_i^\prime \mbox{ tel que } \| v_i^\prime \| < v_i^{max} \mbox{ et } \| v_i^\prime - v_i \| < a_i^{max} \,\Delta t \}
+\]
+Concernant la sélection des vélocités, pour chaque agent $A_i$, une vélocité de préférence $v_i^{pref}$: la vélocité dont la norme est égale à la vitesse convenable à l'agent et sa direction pointe vers l'objectif. Si l'agent est proche de l'objectif, le vecteur nul est assigné à $v_i^{pref}$. Consécutivement, une nouvelle vélocité $v_i^\prime$ est choisie comme la plus proche de $v_i^{pref}$ et se trouvant en dehors du $RVO^i$ tout en appartenant au domaine $AV^i$. Il arrive que, dans un environnement encombré, les RVO combinés remplissent les vélocités admissibles. Dans ce cas, l'algorithme choisit une vélocité à l'intérieur de la RVO mais cette vélocité est pénalisé (sous forme d'une fonction de pénalité) par rapport à la vélocité de préférence et du time-to-collision. Les vélocités avec les pénalités minimales sont plus susceptibles d'être choisies:
+\[
+v_i^\prime = arg\!\!\!\!\min_{\scriptscriptstyle{v_i^{\prime\prime} \in\,\, AV^i}} penalty_{\,\,i}(v_i^{\prime\prime})
+\]
+Un échantillon au nombre de $N$ des vélocités du domaine $AV^i$ est utilisé pour ce choix.\\
+Enfin ils définissent une région de voisinage pour séléctionner les agents à prendre en compte pour la définition de la $RVO^i$. Cette région $NR^i$ est située par rapport à la position de l'agent $A_i$ et sa taille est proportionelle à la vitesse moyenne des agents et des obstacles. 
+
+\textbf{Résultats et expériences}. Ils appliquent leur concept de navigation sur des centaines d'agents dans des environnements densément peuplés d'obstacles statiques et en mouvements. Parmi les expériences, des agents forment la circonférence d'un cercle et se déplacent vers la position opposée comme objectif. Une autre forme consiste à faire interagir des agents dans un espace étroit en plaçant des obstacles au milieu d'une pièce. Une dernière catégorie d'expérience consiste à mettre une file d'agent en mouvement en face d'un obstacle (auto) avançant vers eux passivement sans prendre en compte leurs actions.\\
+Pour finir, ils montrent que la performance en temps réel est achevée dans ces sénarios complexes par rapport au nombre d'agents de la simulation.
+
+\section{Introduction}
+
+Les systèmes multi-agents réalisent des tâches avec une équipe d'agents pour gagner en efficacité: le déminage, la recherche et le secourisme de personnes, etc. Cette article se borne à résoudre le problème de la navigation sans collision d'un agent dans un environnement semé d'obstacles et d'autres agents. L'agent en question peut être un humain virtuel, une automobile, etc. Une approche assez commune pour la résolution de ce problème est la navigation continue: un cycle continu de sondage et d'action durant lequel chaque agent effectue un déplacement en se basant sur l'observation de ses environs. La recheche de chemin global et l'évitement de collision locale son souvent séparés dans ce schéma. Typiquement, un chemin global vers un but localisé indique la direction globale du mouvement, alors que les collisions avec les autres agents et les obstacles sont évités en navigant autour d'eux.
+
+La technique d'évitement de collision est un module important pour ces planificateurs, et beaucoup d'approches ont été proposé. Cependant ces approches traitent avec des obstacles qui sont supposés en mouvement passif à travers l'environnement sans une perception de ce qui les entoure. Dans un cadre multi-agent, cette supposition ne tient pas car les agents se perçoivent, et change activement leur mouvements en conséquence. Quand chacun des agents ne prend pas en compte que les autres agents ont également la capacité de décider pour éviter les collisions, le mouvement qui en ressort est sujet à produire des \textit{oscillations} indésirables et irréalistes. Bien que ce problème a été identifié par des travaux antérieurs à celui-ci, aucune solution propose une navigation sûre et sans collision parmi des agents multiples dans un environnement large encombré.
+
+\textbf{Résultats principaux}: Dans cet article, nous introduisons un nouveau concept pour l'évitement de collision réactive et locale appelé \textit{Reciprocal Velocity Obstacle}, qui suppose implicitement que les autres agents effectue un raisonnement similaire d'évitement de collision. Sous cette hypothèse, notre framework est garanti de générer des déplacements sûrs et sans oscillations.
+\newline
+Notre méhtode est une extension du concept de Velocity Obstacle, introduit par Fiorini et Shiller dans \cite{fiorini-01}, lequel est une technique généralement applicable, bien défini et simple qui a été largement utilisée pour la navigation sûre parmi les obstacles en mouvement. Notre approche hérite de toutes ses attirantes propriétés, mais nous introduisons une importante capacité  nouvelle pour résoudre le problème commun d'oscillation dans la navigation multi-agent.
+\newline
+Les seules informations que chaque agent a besoin de détenir sur les autres agents est leur posiion actuelle et leur vélocité, leur forme exacte (qui peuvent être acquises par des capteurs). Nous supposons que les agents et les obstacles sont des objets en translation dans un plan à deux dimensions (ex. disques ou polygones). Cette hypothèse est applicable à la plupart des applications avec des agents mobiles, dont l'orientation peut être définie par le front de déplacement de chaque agent.
+\newline
+Nous montrons le potentiel de l'approche de la RVO en l'appliquant à des scénarios dans lesquels des centaines d'agents similaires sont en mouvement indépendamment les uns des autres dans un environnement complex. Nous expérimentations montrent que des déplacements fluides et réalistes sont générés même quand les agent forment des groupes très denses. En outre, la performance en temps réel peut être achevé dans de tels scénarios à défi, et l'approche est spécialement convenable à la parallélisation, car un calcul indépendant est effectué pour chaque agent.
+
+\textbf{Organisation} 
+
+Le reste de l'article est organisé comme suit. Nous donnons un bref apercu des travaux antérieur sur la quesion. Nous revoyons le concept de Velocity Obstacles et montrons qu'il génére des oscillations quand il est utilisé pour la navigation multi-agent. Nous présentons notre nouveau concept, la RVO et montrons qu'il génère des déplacements sûrs et sans oscillations. Nous décrivons comment nous utilisons cette méthode pour la direction de plusieurs agents dans des environnements complexe contenant des obstacles statiques et en mouvement. Nous démontrons que la performance en temps réel de notre approche par plusieurs expériences.
+
+\section{Travaux antérieurs}
+
+
+\section{Vocabulary}
+
+\noindent \textbf{A}\\
+\textit{appealing}: attirant \\
+\textbf{B}\\
+\textit{challenging}: de défi, stimulant \\
+\textbf{C}\\
+\textit{to clutter}: encombrer, (n) fouilli \\
+\textbf{S}\\
+\textit{setting}: cadre, monture \\
+
+
+\begin{thebibliography}{2} 
+
+\bibitem{fiorini-01}\label{Fiorini and Shiller (1998)}
+P. Fiorini and Z. Shiller. 1998.
+\textit{Motion planning in dynamic environments using velocity obstacles}.
+Int. Journal of Robotics Research, vol. 17, no. 7, pp. 760–772, 1998.
+
+\end{thebibliography}
+
+\end{document}

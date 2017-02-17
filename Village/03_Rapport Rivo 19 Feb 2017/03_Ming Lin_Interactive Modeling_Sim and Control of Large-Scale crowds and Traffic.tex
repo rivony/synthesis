@@ -1,0 +1,96 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage[colorlinks=true,
+            linkcolor=red,
+            urlcolor=blue,
+            citecolor=blue]{hyperref}
+            
+\title{Interactive Modeling, Simulation and Control of Large-Scale Crowds and Traffic}
+\author{Ming C. Lin}
+\date{University of North Carolina}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\linespread{1}
+
+\begin{document}
+
+\maketitle
+
+Cet article fait un recensement et une évaluation des travaux de Ming Lin et al. sur la simulation de larges foules (agents).
+Les groupes d'entités (individu ou véhicule) forment des systèmes complexes dévoilant des patterns observables dans la société.
+Les caractéristiques qui émergent de ces comportements sont encore à découvrir.
+Ils décrivent leur compréhension des principes des foules macroscopiques et identifient des modèles issus de leur comportement.
+Ils énoncent des méthodes de navigation globale d'entités virtuelles multiples tout en évitant les collisions au niveau local: une formulation modélisant la dynamique d'une large foule, une méthode de simulation d'un traffic continu, le contrôle d'une foule par des champs de navigation.
+
+\section{Clear path}
+
+"Clear path" est une approche qui généralise les méthodes basées sur la vélocité (VO: Velocity Obstacle) avec une simulation multi-agent. Les calculs pour les algorithmes d'évitement de collisions locales peuvent être réduit à l'optimisation d'un problème à complexité quadratique minimisant les variations de la vélocité de chaque agent soumis à des contraintes de non-collision. Un algorithme en temps polynomial pour les agents en ressort permettant de calculer le mouvement 2D sans collision d'une manière distribuée. En supposant que le problème de d'évitement de collision locale pour $N$ agents est un problème d'optimisation combinatoire, ils étendent la formulation de la VO en imposant des contraintes additionnelles qui garantissent l'évitement de collision pour chaque agent pendant un interval discret. Le Fast Velocity Obstacle (FVO) utilise quatre contraintes. Les \textit{deux} premières contraintes de frontières coniques de la FVO sont les mêmes que celles de la RVO:
+
+\begin{eqnarray}
+FVO_L{}_B^A(\textbf{v}) = \phi(\textbf{v}, (\textbf{v}_A + \textbf{v}_B)/2, \textbf{P}_{ABleft}^\perp) \geq 0 \\
+FVO_R{}_B^A(\textbf{v}) = \phi(\textbf{v}, (\textbf{v}_A + \textbf{v}_B)/2, \textbf{P}_{ABright}^\perp) \geq 0 
+\end{eqnarray}
+
+Deux contraintes supplémentaires sont introduites dans le modèle ClearPath. 
+
+\textbf{Contrainte d'intervalle de temps finie}. Les collisions sont évitées si elles surviennents dans un intervalle de temps défini $\Delta T$. Le cône d'intervalle de la RVO est tronquée pour se limiter à un laps de temps défini.
+
+\textbf{Contrainte de l'orientation de vélocité}. Les agents sont contraints de se déplacer sur leur côté droit par la formulation $FVO_C{}_B^A(\textbf{v}) = \{v \,|\, \phi(\textbf{v}, P_A, \textbf{P}_{AB}^\perp) \leq 0\}$.
+
+Toutes ses contraintes garantissent un évitement de collision. Pour chaque agent, le problème est résolu par l'optimisation d'une fonction avec des contraintes linéaires. Ce qui est possible en temps polynomial si le nombre de contraintes est limité (sinon c'est NP-difficile), deux dans le cas de ClearPath.
+
+\textbf{P-ClearPath} est une extension de "ClearPath" qui parallélise l'algorithme. Des opérations de groupement d'agents pour le traitement de collision et de division des traitements permettent d'améliorer l'algorithme. 
+
+\textbf{Résultats:} P-ClearPath est un algorithme très efficace et ils l'ont prouvé en le testant sur des machines à coeur multiples (Larabee avec 32-64 cores) et prends 2.5 millisecondes dans des scénarios composés de centaines d'agents.
+
+\section{Foules hybrides}
+
+Les foules denses sont caractérisées par une distance interpersonnelle faible et en conséquence une perte de liberté de mouvement. Ils ont choisi alors de modéliser le mouvement de ces encombrantes foules comme le flux effectué par un seul système. Pour cela, un modèle d'évitement de collision entre agents est développé pour alléger et séparer cette opération du guidage globale de la foule d'agents interactivement.
+
+La méthode combine une représentation lagrangienne des individus avec un model de foule eulérien. Le but étant d'obtenir les comportements locaux entre agents et le mouvement global de la foule en général. Le défi est de simuler la variation observée de la structure de la foule en fonction de l'environnement qui devient plus étroit ou confiné: la foule initialement sous la forme d'un flux compressible avec une densité faible devient incompressible quand les agents se rapprochent de plus en plus les uns des autres. Ils proposent une nouvelle formulation mathématique de ce phénomène.
+
+\textbf{Résultats:} Ils peuvent simuler une dense foule de plus de 100 000 agents compressés dans des environnements étroits (mosquées, marchés, conférences). Les agents peuvent donc avoir un objectif unique sans que l'algorithme ne produise d'effets indésirés.
+
+\section{Le traffic continu}
+
+Ils constatent que la simulation de traffic a été largement simulée soit par des approches microscopiques ou macroscopiques. Cependant, peu d'attention a été accordée à la production d'animations 3D basées sur les modèles macroscopiques. Ils ont alors simulé à grande échelle, les traffics sur des réseaux routiers réels avec ces modèles. Cependant, des informations au niveau microscopique sont utilisées pour la représentation visuelle de la simulation.
+
+Leur approche est une extension des approches par file continue auxquelles ils procurent un nouveau modèle de changement de file utilisant une représentation discrète des véhicules. La méthode proposée a été validée par des observations du traffic réel.
+
+\textbf{Résultats:} Ils ont testé leur technique sur des routes synthétiques (virtuelles) dans des villes à taille moyenne avec un grand volume de traffic sur un court segment d'autoroute. Des données sur les routes (routes secondaires, les feux tricolores, les grands axes) ont été obtenues depuis la base de données GIS américaines disponibles au public dénommée TIGER. La visualisation similaire au système de particules reflète des mouvements réalistes. Les calculs effectués sont directement proportionnels au nombre de cellules à mettre jour à chaque étape de la simulation, même une machine personnelle Intel Core2 produit des résultats satisfaisants (23 kilomètre-carrés, 180 kilomètres de routes, 2500 véhicules).
+
+\section{Diriger les foules avec des champs de navigation}
+
+Dans des systèmes basés agent, chaque agent est supposé être une entité prenant des décisions indépendantes. D'autres méthodes se concentrent sur les comportements de groupes pour prendre des décisions. Ces modèles produisent des effets indésirables pour les comportements macroscopiques. Le but étant de générer des mouvements de foules plausibles tout en respectant les règles locales de non-collision et d'interaction.
+
+Ils développent une approche pour guider la simulation de flux d'agents, lequels possèdent des connaissances de leur environnement et ont des objectifs à chaque étape de la simulation. Ils utilisent des champs de guidage discrétisés. Ces champs peuvent être modifié par l'utilisateur interactivement. Les comportements locaux sont le fruit des méthodes existantes pour l'évitement de la collision, l'espace personnel, la communication entre agents.
+
+\textbf{Résultats:} Cette approche est applicable aux méthodes basées agent existantes. Ils démontrent l'utilité de cette approche par la simulation de scénarios  basés sur des séquences vidéos du flux de personnes réelles. L'utiliseur peut interagir avec le champ de guidage.
+
+\section{Discussions}
+
+\textbf{ClearPath} est convenable pour la simulation d'interaction de foule très dense et a besoin des avancés en matière de parallélisation. Son implémentation reste à explorer.
+
+La technique de modélisation 3D de traffic par la méthode macroscopique peut simuler des conditions variées d'interactions. Ils veulent creuser plus le couplage entre les méthodes macroscopiques qui permettent de générer une grande quantité de véhicules avec les modèles discrets qui décrivent les comportements locaux des agents. La perspective d'intégrer un traffic et des simulations de foule pour modéliser une scène urbaine est évoquée.
+
+L'approche pour guider les foules avec des champs de navigation est général et peut intégrer tout algorithme d'évitement de collision. L'interaction de l'utilisateur peut se faire par dessin ou suivant des séquences vidéos réelles.
+
+\section{Vocabulaire}
+
+\textbf{freeway}: autoroute
+
+\end{document}

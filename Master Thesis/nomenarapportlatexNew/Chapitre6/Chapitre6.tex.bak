@@ -1,0 +1,444 @@
+%------------------------------début entêtes-----------------------------------------
+\pagestyle{fancy}
+
+\renewcommand{\footrulewidth}{1pt}
+
+\fancyhead[L]{\footnotesize \rightmark}
+\fancyhead[C]{\thepage}
+\fancyhead[R]{Extraction de mots-clés}
+
+\fancyfoot[L]{Ramiandrisoa Faneva}
+\fancyfoot[C]{\thepage}
+\fancyfoot[R]{Extraction d'information}
+
+%------------------------------fin entêtes-------------------------------------------
+
+\chapter{Extraction de mots-clés}
+
+\qquad Dans cette partie, le titre d'un article et son résumé sont considérés comme un document (un article sans résumé n'est pas considéré comme un document). Cette analyse porte sur 115 documents publiés en 2010 dans le journal IPM sur lesquels nous avons également les mots clés formulés par auteurs. Ainsi afin de comparer les termes-clés extraits à partir des méthodes implémentés (comme le TF-IDF) et les termes-cles des auteurs, nous allons travailler sur ces 115 documents.
+
+\smallskip
+
+\qquad Notre objectif est de savoir quelle méthode d'extraction de termes clés est la mieux adaptée pour extraire automatiquement les mots clés des articles du journal IPM. C'est à dire connaître la méthode qui donne des mots clés les plus proches de ceux formulés par les auteurs des articles.
+
+\section{Prétraitements}
+
+\qquad Chaque document (article) de la sous collection (du journal IPM) subit les mêmes  prétraitements. Tout d'abord, une segmentation en phrase suivie d'une segmentation en mots puis d'une étiquetage grammatical de tous les documents est réalisée. La segmentation en mots est réalisée avec le TreeBank-WordTokenizer qui est disponible avec la librairie python NLTK\cite{bird2009natural}. Pour  l’étiquetage grammatical, nous avons utilisé le  Stanford POS tagger\cite{toutanova2003feature}. Le choix de cet étiqueteur s'explique par la supériorité de son niveau de performance. Cet étiqueteur est mieux que les simples étiqueteurs, mais aussi il semble être supérieur à l'étiqueteur de Brill\cite{Brill}, le plus connu des étiqueteurs de combinaison.
+
+\section{Mesures d’évaluation}
+
+\qquad Nous allons réaliser une comparaison entre les termes-clés écrits par les auteurs et les termes-clés extaits à partir des méthodes que nous avons implémentées. Nous comparons deux mots  en comparant  leur racine obtenue avec la racinisation de Porter. Nous allons alors mesurer l'efficacité des méthodes d'extraction des termes-clés en termes de F-score (F). Nous avons choisi cette mesure parce que elle établit une moyenne entre le Rappel (R) et la Précision (P) qui sont des mesures antagonistes. Cette mesure F-score équilibre les deux mesures Rappel (R) et Précision (P) en utilisant un paramètre $\beta$. Dans nos analyse, nous avons pris  $\beta$ = 1 pour que le rappel et la précision reçoivent un poids équivalent. C'est à dire qu'nous n'allons ni privilégié le rappel (avec $\beta >$ 1) au risque d'obtenir comme mots clés tous les mots du document ni trop privilégié la précision (avec $\beta <$ 1) au risque d'avoir qu'un seul mot clé comme résultat.
+
+\smallskip
+
+\noindent Ces mesures sont donc mesurer comme suit :
+
+\begin{center}
+	\begin{equation}
+		P= \frac{Nombre_{match}}{Nombre_{result}}
+	\end{equation}
+\end{center}
+
+\begin{center}
+	\begin{equation}
+		R= \frac{Nombre_{match}}{Nombre_{ref}}
+	\end{equation}
+\end{center}
+
+\begin{center}
+	\begin{equation}
+		F= \frac{(\beta^2 + 1) \times P \times R}{\beta^2 P + R}
+	\end{equation}
+\end{center}
+
+\noindent Où:
+
+\medskip
+
+$Nombre_{match}$ : nombre de termes-clés générés identique à ceux formulés par les auteurs
+
+\smallskip
+
+$Nombre_{result}$ : nombre total de termes-clés générés automatiquement
+
+\smallskip
+
+$Nombre_{ref}$ : nombre total de termes-clés générés automatiquement
+
+\section{Extraction des termes candidats}
+
+\qquad Il existe plusieurs méthodes d'extraction de terme candidat dont les trois suivant, ce sont les plus utilisés :
+
+\smallskip
+
+\textbf{\textit{N-grammes}}
+
+\smallskip
+
+\qquad Les n-grammes sont toutes les séquences ordonnées des n mots adjacents. Cette méthode offre de très nombreux termes candidats qu'ils soient pertinents ou non.
+
+\smallskip
+
+\textbf{\textit{Chunks nominaux}}
+
+\smallskip
+
+\qquad Les chunks nominaux sont des syntagmes non récursif, c'est à dire qu'une phrase nominale n'en contient aucune autre. Ils sont linguistiquement définis, alors ils sont fiables.
+
+\smallskip
+
+\textbf{\textit{Les plus longues séquences de noms et d’adjectifs}}
+
+\smallskip
+
+\qquad Ce sont les plus longues séquences de noms et d'adjectifs, c'est à dire quand nous parcourons toutes les phrases du document (en commençant à chaque fois au debut de la phrase) mot par mot et dès qu'un mot n'est pas considéré comme un adjectif ou un nom, alors la sequence de mots précédente (si elle existait) est un terme candidat. Puis nous recommençons le parcours en commeçant par le mot suivant et nous continuons ce principe jusq'à la fin du document.
+
+\smallskip
+
+\qquad Afin de réaliser une extraction de termes candidats de qualité, nous excluons d'office la sélection avec la méthode des n-grammes qui fournit beaucoup de candidats non pertinents par rapport aux autres méthodes. Pour le choix entre la sélection avec la méthode des chunks nominaux et la sélection avec la méthode des plus longues séquences de noms et d’adjectifs, nous choisissons la dernière parce qu'elle présente l'avantage de fournir des termes-candidats grammaticalement corrects et elle ne nécessite qu'une adaptation limitée pour le traitement de documents écrits dans une autre langue.
+
+\smallskip
+
+\noindent Ainsi, nous n'avons gardé que les mots étiquetés avec les étiquettes suivantes :
+
+\smallskip
+
+\textbf{\textit{Nom :}} nn, nns, nnp, nnps, nc, npp et 
+
+\smallskip
+
+\textbf{\textit{Adjectif :}} jj, adj
+
+\smallskip
+
+\noindent Chaque documents possèdent ses propres termes candidats. 
+
+\section{Extraction des termes-clés}
+
+\qquad Nous avons implémenté cinq méthodes d'extraction automatique de termes-clés : TF-IDF, singleRank, TextRank, TopicRank et Kcore.
+
+\smallskip
+
+\qquad Pour tous ces méthodes, sauf pour le TF-IDF, plusieurs tests, sans puis avec racinisation\footnote{C'est à dire que tous les termes des documents sont racinisés avant les tests}, ont été effectués pour que nous puissions les configurer afin d'en obtenir de meilleurs résultats. Pour ces tests, nous avons extracté dix mots-clés par document sur l'ensemble de la collection. Dans les méthodes à base de graphe que nous avons implémenté, nous créons (utilisons) toujours des graphes non orientés.
+
+\begin{itemize} [label = $\clubsuit$, leftmargin=0.6in]
+	\item \textit{TF-IDF :}
+\end{itemize}
+
+\qquad Le TF-IDF comapre le comportement d'un terme candidat dans le document analysé avec son comportement dans le corpus. Un terme candidat a une forte importance dans le document analysé s’il y est très présent, tandis qu’il ne l’est pas dans le reste de la collection.
+
+\smallskip
+
+\qquad Une fois les termes candidats connus, nous avons calculés la valeur TF-IDF pour chacun des termes candidats puis nous avons classés ces termes candidats (par document) dans l'ordre décroissant des valeurs TF-IDF. Puis nous avons supprimés tous les doublons (ou plus) et ceux qui restent sont les termes-clés.
+
+\begin{itemize} [label = $\clubsuit$, leftmargin=0.6in]
+	\item \textit{TextRank :}
+\end{itemize}
+
+\qquad TextRank est une méthode d’ordonnancement d’unités textuelles à partir d’un graphe. Les nœuds du graphe sont les mots candidats et leurs arêtes représentent leurs relations de cooccurrences dans une fenêtre de N mots (N peut être comprise entre deux à vingt). Un score d’importance est ensuite calculé pour chaque mot : un mot est important s’il cooccurre avec un grand nombre de mots qui sont eux aussi importants. Les mots les plus importants sont ensuite considérés comme des mots-clés et les plus longues séquences de mots-clés adjacents dans le document génèrent les termes-clés.
+
+\smallskip
+
+\qquad Afin de connaître le nombre N qui nous permet d'obtenir de meilleurs termes clés\footnote{C'est à dire que plusieurs des termes clés extraits sont les même que ceux formulés par les auteurs}, nous avons effectué plusieurs tests en variant ce nombre N de deux à vingt mots avec un pas de un.
+
+\smallskip
+
+\qquad La figure \ref{image:textrank} suivante présente les résultats de TextRank lorsque nous faisons varier la fenêtre de cooccurrences. Globalement, nous observons une stabilité des performances de TextRank quelle que soit la valeur utilisée pour la fenêtre de cooccurrences surtout entre cinq à vingt mots. Nous obtenons quand même des résultats optimaux lorsque la valeur de N est 17. %Ainsi dans la suite de notre travail, nous allons utilisé une fenêtre de coocurences où N $=$ 17.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{textrank}
+		\caption{Résultats de l’extraction avec TextRank, en fonction de la fenêtre de cooccurrences utilisée}
+		\label{image:textrank}
+	\end{center}
+\end{figure}
+
+\qquad La figure \ref{image:textrank2} suivante présente les résultats de TextRank avec l'utilisation de la racinisation tout en faisant varier la valeur de la fenêtre de cooccurrences. Nous observons aussi une certaine stabilité des performances quelle que soit la valeur utilisée pour la fenêtre de cooccurrences. Nous obtenons des résultats optimaux lorsque la valeur de N vaut 11.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{textrank2}
+		\caption{Résultats de l’extraction avec TextRank avec racinisation, en fonction de la fenêtre de cooccurrences utilisée}
+		\label{image:textrank2}
+	\end{center}
+\end{figure}
+
+\begin{itemize} [label = $\clubsuit$, leftmargin=0.6in]
+	\item \textit{SingleRank :}
+\end{itemize}
+
+\qquad SingleRank est une méthode issue de TextRank. Dans cette méthode, les termes-clés ne sont plus générés, mais ordonnés à partir de la somme des scores d’importance des mots qui les composent. Puis il est aussi possible de faire recours à l'utilisation des documents similaires (d'après a mesure de similarité vectorielle cosinus) au document analysé en supposant que ces documents offrent des données supplémentaires. C'est à dire qu'il y a utilisation des relations de coocurences dans ces documents afin d'ajouter ou renforcer les liens entre les mots composant les nœuds du graphe. Le problème avec l'utilisation des documents similaires est qu'elle ne peut être appliquée que dans un contexte particulier (un contexte qui n'est pas garanti dans notre experimentation) parce que la performance de SingleRank va dépendre de la disponibilité de ces  documents par rapport à celui qui est analysé.
+
+\smallskip
+
+\qquad Donc comme avec TextRank, nous avons aussi fait varier le nombre N de deux à vingt mots avec un pas de un.
+
+\smallskip 
+
+\qquad La figure \ref{image:singlerank} ci-dessous présente les résultats de SingleRank, et nous observons une stabilité de ses performances quelle que soit la valeur utilisée pour la fenêtre de cooccurrences surtout entre quatre à vingt mots. Nous obtenons quand même des résultats optimaux lorsque la valeur de N est 17. %Ainsi dans la suite de notre travail, nous allons utilisé une fenêtre de coocurences de 17 mots.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{singlerank}
+		\caption{Résultats de l’extraction avec SingleRank, en fonction de la fenêtre de cooccurrences utilisée}
+		\label{image:singlerank}
+	\end{center}
+\end{figure}
+
+\qquad La figure \ref{image:singlerank2} suivante présente les résultats de SingleRank avec l'utilisation de la racinisation, et il y a une stabilité des performances quelle que soit la valeur de N de la fenêtre de cooccurrences, surtout quand N est compris entre 5 et 20 mots. Nous obtenons quand même  des résultats optimaux lorsque la valeur de N vaut 8.
+\newpage
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{singlerank2}
+		\caption{Résultats de l’extraction avec SingleRank avec racinisation, en fonction de la fenêtre de cooccurrences utilisée}
+		\label{image:singlerank2}
+	\end{center}
+\end{figure}
+
+\begin{itemize} [label = $\clubsuit$, leftmargin=0.6in]
+	\item \textit{TopicRank :}
+\end{itemize}
+
+\qquad TopicRank est une méthode d’extraction de termes-clés qui représente un document sous la forme d’un graphe (complet) de sujets. Contrairement aux autres méthodes à base de graphe qui cherche les mots important dans le document, elle cherches ses sujets importants. Un sujet est une information véhiculée par au moins une unité textuelle présente dans le document analysé. Plus précisement, un sujet est un groupe de termes candidats qui vehicule la même information.
+
+\smallskip
+
+\qquad Au départ de l'algorithme, un terme candidat est considéré comme un sujet, puis une mesure de similarité de Jaccard est calculée entre toutes les paires de termes candidats. Deux sujets présentant la plus forte similarité seront regroupés en un seul sujet et nous recommençons le caclul de similarité entre toutes les paires de sujets et le regroupement jusqu'à un point de convergence. Comme point de convergence, un seuil de similarité $\zeta$ est utilisé, c'est à dire que nous nous arretons quand toutes les mesures de similarité entre toutes les paires de sujets seront inférieur à $\zeta$.
+
+\smallskip 
+
+\qquad Comme la mesure similarité de Jaccard ne peut être utilisée qu'entre deux termes candidats et qu'un sujet peut être composé de plusieurs termes, alors afin de connaître la similarité entre deux sujets, il y a trois méthodes :
+
+\begin{itemize}[leftmargin=1.0in]
+	\item \textbf{\textit{simple :}} la plus grande valeur de similarité entre les candidats des deux groupes est la similarité entre eux.
+	\item \textbf{\textit{complète :}} la plus petite valeur de similarité entre les candidats des deux groupes est la similarité entre eux.
+	\item \textbf{\textit{moyenne :}} la moyenne de toutes les similarités entre les candidats des deux groupes est la similarité entre eux.
+\end{itemize}
+
+\noindent Une fois tous les sujets constitués, ils composent les nœuds du graphe complet et le poids de chaque arête est la force du lien sémantique entre deux sujets que cette arête relie. Cette force est représentée par la distance entre les termes candidats de chaque sujet dans le document.
+
+\smallskip
+
+\qquad Le graphe construit, l’algorithme d’ordonnancement de TextRank est utilisé pour identifier les sujets les plus importants du document. Et enfin, un terme candidat de chaque sujet important est extrait pour devenir un terme clés. Ce choix de terme candidat peut se faire de trois manière :
+
+\begin{itemize}[leftmargin=1.0in]
+	\item \textbf{\textit{Première position :}} le terme candidat d'un sujet apparaissant le premier dans le document analysé est sélectionné.
+	\item \textbf{\textit{Fréquence :}} le terme candidat d'un sujet le plus fréquent  dans le document analysé est sélectionné.
+	\item \textbf{\textit{moyenne :}} la moyenne de toutes les similarités entre les candidats des deux groupes est la similarité entre eux.
+\end{itemize}
+
+\qquad Afin d'obtenir des meilleurs termes clés, des expériences préliminaires sont à réaliser afin de pouvoir configurer TopicRank de façon la plus optimale, c'est à dire trouver le seuil de similarité et la meilleure stratégie de groupement des termes candidats. Mais aussi de trouver la meilleure stratégie pour sélectionner le terme candidat le plus représentatif de chaque sujet important. 
+
+\smallskip
+
+\noindent Pour effectuer ces tests préliminaires, nous avons fait varier  le seuil de similarité $\zeta$ avec un pas de 0,10 pour toutes les stratégies de groupement.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{topicrank}
+		\caption{Résultats de l’extraction de termes-clés avec TopicRank, en fonction de la stratégie de regroupement et de la valeur du seuil de similarité}
+		\label{image:topicrank}
+	\end{center}
+\end{figure}
+
+\qquad Les trois stratégies de regroupement ont chacun leur comportement qui leur est propre jusqu’à un certain point de convergence qui vaut 0,70 (c'est à dire quand $\zeta=$0,70), ce point de convergence correspond à la valeur du seuil $\zeta$ pour laquelle nous avons les mêmes sujets créés  quelle que soit la stratégie utilisée.
+
+\smallskip
+
+\qquad Avec la stratégie complète, les résultats se déclinent au fur et à mesure que le seuil $\zeta$ augmente. Ceci s'explique par le fait que cette stratégie ne prend en compte que la plus petite valeur de similarité entre deux candidats de deux sujets. Ainsi si le seuil de similarité $\zeta$ est petite, il y aura plus de regroupement de sujets avant l'arrêt de l'algorithme de regroupement mais dans le cas inverse, il y en aura très peu parce que le condition d'arrêt de l'algorithme de regroupement sera très vite atteint. Contrairement, la stratégie simple, qui utilise le principe inverse dans le choix de la valeur de similarité entre deux sujet, voit ses résultats s'améliorer lorsque le seuil $\zeta$ augmente. Quand à la stratégie moyenne, elle agit en compromis et elle est toujours presqu'au milieu des deux stratégies même si son comportement est se rapproche plutôt de celui de la stratégie simple. Les meilleurs résultats sont obtenues en utisant la stratégie complète et en fixant comme seuil de similarité  $\zeta$ à 0,10. %Alors pour la suite du travail et toutes les expériences que nous allons réaliser avec TopicRank, nous allons fixer comme seuil de similarité $\zeta$ à 0,10 et nous optons pour la stratégie complète parce que c'est là que nous obtenons de meilleurs resultats. 
+
+\smallskip
+
+\qquad La figure \ref{image:topicrank2} ci-dessous montre les comportements des stratégies de regroupement après racinisation, elles ont à peu près les mêmes comportement présentés dans l'illustration 8. Nous observons que ces stratégies convergent aussi vers un point de convergence qui vaut 0,70 et que nous enregistrons des résultats optimaux avec la stratégie complète et quand le seuil de similarité $\zeta$ vaut 0,20.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{topicrank2}
+		\caption{Résultats de l’extraction de termes-clés avec TopicRank avec racinisation, en fonction de la stratégie de regroupement et de la valeur du seuil de similarité}
+		\label{image:topicrank2}
+	\end{center}
+\end{figure}
+
+\qquad La figure \ref{image:topicrank3} suivante présente les résultats obtenus avec TopicRank et  les différentes stratégies de sélection d’un terme candidat par sujet. Le choix des candidats apparaissant en premier dans le document offre de meilleurs termes-clés que le choix des candidats centroïdes ou des candidats les plus fréquents ce qui confirme l'hypthèse de Bougoin\cite{bougouin2013topicrank}. La stratégie centroïde fournit de très faibles résultats par rapport aux deux autres stratégies. %Alors dans la suite de nos travail, nous allons donc utiliser comme stratégie de sélection d’un terme-clé candidat par sujet la première position.
+\newpage
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{topicrank3}
+		\caption{Résultats de l’extraction avec TopicRank, selon la sélection de termes-clés candidats par sujet}
+		\label{image:topicrank3}
+	\end{center}
+\end{figure}
+
+\qquad La figure \ref{image:topicrank4} ci-dessous montre les résultats des différentes stratégies de sélection d’un terme candidat par sujet. Contrairement à ce que nous avons vu précédement, le choix des candidats les plus fréquents dans le document fournit de meilleurs résultats par rapport aux autres stratégies.
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{topicrank4}
+		\caption{Résultats de l’extraction avec TopicRank avec racinisation, selon la sélection de termes-clés candidats par sujet}
+		\label{image:topicrank4}
+	\end{center}
+\end{figure}
+
+\begin{itemize} [label = $\clubsuit$, leftmargin=0.6in]
+	\item \textit{K-core sur Graph-de-mots :}
+\end{itemize}
+
+\qquad C'est une méthode d'extraction de termes clés à base de graphe tel que les sommets du graphe sont les mots du document (dans notre cas ce sont les termes candidats) et que deux sommets sont reliés si les mots représentant ces sommets cooccurent dans une de fenêtre de W mots. Ces liens peuvent être pondérés par le nombre de coocurences des mots qu'ils relient dans le document (c'est le WK-core) sinon (dans le cas d'un graphe non pondéré) ils seront tous pondérés par 1 (c'est le K-core).
+
+\smallskip
+
+\qquad Un k-core est un sous graphe $H_{k} =$ ($\upsilon$' , $\varepsilon$') d'un graphe G =  ($\upsilon$, $\varepsilon$) où $\upsilon$' $\subseteq$ $\upsilon$ et $\varepsilon$' $\subseteq$ $\varepsilon$ tel que $\forall$ v $\in$ $\upsilon$ , $deg_{H_{k}} (v) \geq k$ et $H_{k}$ est le sous-graphe maximal.
+
+\smallskip
+
+\qquad Une fois le graphe de mot construit, nous avons implémenté l'algorithme de Batagelj and Zaveršnik\cite{batagelj2011fast} qui décompose un graphe en k-core graphe, c'est à dire que l'algorithme va retourner tous les k-core graphe possible de k allant de 1 au maximum trouvé. L'alogorithme attribut un nombre n à chaque sommet du graphe correspondant au k-core graphe auquel il appartient (si v $\in$ k-core alors n $=$ k). Puis l'ordonancement des sommets se fait par ordre décroissante des nombres n et les top m sont retenus comme termes-clés.
+
+\smallskip
+
+\qquad Nous avons donc réaliser plusieurs tests, semblable à ceux dans TextRank, afin de connaître la taille de la fenêtre de occurrences de mots en vue de l'obtention de meilleur résultats.
+
+\smallskip
+
+\qquad La figure \ref{image:wkcore} ci-dessous présente les résultats dans le cas d'un graphe pondéré, c'est à dire les résultats de WK-core. Nous observons que c'est avec une fenêtre d'occurences de deux mots que nous obtenons les meilleurs resultats avec les graphes pondérés.
+
+\smallskip
+
+\qquad La figure \ref{image:kcore} quand à elle présente les résultats de K-core. Avec un graphe non pondéré, c'est une fenêtre de coccurence de trois mots qui fournit les meilleurs résultats. 
+\nolinebreak
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{wkcore}
+		\caption{Résultats de l’extraction avec WK-core}
+		\label{image:wkcore}
+	\end{center}
+\end{figure}
+\nolinebreak
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{kcore}
+		\caption{Résultats de l’extraction avec K-core}
+		\label{image:kcore}
+	\end{center}
+\end{figure}
+
+\qquad Les deux figures suivantes, les figures \ref{image:wkcore2} et \ref{image:kcore}, représentent respectivement les résultats de WK-core et K-core après l'utilisation de la racinisation. Avec WK-core, nous obtenons des résultats optimaux avec une fenêtre d'occurences de treize mots et quatorze mots pour K-core.
+\nolinebreak
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{wkcore2}
+		\caption{Résultats de l’extraction avec WK-core avec racinisation}
+		\label{image:wkcore2}
+	\end{center}
+\end{figure}
+\nolinebreak
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{kcore2}
+		\caption{Résultats de l’extraction avec K-core avec racinisation}
+		\label{image:kcore2}
+	\end{center}
+\end{figure}
+\nolinebreak
+\section{Évaluation et comparaison}
+
+\qquad Les valeurs des mesures dans les tableaux suivant sont les moyennes de chaque mesures de tous les documents. Tous les méthodes sont configurées de façon optimale c'est à dire dans l'optique d'obtenir les meilleurs termes-clés. Nous allons voir ainsi quelle est la méthode qui convient le mieux à notre cas et si la racinisation des documents ont une influence positive sur ces méthodes.
+
+\smallskip
+
+\textbf{\textit{Top 15 :}} 
+
+\smallskip
+
+\noindent les 15 premiers termes-clés générés (et ordonnés) sont selectionnés.
+
+\vspace*{0.2cm}
+\begin{table}[h]
+	\begin{center}
+		\input{Chapitre6/tableau1}
+		\caption{Résultats de l’extraction de quinze termes-clés}
+		\label{tab:chap6tab1}
+	\end{center}
+\end{table}
+
+\begin{table}[h]
+	\begin{center}
+		\input{Chapitre6/tableau4}
+		\caption{Résultats de l’extraction de quinze termes-clés avec racinisation}
+		\label{tab:chap6tab4}
+	\end{center}
+\end{table}
+
+\qquad TF-IDF fournit de meilleurs résultats que les autres méthodes, avec ou sans racnisation. Il est aussi imporatant à noter que c'est TopicRank qui fournit les meilleurs résultats parmis les méthodes basées sur un graphe de mots. Nous constatons une baisse des performances de toutes les méthodes avec l'utilisation de la racinisation parce que l'étiquetage des mots et de leurs racines est différent (exemple: le mot « langage » est étiqueté comme nn alors que son radical « languag » est étiqueté comme nnp), ce qui influence l'extraction des terme candidat (c'est à dire que les termes candidats extractés sans radicalisation sont différents de ceux avec radicalisation).%TF-IDF fournit de meilleurs résultats que les autres méthodes. Il est aussi imporatant à noter que c'est TopicRank qui fournit les meilleurs résultats parmis les méthodes basées sur un graphe de mots.
+
+\medskip
+\newpage
+\textbf{\textit{Top10 :}} 
+
+\smallskip
+
+\noindent Parmis tous les termes-clés générés et ordonnés, nous avons récupéré les dix premiers.
+
+\vspace*{0.2cm}
+\begin{table}[h]
+	\begin{center}
+		\input{Chapitre6/tableau2}
+		\caption{Résultats de l’extraction de dix termes-clés}
+		\label{tab:chap6tab2}
+	\end{center}
+\end{table}
+
+\begin{table}[h]
+	\begin{center}
+		\input{Chapitre6/tableau5}
+		\caption{Résultats de l’extraction de dix termes-clés avec racinisation}
+		\label{tab:chap6tab5}
+	\end{center}
+\end{table}
+
+\qquad TF-IDF fournit encore les meilleurs résultats comparé aux autres méthodes. Il est aussi imporatant à noter que sans racinisation, à part SingleRank, Kcore et Wkcore, tous les autres méthodes voient leur F-score s'améliorer par rapport aux résultats dans le tableau \ref{tab:chap6tab1}. A l'inverse, avec la racinisation, seul SingleRank voit son F-score diminuer.
+
+\smallskip
+
+\noindent Il y a toujours une baisse des performances de toutes les méthodes avec l'utilisation de la racinisation.
+
+\medskip
+
+\textbf{\textit{Tiers :}} 
+
+\smallskip
+
+\noindent 33 \% des termes-clés générés sont selectionnés. Nous prenons toujours les mieux classés après ordonnancement.
+
+\vspace*{0.2cm}
+\begin{table}[h]
+	\begin{center}
+		\input{Chapitre6/tableau3}
+		\caption{Résultats de l’extraction de termes-clés}
+		\label{tab:chap6tab3}
+	\end{center}
+\end{table}
+\newpage
+
+\begin{table}[h]
+	\begin{center}
+		\input{Chapitre6/tableau6}
+		\caption{Résultats de l’extraction de termes-clés avec racinisation}
+		\label{tab:chap6tab6}
+	\end{center}
+\end{table}
+\qquad Sans radicalisation, c'est TopicRank qui fournit les meilleurs résultats par rapport aux autres méthodes et c'est le meilleur résultat parmis tous les tests effectués. Pour Kcore et Wkcore, leur scores se dégradent encore alors que SingleRank signe sa meilleure F-score. TextRank a aussi diminué en perfomance par rapport aux résultats dans le tableau \ref{tab:chap6tab2}.
+
+\smallskip
+
+\noindent Avec racinisation, c'est encore TF-IDF qui offre les meilleurs résultats vis à vis des autres méthodes et seul TextRank voit son F-score diminuer.
+
+\smallskip
+
+\noindent Il y a toujours une baisse des performances de toutes les méthodes, sauf pour K-core et WK-core, avec l'utilisation de la racinisation.
+
+%Ici, c'est TopicRank qui fournit les meilleurs résultats par rapport aux autres méthodes et c'est le meilleur résultat parmis tous les tests effectués. Pour Kcore et Wkcore, leur scores se dégradent encore alors que SingleRank signe sa meilleure F-score. TextRank a aussi diminué en perfomance.
+
+
+\section{Conclusion}
+
+\qquad En conclusion,  TopicRank est la meilleure méthode d'extraction automatique de mots clés à appliquer sur les 115 documents de IPM, en choisissant bien sur de ne garder que 33\% des termes-clés générés et en n'utilisant pas de racinisation. Cette supériorité vis-à-vis de TF-IDF est vraiment importante parce que TF-IDF utilise des documents supplémentaires afin d'ordonner les mots clés alors que ce n'est pas le cas de TopicRank. L'utilisation de la racinisation n'influe pas positivement dans les performances des méthodes d'extraction automatique de termes-clés, c'est même l'inverse qui se produit. Ceci est causé par la différence d'étiquetage d'un mot et de son radical, ce qui modifi complètement les termes candidats extractés.
+%En conclusion,  TopicRank est la meilleure méthode d'extraction automatique de mots clés à appliquer sur les 115 documents de IPM, en choisissant bien sur de ne garder que 33 \% des termes-clés générés. Cette supériorité vis-à-vis de TF-IDF est vraiment importante parce que TF-IDF utilise des documents supplémentaires afin d'ordonner les mots clés alors que ce n'est pas le cas de TopicRank. 

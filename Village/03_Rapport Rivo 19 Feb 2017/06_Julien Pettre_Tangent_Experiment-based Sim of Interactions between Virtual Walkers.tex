@@ -1,0 +1,112 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage[colorlinks=true,
+            linkcolor=red,
+            urlcolor=blue,
+            citecolor=blue]{hyperref}
+\usepackage{siunitx}
+            
+\title{Experiment-based Modeling, Simulation and Validation of Interactions between Virtual Walkers}
+\author{Julien Pettré, Jan Ondrej, Anne-Hélène Olivier, Armel Cretual, Stéphane Donikian}
+\date{
+	\begin{center}
+		Bunraku team, IRISA / INRIA-Rennes, France\\
+		M2S, UEB, Université de Rennes 2, France
+	\end{center}
+}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\linespread{1}
+
+\begin{document}
+
+\maketitle
+
+\section*{Abstract}
+
+Une interaction se passent entre deux humains quand ils marchent avec des trajectoires convergentes. Ils ont besoin de rectifier leur mouvement afin d'éviter et de croiser l'une l'autre à une distance respectable. Cette note présente un modèle pour résoudre les interactions entre des humains virtuels. Le modèle proposé est élaboré à partir des données expérimentales sur les interactions. Nous nous concentrons tout d'abord sur le cas de l'interaction par paire. Dans un second temps, nous étendons notre approache au cas des interactions multiples. Nos données expérimentales nous permettent d'établir les conditions pour que les interactions se produisent entre les piétons, aussi bien que les rôles de chacun pendant l'interaction et l'ensemble des stratégies des piétons pour rectifier leur mouvement. Le faible nombre de paramètres du modèle permet son calibrage automatique à partir des données expérimentales disponibles. Nous validons notre approche en comparant des trajectoires simulées avec des trajectoires réels. Nous l'avons comparé avec les solutions antérieures. Nous terminons par les discussions sur notre modèle par rapport à son extension à des situations complexes.
+
+\section{Introduction}
+
+La communauté d'animation par ordinateur s'efforce de prodiguer des humains virtuels avec une autonomie de locomotion réaliste. Cette tâche est ardue du fait des environnements formés d'obstacles statiques et dynamiques.
+
+Une interaction se passe entre les piétons quand une influence réciproque est observé dans leur trajectoire respective: chacun rectifiant son déplacement pour éviter les autres. La complexité dans la compréhension de ces interactions vient du fait du nombre élevé de facteurs en jeu: un but à atteindre, soumis à des contraintes physiques et biomécaniques, des facteurs environementaux (les obstacles par exemple). Les rectifications de trajectoires sont basées sur la perception humaine des déplacements des autres, qui est sujette à l'erreur. D'autres facteurs, plus secondaires, sont sociologiques ou culturels (règles tacites: déviation préférée vers la gauche ou la droite, évitement des personnes agées plus soignement), ou psychologiques (état mental: préssé ou nonchalant).
+
+Pour réaliser des interactions plausibles entre piétons, notre premier objectif est de comprendre le comportement d'être humains réels. Bien que le nouveau modèle a été élaboré en l'alignant à des observations expérimentales, notre approche se basent sur deux suppositions (chose courante dans les modèles existants) majeures: l'interaction simultanée entre plusieurs piétons peut être décrite par une combinaison d'interactions par paire, les facteurs secondaires peuvent être pris en compte dans des recherches futures car les facteurs physiques et perceptuels sont prépondérantes. De ces suppositions, notre note se borne à décrire l'interaction entre deux piétons dans un premier temps, ensuite la combinaison de ces intéractions d'une façon moins complete. Notre contribution porte sur trois points: un modèle pour résoudre les interactions entre les piétons, l'élaboration de ce modèle avec des observations expérimentales d'interactions réelles (données disponibles pour la communauté de la recherche) et enfin une évaluation quantitative de nos résultats. L'évaluation est objective et permet de valider les trajectoires simulées comparées aux données réelles, ou des trajectoires obtenues par des solutions antérieures.
+
+\section{Les travaux en relation avec l'approche}
+
+Principalement trois domaines de recherche se sont penchés sur le problème d'interactions entre piétons. En premier lieu, les sciences cognitives ont étudié l'influence des obstacles sur le déplacement de l'homme (celui-ci combine à la fois les notions de temps, de distance et de vélocité pour éviter les collisions). En second lieu, le domaine de la simulation de la foule s'intéresse en grande partie à l'étude de l'impact des interactions humain-humain ou obstacle-humain sur la circulation globale des piétons, à un niveau macroscopique bien que la solution est souvent basée sur des modèles microscopiques. En dernier lieu, le domaine de l'animation ayant besoin de trajectoires d'individu plausible ont développé des approches spécifiques pour simuler des interactions. Deux classes de solutions existent: les premières sont basées sur des méthodes de direction (générale et efficace mais dont le niveau de réalisme reste à évaluer), les autres méthodes se reposent sur une base de données des interactions réelles à réutiliser pour simuler comment les êtres humains résolvent ces interactions (le domaine de validité des solutions est limité au contenu de la base de donnée).
+
+\subsection*{Time-to-Collision et espace personnel}
+
+L'évitement de collision est un problème spatio-temporel. Les sciences cognitives ont divisés leurs dimensions temporelles et spatiales en deux notions: le TTC (time-to-contact) et l'espace personnel. Selon Cutting et al. (1995), les humains évitent les collisions en répondant successivement à deux questions: une collision aura-t-elle  lieu? et quand cela va arriver? Les réponses viennent de la perception visuelle de leur environement et des obstacles (stationaires ou en mouvement). Lee (1976) et Trésilian (1991) ont démontré que le flux optique générer par la perception visuelle d'un objet en mouvement est suffisant pour évaluer le TTC. Les humains rectifie leur déplacement pour éviter les collisions dans le but de préserver des TTC admissibles. Le temps est lié à l'espace par la vélocité. Donc, le TTC peut être considéré comme une distance préservée par les humains par rapport aux obstacles, d'où la notion d'espace personnel. L'espace personnel est une surface de sécurité préservée par les piétons autour d'eux. L'espace personnel permet aux piétons d'avoir assez de temps pour réagir face à un obstacle en mouvement innopiné surgissant dans son champ de perception. Gérin-Lajoie et al. (2005) ont expérimentalement mesuré la forme et les dimensions de l'espace personnel qui est elliptique (intuitivement imaginé par Goffman (1971)). L'innovation dans cette étude est la concentration sur l'espace personnel étant en mouvement. Cependant, le processus d'expérimentation a été basé sur l'interaction entre un piéton et un mannequin en mouvement monté sur des rails.
+
+\subsection*{Approches réactives}
+
+Résoudre les interactions est certainement une composante cruciale de la simulation de la foule. Les forces sociales d'Helbing (1995) constituent probablement l'approche la plus populaire. Le modèle a été plus tard revisité et calibré pour des situations spécifiques (2005), ou intégré dans une platforme pour résoudre des problèmes bien connus (PAB2007). Dans ce modèle, les piétons virtuels sont modélisés comme des particules controllés par la vélocité subissant les forces d'accélération analoguent à la Physique. Les interactions sont modélisées comme des forces répulsives entre les piétons, et exprimées comme une fonction de leur distance relative. Treuille et al. (2006) font également une analogie à la Physique, mais formule les interactions comme un problème de minimisation. Le déplacement des piétons est déduit d'un champ de potentiel, dont la composante dynamique est le produit d'une répulsion émise par les piétons. Les piétons s'évitent implicitement, les interactions ne sont pas explicitement modélisées. Dans (HLT03), les interactions entre les humains sont modélisées comme un system de masse-ressort: les termes de fermeté et de viscosité varie relativement par rapport à la distance entre les piétons.
+
+\subsection*{L'évitement anticipé de collisions}
+
+Les comportements directrices introduits dans (Rey99) permettent la résolution d'interaction avec anticipation. L'évitement de collision non aligné (unaligned collision avoidance) extrapole les trajectoires des piétons - en supposant que leur vélocité soit constante - et vérifie les collisions dans un futur proche. Un accélération réactive est calculée pour chacun de ces piétons, dans la direction opposée à partir de celui d'une collision future. Van den Berg et al. étendent le principe de "Reciprocal Velocity Obstacle" de la robotique (vdBPS*08).  Similairement à la direction de Reynolds, cette technique permet la résolution d'interaction collaborative avec anticipation. Finallement, Paris et al. (2007), inspirés par Feurtey (2000), résolvent le problème depuis une perspective égocentric (i.e., centré sur le piéton). Dans cette approche, le déplacement des voisins percus est aussi linéairement prédit; un domaine de vélocités admissibles pour chaque piéton est déduit. Une fonction de coût est utilisé pour calculer une vélocité spécifique appartenant aux vélocités admissibles. Plus récemment, Kapadia et al. ont proposé un model égocentrique anticipative (2009).
+
+\subsection*{L'imitation des humains}
+
+Plusieurs solutions prennent avantage des technologies de capture de mouvement ou de suivi par vidéo pour créer des bases de données d'interactions réelles (MH04). Dans (LCHL07), les mouvements et les positions relatifs entre les humains virtuels sont liés aux comportements: cette approche est applicable au problème d'évitement de collision, mais plus généralement permet d'avoir un comportement d'animation de foule. Dans (LCL07), les auteurs résolvent les interactions dans une simulation en faisant des requêtes d'une exemple la plus similaire dans la base de données; cependant des problèmes de controlabilité et d'efficacité remontent. Ces problèmes sont résolus pour la plupart dans (TPL07): les piétons sont décrits en utilisant un vecteur d'état, alors qu'un déplacement est modélisé comme une variation d'un vecteur d'état. Etant donné une commande d'état défini par l'utilisateur, une séquence de mouvement est recherché pour atteindre l'état désiré d'une manière proche de l'optimal. Quelques composantes du vecteur d'état sont utilisées pour décrire les interactions avec un piéton voisin: cette technique permet alors de résoudre les interactions.
+
+\subsection*{Notre approche}
+
+L'étude expérimentale proposée dans la section suivante nous permet de décrire comment les êtres humains résolvent les collisions. Nous démontrons que les rectifications ne sont pas purement réactives et ne peuvent pas être modélisées uniquement comme une fonction de distance entre eux. Il est cependant possible que cette supposition soit vraie dans le cas de zones avec une foule dense où les piétons ont de nombreuses et intensives interactions. Cela dit, une animation ou simulation numérique de piétons virtuels nécessite une anticipation dans le cas général. Nous avons mentionné des solutions existantes pour anticiper une réaction. Cependant, plusieurs questions demeurent: certaines approches anticipe une réaction à une distance constante ou à un time-to-collision, d'autres immédiatement quand l'interaction est détectée. Nos expérimentations démontrent que les interactions débutent avec une période de temps d'observation, qui permet aux humains d'estimer le déplacement de ces voisins assez précisément avant de réagir. Notre modèle explique les erreurs de percetpion afin d'évaluer quand les réactions surviennent. D'ailleurs, les solutions antérieures assument que la vélocité est constante avant l'interaction, ce qui permet les extrapolations linéaires de trajectoires. Nous discutons du cas plus complexe où les piétons accélèrent quand leurs interactions sont initialisées. Concernant les techniques d'imitation, leur principale avantage est leur réalisme intrinsèque. Cependant, deux points négatifs limitent leur application. D'abord, l'efficacité ne permet pas toujours une simulation en temps réel. Ensuite, leur domaine de validité est restreint par le contenu de leurs bases de données d'exemples. En outre, certaine de ces techniques ne s'applique pas aux interactions multiples. A propos des méthodes directrices, le niveau de détail de réalisme obtenu n'ont pas toujours été évalué. Brogan et Johnson ont proposé des mesures d'évaluation pour vérifier les trajectoires simulées (BJ03). Singh et al. (SNK*08) ont proposé un framework pour évaluer la capacité des méthodes directrices à gérer les interactions parmi les obtacles. Nous proposons une évaluation objective de nos résultats en se basant sur des données réelles.
+
+\section{Etude expérimentale}
+
+\subsection*{Objectifs}
+
+Notre objectif est ici de décrire comment les humains résolvent les interactions par paire. Nous choisissons d'observer des interactions sous des conditions de contrôle par protocol, dans le but de réduire - et plus important encore, pour maintenir une constante entre chaque échantillon expérimental - le rôle des facteurs secondaires: nous concentrons notre attention sur les facteurs physiques et perceptuels uniquement. Des mesures précises des rectifications de déplacement sont désirées, et nous choisissons d'utiliser un système de capture de mouvement pour acquérir des données expérimentales.
+
+\subsection*{Protocol}
+
+Le protocole consiste à mettre dans une pièce carré quatre participants, deux d'entre (choisis aléatoirement) recoivent un signal synchronisé déclachant leur déplacement vers le coin opposé avec leur vitesse de confort propre. Les deux autres sortent. Les deux déplacement suivent la diagonale de la pièce et peut éventuellement conduire à une collision sans pouvoir anticiper de quel coin arrive l'autre participant. L'expérience fait intervenir 30 participants et 429 échantillions sont enregistrés pour analyse. Des cloisons de \num{5}\si{\meter} de longueur dressées à partir du milieu de chaque côté de la pièce carré empêchent les participants de s'apercevoir pour leur permettre d'atteindre leur vitesse de confort jusqu'à la zone de perception (un carré au centre de la pièce ayant \num{10}\si{\meter} de côté).
+
+\subsection*{Méthode}
+
+La trajectoire a été établi au moyen de deux marqueurs sur l'épaule: P(x,y). La vélocity est notée $V = \frac{dP}{dt}$ et l'accélération $A = \frac{dV}{dt}$. Nous notons $\theta$ la direction de la vélocité et $v$ sa norme. Nous vérifions que les vélocités latérales peuvent être négligées, considérons que la locomotion est non-holonomique \cite{ARECHAVALETA-08} dans notre cas.
+
+\section{Vocabulary}
+
+\noindent \textbf{A}\\
+\textit{to account for}: expliquer\\
+\textbf{F}\\
+\textit{furthermore}: en outre, en plus\\
+\textbf{M}\\
+\textit{moreover}: de plus, d'ailleurs, du reste\\
+\textbf{S}\\
+\textit{stiff}: dur, raide, ferme\\
+\textit{streering}: conduite (to steer: conduire, diriger)\\
+\textbf{U}\\
+\textit{to undergo}: subir\\
+
+\begin{thebibliography}{2} 
+
+\bibitem{ARECHAVALETA-08}
+\label{ARECHAVALETA-08}
+ARECHAVALETA G., LAUMOND J.-P., HICHEUR H., BERTHOZ A.. 2008.
+\textit{On the nonholonomic nature of human locomotion}. Auton. Robots 25, (1-2) (2008), 25–35.
+
+\end{thebibliography}
+
+\end{document}

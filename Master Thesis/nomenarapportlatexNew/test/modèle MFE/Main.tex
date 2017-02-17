@@ -1,0 +1,71 @@
+\documentclass[oneside,12pt]{report}
+
+\usepackage[latin1]{inputenc} % un package pour utliser tous les caractères de votre clavier
+\usepackage[T1]{fontenc} % un second package pour le font
+\usepackage[francais]{babel} % un troisième package pour dire à latex que vous écrivez en français
+\usepackage{fancyhdr}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+
+\begin{document}
+
+%------------------------------début des page non numérotées-------------------------
+
+\pagenumbering{roman}
+\setcounter{page}{-2}
+
+\input{PageDeGarde/PageDeGarde.tex}
+\input{Remerciements/Remerciements.tex}
+\input{Dédicaces/Dédicaces.tex}
+\input{Résumé/Résumé.tex}
+
+%------------------------------fin des page non numérotées---------------------------
+%------------------------------début entêtes-----------------------------------------
+
+\pagestyle{fancy}
+
+\renewcommand{\footrulewidth}{1pt}
+
+\fancyhead[L]{\rightmark}
+\fancyhead[C]{\thepage}
+\fancyhead[R]{mon premier chapitre}
+
+\fancyfoot[L]{Mon Nom \& Prénom}
+\fancyfoot[C]{\thepage}
+\fancyfoot[R]{Thème de mon mémoire}
+
+%------------------------------fin entêtes-------------------------------------------
+%-----------------début de la numérotation avec les chiffres romains-----------------
+
+
+\tableofcontents
+
+\listoftables
+
+\listoffigures 
+
+%-----------------fin de la numérotation avec les chiffres romains-------------------
+%-----------------début de la numérotation avec les chiffres arabs-------------------
+
+
+\input{IntroductionGénérale/IntroductionGénérale}
+
+\pagenumbering{arabic}
+
+\setcounter{page}{1}
+
+\input{Chapitre1/Chapitre1}
+
+\input{Chapitre2/Chapitre2}
+
+\input{Chapitre3/Chapitre3}
+
+\input{ConclusionGénérale/ConclusionGénérale}
+
+\input{Annexe/Annexe}
+
+\input{Bibliographie/Bibliographie}
+					
+					
+%-----------------fin de la numérotation avec les chiffres arabs---------------------
+
+\end {document}
