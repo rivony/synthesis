@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.6.8)  17 FEB 2017 12:40
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.6.8)  17 FEB 2017 16:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -697,7 +697,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 (./Rapport_Rivo_19_Feb_2017.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 6.
+(Font)              <10.95> on input line 3.
 )
 \tf@toc=\write4
 \openout4 = `Rapport_Rivo_19_Feb_2017.toc'.
@@ -717,50 +717,42 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [2] [3] [4] [5] [6] [7] [8] [9] [10] [11]
-Underfull \hbox (badness 10000) in paragraph at lines 257--258
+Underfull \hbox (badness 10000) in paragraph at lines 256--257
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 267--268
+Underfull \hbox (badness 10000) in paragraph at lines 266--267
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 276--278
+Underfull \hbox (badness 10000) in paragraph at lines 275--277
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 281--282
+Underfull \hbox (badness 10000) in paragraph at lines 280--281
 
  []
 
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 294.
 [12]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 323.
- [13]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 323.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 294.
  (./Rapport_Rivo_19_Feb_2017.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 323.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 323.
-
-
-Package rerunfilecheck Warning: File `Rapport_Rivo_19_Feb_2017.out' has changed
-.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Rapport_Rivo_19_Feb_2017.out':
-(rerunfilecheck)             Before: 16ABB67A0E99BB7625532A6DA778587F;1249
-(rerunfilecheck)             After:  44E1828DBA9D688D2E570CFCDD66D998;1794.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 323.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 294.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 294.
+Package rerunfilecheck Info: File `Rapport_Rivo_19_Feb_2017.out' has not change
+d.
+(rerunfilecheck)             Checksum: 0C34A7CF898F06A4D18E022B092EAF5D;1601.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 294.
  ) 
 Here is how much of TeX's memory you used:
  8924 strings out of 493304
- 133970 string characters out of 6139872
- 265450 words of memory out of 5000000
- 12078 multiletter control sequences out of 15000+600000
- 57692 words of font info for 109 fonts, out of 8000000 for 9000
+ 134033 string characters out of 6139872
+ 264450 words of memory out of 5000000
+ 12083 multiletter control sequences out of 15000+600000
+ 57609 words of font info for 108 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  35i,12n,43p,1294b,465s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dv
@@ -776,10 +768,10 @@ are/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/l
 m/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf
 /fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6
 .pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb>
-Output written on Rapport_Rivo_19_Feb_2017.pdf (13 pages, 304841 bytes).
+Output written on Rapport_Rivo_19_Feb_2017.pdf (12 pages, 296617 bytes).
 PDF statistics:
- 220 PDF objects out of 1000 (max. 8388607)
- 188 compressed objects within 2 object streams
- 41 named destinations out of 1000 (max. 500000)
- 16465 words of extra memory for PDF output out of 17280 (max. 10000000)
+ 231 PDF objects out of 1000 (max. 8388607)
+ 200 compressed objects within 2 object streams
+ 38 named destinations out of 1000 (max. 500000)
+ 16505 words of extra memory for PDF output out of 17280 (max. 10000000)
 

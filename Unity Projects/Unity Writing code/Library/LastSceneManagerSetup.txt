@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/scene distance computation.unity
+  isLoaded: 1
+  isActive: 1

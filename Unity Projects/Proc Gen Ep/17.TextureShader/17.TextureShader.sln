@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{B529AC0A-3EE7-7DB8-7069-A50FAE43A93B}") = "17.TextureShader", "Assembly-CSharp-firstpass.csproj", "{75062E5D-C05E-D8B4-650E-ECB4AE134E49}"
+EndProject
+Project("{B529AC0A-3EE7-7DB8-7069-A50FAE43A93B}") = "17.TextureShader", "Assembly-CSharp.csproj", "{DABF613F-8C37-B127-18AA-2E876DE25C98}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75062E5D-C05E-D8B4-650E-ECB4AE134E49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75062E5D-C05E-D8B4-650E-ECB4AE134E49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75062E5D-C05E-D8B4-650E-ECB4AE134E49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75062E5D-C05E-D8B4-650E-ECB4AE134E49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DABF613F-8C37-B127-18AA-2E876DE25C98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DABF613F-8C37-B127-18AA-2E876DE25C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DABF613F-8C37-B127-18AA-2E876DE25C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DABF613F-8C37-B127-18AA-2E876DE25C98}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal

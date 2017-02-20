@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/Time Cop.unity
+  isLoaded: 1
+  isActive: 1

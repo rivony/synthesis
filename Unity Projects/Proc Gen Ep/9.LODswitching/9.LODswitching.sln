@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{325FCB9A-B8B8-1583-3694-6BBDA3F97702}") = "9.LODswitching", "Assembly-CSharp.csproj", "{FC80DCB6-3299-8785-2053-7891CDC9B376}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FC80DCB6-3299-8785-2053-7891CDC9B376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC80DCB6-3299-8785-2053-7891CDC9B376}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC80DCB6-3299-8785-2053-7891CDC9B376}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC80DCB6-3299-8785-2053-7891CDC9B376}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal

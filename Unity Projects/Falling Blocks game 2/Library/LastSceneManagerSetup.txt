@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/Scenes/Fall in love.unity
+  isLoaded: 1
+  isActive: 1

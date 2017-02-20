@@ -14,4 +14,3 @@
 \contentsline {section}{\numberline {5}Procedural city layout generation based on urban land use models (2009) of S. A. Groenewegen, R. M. Smelik , K. J. de Kraker and R. Bidarra}{10}{section.5}
 \contentsline {subsection}{\numberline {5.1}Les mod\IeC {\`e}les d'am\IeC {\'e}nagement de territoire urbain}{11}{subsection.5.1}
 \contentsline {subsection}{\numberline {5.2}M\IeC {\'e}thode}{11}{subsection.5.2}
-\contentsline {section}{\numberline {6}Urbanisation et developpement : les enjeux et defis majeurs dans les cas des villes d'Antananarivo et Moramanga (2013) d'ANDRIANJAFIALIVELO Lova Harimanana}{12}{section.6}

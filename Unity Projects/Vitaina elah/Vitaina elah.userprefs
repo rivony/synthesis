@@ -1,0 +1,16 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Difficulty.cs">
+    <Files>
+      <File FileName="Assets\Scripts\PlayerBehaviour.cs" Line="9" Column="11" />
+      <File FileName="Assets\Scripts\FallingBlockBehaviour.cs" Line="24" Column="24" />
+      <File FileName="Assets\Scripts\SpawnerBehaviour.cs" Line="37" Column="42" />
+      <File FileName="Assets\Scripts\Difficulty.cs" Line="7" Column="47" />
+      <File FileName="Assets\Scripts\GameOverBehaviour.cs" Line="27" Column="68" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

@@ -1,0 +1,17 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\3.Mesh\MeshGenerator.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Structs\LODInfo.cs" Line="5" Column="29" />
+      <File FileName="Assets\Scripts\4.Endless Terrain\TerrainChunk.cs" Line="58" Column="39" />
+      <File FileName="Assets\Scripts\3.Mesh\MeshGenerator.cs" Line="85" Column="27" />
+      <File FileName="Assets\Scripts\3.Mesh\MeshData.cs" Line="76" Column="33" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="E:\Unity Projects\Proc Gen Ep\13.Collisions\Assets\Scripts\4.Endless Terrain\TerrainChunk.cs" line="58" column="39" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

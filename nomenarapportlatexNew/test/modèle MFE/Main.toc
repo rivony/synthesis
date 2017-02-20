@@ -1,5 +1,0 @@
-\select@language {french}
-\contentsline {chapter}{\numberline {1}nom de chapitre 1}{2}
-\contentsline {section}{\numberline {1.1}section 1}{2}
-\contentsline {chapter}{\numberline {2}nom de chapitre 3}{4}
-\contentsline {chapter}{\numberline {3}nom de chapitre 3}{5}

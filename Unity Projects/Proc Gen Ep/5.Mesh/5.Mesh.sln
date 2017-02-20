@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{0A4792C1-4E1D-11F7-DC5A-399F00239223}") = "5.Mesh", "Assembly-CSharp.csproj", "{04A75D8E-7213-0F63-A5A4-15CCD2681D86}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04A75D8E-7213-0F63-A5A4-15CCD2681D86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04A75D8E-7213-0F63-A5A4-15CCD2681D86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04A75D8E-7213-0F63-A5A4-15CCD2681D86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04A75D8E-7213-0F63-A5A4-15CCD2681D86}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal

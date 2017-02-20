@@ -1,0 +1,15 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Shaders\Terrain.shader">
+    <Files>
+      <File FileName="Assets\Scripts\6.Data\TextureData.cs" Line="42" Column="58" />
+      <File FileName="Assets\Scripts\Constants\Constants.cs" Line="16" Column="1" />
+      <File FileName="Assets\Shaders\Terrain.shader" Line="72" Column="89" />
+      <File FileName="Assets\Scripts\2.Texture\Layer.cs" Line="6" Column="18" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

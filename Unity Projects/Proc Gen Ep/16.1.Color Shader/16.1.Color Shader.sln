@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{33C40BF6-6CE2-80DA-492F-CF20A7B6B719}") = "16.1.Color Shader", "Assembly-CSharp-firstpass.csproj", "{FD80237F-7544-81F4-A3F3-C3D42C18AB53}"
+EndProject
+Project("{33C40BF6-6CE2-80DA-492F-CF20A7B6B719}") = "16.1.Color Shader", "Assembly-CSharp.csproj", "{63374CD8-AAF4-3AD8-B551-C34432DDF441}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD80237F-7544-81F4-A3F3-C3D42C18AB53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD80237F-7544-81F4-A3F3-C3D42C18AB53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD80237F-7544-81F4-A3F3-C3D42C18AB53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD80237F-7544-81F4-A3F3-C3D42C18AB53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63374CD8-AAF4-3AD8-B551-C34432DDF441}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63374CD8-AAF4-3AD8-B551-C34432DDF441}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63374CD8-AAF4-3AD8-B551-C34432DDF441}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63374CD8-AAF4-3AD8-B551-C34432DDF441}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{70F7133E-87B5-5FFD-D942-5BFEACDEBFD7}") = "Space_Parenting_Rot", "Assembly-CSharp.csproj", "{285457A7-3E49-7F64-C250-4C439A144D5E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{285457A7-3E49-7F64-C250-4C439A144D5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{285457A7-3E49-7F64-C250-4C439A144D5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{285457A7-3E49-7F64-C250-4C439A144D5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{285457A7-3E49-7F64-C250-4C439A144D5E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
