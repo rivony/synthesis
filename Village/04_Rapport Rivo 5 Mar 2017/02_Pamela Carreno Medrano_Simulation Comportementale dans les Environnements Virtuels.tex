@@ -18,6 +18,8 @@
             urlcolor=blue,
             citecolor=blue]{hyperref}
             
+\usepackage[algo2e]{algorithm2e}
+
 \title{Simulation Comportementale dans les Environnements Virtuels.}
 \author{\textit{Pamela Carre$\tilde{n}$o Medrano}}
 \date{
@@ -36,6 +38,59 @@
 
 \maketitle
 \section*{Abstract}
+
+
+Les Serious Games reproduisent des situations et des environnements d'apprentissage virtuellement qui seraient coûteux et/ou dangeureux à mettre en place en réalité.
+
+Un problème abordé dans ce rapport de stage est la simulation des comportements de personnages non joueurs (PNJ) lorsque l'utilisateur trouble l'état du jeu et celui de chaque personnage. Comment créer des personnages réalistes et autonomes? quelles techniques produiraient des comportements réactifs et adaptatifs efficacement?
+
+\section{Etat de l'art}
+
+\textbf{Les agents virtuels autonomes} sont utiles pour évoluer dans les environnements virtuels complexes et dynamiques. L'utilisateur s'attend à retrouver des phénomènes et règles similaires au monde réel, d'où le peuplement de l'environnement virtuel de créatures pour interagir avec l'utilisateur tout en évoluant dans leur monde avec leur semblable. Le défi est grand à cause de la capacité humaine à percevoir les détails du comportement humain qui arrive à deceler les mouvements artificiels. Il est possible de créer des scénarios et des actions pour imiter l'être humain. Le souci est qu'avec un peu d'habitude, le joueur identifie le caractère répétitif des agents, les actions deviennent prévisibles  pour lui et le comportement de l'ensemble des créatures lui semble dénué d'individualité.\\
+ La solution proposée est la conception d'agents autonomes adaptatifs. Un agent est l'acteur de l'environnement ayant des intentions et affectent le monde virtuel. Ce monde est imprévisible, et l'agent doit atteindre son objectif en étant autonome (sans l'intervention d'autres agents ou du concepteur) pour sa survie, adaptatif (devient de plus en plus performant) vis-à-vis de son environnement, situé (capable de percevoir son environnement et d'agir sur lui), incarné (possède un corps).\\
+L'architecture d'un agent autonome adaptatif est caractérisé par une faculté cognitive total (Newell) réunissant la fonction de perception (sens), de décision (interprétation des informations percues, choix et mesures à prendre) et la fonction d'action (comment exécuter le plan produit par le module de décision). Pour pouvoir enchaîner des actions, un module supplémentaire d'apprentissage doit être inclu dans le système d'agent. La modélisation du comportements s'apparente en conséquence à une boucle "Perception-Séléction-Action": l'état du monde virtuel est perçue et associé aux intentions de l'agent pour prendre une décision, une action est exécutée et provoque des changements sur le voisinage de l'agent ainsi que son état interne, et la perception devient nouvelle.\\
+Les agents autonomes simplifient le travail du concepteurs qui doit créer l'environnement et placer les agents. L'évolution des agents font émerger des comportements complexes grâce aux interactions des agents entre eux et avec leur monde.
+
+\subsection{Modélisation des comportements autonomes}. Les modèles de comportements, selon N. Badler, permettent aux agents virtuels de se meuvoir en prenant des décisions et en entrant en interaction avec son voisinage selon le contexte.\\
+
+\textbf{Des architectures cognitives} sont proposées: la première néglige le rôle d'une représentation des connaissances de l'agent et dote celui-ci de compétences élémentaires, d'un mécanisme de contrôle et d'une capacité à exploiter les informations de l'environnement; la deuxième permet l'élaboration de plans complets pour atteindre l'objectif et muni l'agent d'une représentation de connaissances et d'un contôle d'action.\\
+SOAR- State, Operator and Result (J.Laird et al. 1986): un système qui doit créer une représentation de la tâche dans une mémoire de travail sous la forme d'une hierarchie d'états à atteindre et d'opérateurs permettant de passer d'un état à un autre. Par hypothèse, SOAR peut représenter tous les comportements par la séléction et l'application des opérateurs à des états. Les règles de production permettent de sélectionner les opérateurs à choisir (pair condition-action) ainsi que des connaissances portant sur les préférences d'une action. Concernant l'apprentissage, le système crée de nouvelles règles après chaque tâche effectuée. \\
+ACT-R - Adaptative Control of Thought-Rational, met l'accent sur un apprentissage procédural pour donner des habiletées à l'agent. Le système est formé de module traitant chacun un type d'information. Une seule règle est appliquée à chaque cycle de décision. Une unité centrale coordonne les tâches à partir d'informations partielles traitées par chaque module.\\
+
+\textbf{Système multi-agents}. L'objectif de ce système est de modéliser l'émergence des comportements complexes à partir d'interactions entre individus dotés de comportement simple (se déplacer, se nourir, etc.). L'agent peut agir sur lui-même et sur son environnement. Il possède une représentation partielle de l'environnement. Il communique avec les autres agents. Son comportement est la conséquence de des observations. Les deux types d'agents sont les agents réactifs (se comportant par stimuli-action, individuellement sans intelligence, intelligents en collectivité) et les agents cognitifs (coopératif face à un problème, ont une représentation commune de l'environnement). Les agents cognitifs gagnent en autonomie et en connaissance.\\
+Modèle BDI - Beliefs, Desires, Intentions. Ce modèle s'inspire du raisonnement humain, dont les concepts de croyance (ce que l'agent croit savoir de son monde), de désirs (les motivations et préférences de l'agent), et d'intentions (plans possibles pour  combler les désirs de l'agent).
+
+\begin{algorithm2e}
+\caption{Opération d'un agent BDI}\label{alg:gauss-seidel}
+\KwIn
+{%
+ liste de plans
+}
+\For{$k\leftarrow 1$ \KwTo $\infty$}
+{
+   Observer le monde \\
+   Mettre à jour le modèle interne du monde \\
+   Déliberer sur quel doit être le prochain désir à réaliser \\
+   Raisonner afin de trouver un plan pour satisfaire le désir
+}
+\end{algorithm2e}
+
+Un plan peut être la modification des croyances, l'ajout d'un nouveau désir ou l'exécution d'une action particulière. 
+
+PECS - Physical conditions, Emotional state, Cognitive capabilities, Social status. Le comportement social est le principal but de ce modèle. Les comportements existants sont générés à partir de trois couches:    la perception (traite les informations provenant de l'environnement), les états internes de l'agent, les actions de l'agent.\\
+Brahms est un language orienté agent pour simuler les activités de l'homme. Son concept suppose le monde comme une composition d'agents regroupés et d'objets sans comportement propre. Un agent a des \textit{croyances} changeantes selon les évènements. Les états du monde connus de tous les agents sont appelés \textit{faits}. Un \textit{cadre de travail} associe une tâche à son état conditionnel. Un \textit{cadre de pensée} modélise le raisonnement de l'agent et les conséquences des états conditionnels, il permet de déduire des croyances nouvelles. Une \textit{géographie} localise les endroits d'activité d'un agent. 
+
+\textbf{Animation comportementale}. C'est l'ensemble des modélisations de comportements caractérisées par des entités capable de percevoir leur monde. L'objectif étant de choisir la meilleure action face à une situation. La boucle Perception-Décision-Action est la base de l'animation comportementale. Elle distingue les systèmes réactifs (réaction inconsciente de l'entité sans connaissance) des systèmes cognitifs (la décision de l'entité  est basée sur ses expériences antérieures). \\
+Les entités des systèmes réactifs ne regardent pas les conséquences de leurs actions.  Les systèmes réactifs mentionnés dans le rapport sont les systèmes stimuli-réponse (composés de capteurs et d'effecteurs, reliés par des noeuds qui transforment les signaux des capteurs en commandes pour les effecteurs), les systèmes à base de règles (composés de capteurs et d'un ensemble de règles reliant une condition à une action: règles si...alors, règles sous forme d'arbre de décision avec des actions comme feuille et des experts décisionnels comme noeuds) et les automates à états finis (composés d'états et transitions, formant des enchainements d'actions conditionnels: piles d'automates, automates parallèles et automates parallèles hierarchiques).\\
+Les systèmes cognitifs se basent sur une représentation des connaissances pour déterminer l'enchaînement d'actions pour atteindre un but donné. Les modèles présentés dans le rapport sont le calcul situationnel nécessitant un temps de recherche considérable (une description complète du monde virtuel à partir des éléments: les situations, les fluents ou fonction de description d'éléments dynamiques, les causalités pour relier les états relatifs entre les fluents, les actions formées de couples \textit{preconditions} $\rightarrow$  \textit{effets} pour modifier une situation, les stratégies composées d'enchainement d'actions, les connaissances qui détermine si une entité connait des fluents), les STRIPS ou STandford Research Institute Planning System (simplification du modèle situationnel pour le rendre plus efficace en supprimant les fluents et en exprimant l'état du monde en fonction de faits), les réseaux de tâches hiérarchiques (décomposition de tâche en sous-tâches et générant un arbre "et/ou" formé de tâches, de méthodes et d'actions) et les mécanismes de sélection d'action (à chaque instant l'action qui converge le plus vers l'objectif est choisie en fonction des changements de l'environnement et l'acquisition de nouvelles données).
+
+\textbf{Bilan}
+L'architecture cognitif SOAR permet de sélectionner un seul opérateur d'action à la fois. ACT-R permet de sélectionner un seul but à tout moment. En conséquence, ces deux modèles nécessitent un temps de calcul considérable. ACT-R analyse l'information pour parfaire l'apprentissage des entités, alors que SOAR évolue au fur et à mesure que des buts sont résolus.\\
+Les systèmes multi-agents permettent de faire émerger des comportements complexes à partir des interactions élémentaires et simples dans le monde virtuel. Ces sont des systèmes réactifs aux changement de l'environnement car ils choisissent les actions incrémentiellement pour générer de nouvelles connaissances à tout moment. Le choix effectué prend avantage sur les changements opportuns. Les points négatifs de ces systèmes sont le niveau d'abstraction élévé et la désincarnation des agents.\\
+Les systèmes réactifs n'ont pas besoin d'une représentation abstraite de l'environnement ou des connaissances de l'entité. Le coût de calcul est faible car ces systèmes n'ont pas besoin d'un enchaînement de multiples actions. Si l'environnement simulé est hautement dynamique, l'utilisation de systèmes réactifs est privilégié. Les systèmes stimuli-réponse n'ont pas besoin de connaître le processus à stimuler, les entités peuvent réaliser des tâches complexes à partir d'exemples. Ces systèmes sont difficiles à interpréter et à entretenir. Au contraire, les automates sont faciles à interpréter. Les systèmes à bases de règles peuvent simuler des comportements où la cohérence temporelle n'est pas importante à l'opposé des automates.\\
+Les systèmes cognitifs supportent des processus décisionnels élaborés car ils générent des plans d'actions. Le calcul situationnel (et STRIPS) et les HTNs supposent que l'unique source de modification de l'environnement sont les entités, ils sont peut réactifs aux changements dans l'état de l'environnement et moins efficaces pour des environnements densément peuplés. Le mécanisme de sélection d'action ne souffre pas de cette limitation car il utilise un processus décisionnel incrémental. Le calcul situationnel et STRIPS ont 100\% de capacité à satisfaire un but, ce qui n'est pas le cas des autres typologies. Chaque système utilise au final un modèle d'expression de but différent, alors que le calcul situationnel et STRIPS utilisent un modèle de formules logiques. HTN est moins flexible car il utilise la notion de tâche pour décrire les buts du système.
+
+
 
 \section{Vocabulary}
 

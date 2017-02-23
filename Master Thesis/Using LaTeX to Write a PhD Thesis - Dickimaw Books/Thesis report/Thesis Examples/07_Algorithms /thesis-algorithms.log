@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.6.8)  11 FEB 2017 12:25
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.6.8)  22 FEB 2017 06:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -399,7 +399,7 @@ Package scrhack Info: redefining \lstlistoflistings on input line 137.
 )
 Package: listings 2013/08/26 1.5b (Carsten Heinz)
 
-No file thesis-algorithms.aux.
+(./thesis-algorithms.aux)
 \openout1 = `thesis-algorithms.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
@@ -415,7 +415,7 @@ LaTeX Font Info:    ... okay on input line 37.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
 LaTeX Font Info:    ... okay on input line 37.
 LaTeX Font Info:    Try loading font information for T1+lmr on input line 37.
-(/usr/share/texmf/tex/latex/lm/t1lmr.fd
+ (/usr/share/texmf/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 \c@lstlisting=\count142
@@ -426,55 +426,55 @@ Package scrhack Info: undefining \float@addtolists on input line 37.
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Try loading font information for T1+lmss on input line 65.
- (/usr/share/texmf/tex/latex/lm/t1lmss.fd
-File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-No file thesis-algorithms.toc.
-\tf@toc=\write3
-\openout3 = `thesis-algorithms.toc'.
 
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 66.
+(/usr/share/texmf/tex/latex/lm/t1lmss.fd
+File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
+) (./thesis-algorithms.toc
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 5.
+
 (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 66.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 5.
 
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 66.
-
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 5.
 
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 66.
-
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 5.
 
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 66.
+(Font)              <12> on input line 5.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 66.
+(Font)              <8> on input line 5.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 66.
-LaTeX Font Info:    Try loading font information for U+lasy on input line 66.
+(Font)              <6> on input line 5.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 5.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 66.
+LaTeX Font Info:    Try loading font information for U+msa on input line 5.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 66.
+LaTeX Font Info:    Try loading font information for U+msb on input line 5.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
+))
+\tf@toc=\write3
+\openout3 = `thesis-algorithms.toc'.
+
+
 Overfull \vbox (7.67189pt too high) has occurred while \output is active []
 
 
@@ -482,8 +482,7 @@ Overfull \vbox (7.67189pt too high) has occurred while \output is active []
 
 
 
-]
-No file thesis-algorithms.lof.
+] (./thesis-algorithms.lof)
 \tf@lof=\write4
 \openout4 = `thesis-algorithms.lof'.
 
@@ -494,8 +493,7 @@ Overfull \vbox (7.67189pt too high) has occurred while \output is active []
 [2
 
 
-]
-No file thesis-algorithms.lot.
+] (./thesis-algorithms.lot)
 \tf@lot=\write5
 \openout5 = `thesis-algorithms.lot'.
 
@@ -506,8 +504,7 @@ Overfull \vbox (7.67189pt too high) has occurred while \output is active []
 [3
 
 
-]
-No file thesis-algorithms.lol.
+] (./thesis-algorithms.lol)
 \tf@lol=\write6
 \openout6 = `thesis-algorithms.lol'.
 
@@ -552,9 +549,6 @@ Overfull \vbox (7.67189pt too high) has occurred while \output is active []
 
 [3]
 Chapter 2.
-
-LaTeX Warning: Reference `lst:sample' on page 4 undefined on input line 91.
-
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2013/08/26 1.5b listings language file
 )
@@ -576,17 +570,6 @@ Overfull \vbox (7.67189pt too high) has occurred while \output is active []
 
 
 ]
-
-LaTeX Warning: Reference `ex:rain' on page 5 undefined on input line 132.
-
-
-LaTeX Warning: Reference `alg:ex1' on page 5 undefined on input line 138.
-
-
-LaTeX Warning: Reference `alg:gauss-seidel' on page 5 undefined on input line 1
-58.
-
-
 Overfull \vbox (7.67189pt too high) has occurred while \output is active []
 
 
@@ -645,37 +628,30 @@ Overfull \vbox (7.67189pt too high) has occurred while \output is active []
 \tf@thm=\write7
 \openout7 = `thesis-algorithms.thm'.
 
- (./thesis-algorithms.aux)
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+ (./thesis-algorithms.aux) ) 
 Here is how much of TeX's memory you used:
- 6941 strings out of 493304
- 100350 string characters out of 6139872
- 338112 words of memory out of 5000000
+ 6951 strings out of 493304
+ 100570 string characters out of 6139872
+ 338148 words of memory out of 5000000
  10309 multiletter control sequences out of 15000+600000
  60420 words of font info for 52 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  42i,14n,49p,244b,1043s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dv
-ips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/s
-hare/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/l
-m/lm-ec.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texm
-f/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi
-12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/font
-s/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb><
-/usr/share/texmf/fonts/type1/public/lm/lmr6.pfb></usr/share/texmf/fonts/type1/p
-ublic/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/shar
-e/texmf/fonts/type1/public/lm/lmssbx10.pfb></usr/share/texmf/fonts/type1/public
-/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/te
-xmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmt
-k10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texmf/fo
-nts/type1/public/lm/lmtti10.pfb>
-Output written on thesis-algorithms.pdf (21 pages, 244347 bytes).
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/us
+r/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvip
+s/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/sha
+re/texmf/fonts/enc/dvips/lm/lm-ec.enc}</usr/share/texmf/fonts/type1/public/lm/l
+mbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/
+fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.
+pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/t
+ype1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr6.pfb></usr
+/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/publi
+c/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmssbx10.pfb></usr/shar
+e/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/l
+m/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf
+/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt1
+2.pfb></usr/share/texmf/fonts/type1/public/lm/lmtti10.pfb>
+Output written on thesis-algorithms.pdf (21 pages, 245433 bytes).
 PDF statistics:
  146 PDF objects out of 1000 (max. 8388607)
  105 compressed objects within 2 object streams
