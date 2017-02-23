@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{B3F47FDF-1C49-D539-EF67-75BAA98408D9}") = "8_ThirdPersonCamera", "Assembly-CSharp.csproj", "{2DCFB6F5-2CDC-8A50-8AEB-0E055D5A6F99}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2DCFB6F5-2CDC-8A50-8AEB-0E055D5A6F99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DCFB6F5-2CDC-8A50-8AEB-0E055D5A6F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DCFB6F5-2CDC-8A50-8AEB-0E055D5A6F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DCFB6F5-2CDC-8A50-8AEB-0E055D5A6F99}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
